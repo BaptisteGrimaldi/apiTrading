@@ -40,14 +40,18 @@ Promise.all([nasdaqStock, nasdaqStockLength])
       });
     }
 
+    async function addList(checkBougieVerteResult:string[]) {
+      listeFinal = listeFinal.concat(checkBougieVerteResult);
+      console.log("liste Intermédiaire", listeFinal)
+    }
+
     async function checkBougieVerteIteration(start: number, end: number) {
       let checkBougieVerteResult = await checkBougieVerte(
         stockData,
         start,
         end
       );
-      listeFinal = listeFinal.concat(checkBougieVerteResult);
-      console.log('listeIntermédiaire', listeFinal);
+      await addList(checkBougieVerteResult)
     }
   })
   .catch((error) => {

@@ -37,7 +37,7 @@ export function checkBougieVerte(stock, start, end) {
                                 day2 === true &&
                                 day3 === false &&
                                 day4 === false) {
-                                // faudra typer !!!
+                                // faudra typer + truc bizare tous ne passe pas reprendre la meme forme que fetch stock!!!
                                 function fetchRsi(symbol) {
                                     return __awaiter(this, void 0, void 0, function* () {
                                         yield fetch(`https://api.twelvedata.com/rsi?symbol=${stock[i].symbol}&interval=1day&time_period=34&apikey=b914fed0677e48cdaf1938b5be42956d`)

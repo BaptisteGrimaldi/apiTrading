@@ -39,11 +39,16 @@ Promise.all([nasdaqStock, nasdaqStockLength])
             }, ms);
         });
     }
+    function addList(checkBougieVerteResult) {
+        return __awaiter(this, void 0, void 0, function* () {
+            listeFinal = listeFinal.concat(checkBougieVerteResult);
+            console.log("problème console.log", listeFinal);
+        });
+    }
     function checkBougieVerteIteration(start, end) {
         return __awaiter(this, void 0, void 0, function* () {
             let checkBougieVerteResult = yield checkBougieVerte(stockData, start, end);
-            listeFinal = listeFinal.concat(checkBougieVerteResult);
-            console.log('listeIntermédiaire', listeFinal);
+            yield addList(checkBougieVerteResult);
         });
     }
 })
