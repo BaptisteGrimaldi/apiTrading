@@ -6,7 +6,7 @@ interface listStock {
 
 export async function fetchStocksList(exchange: string): Promise<listStock> {
   try {
-    const response = await fetch(
+    const response:any = await fetch(
       `https://api.twelvedata.com/stocks?exchange=${exchange.toUpperCase()}`
     );
     return response.json();

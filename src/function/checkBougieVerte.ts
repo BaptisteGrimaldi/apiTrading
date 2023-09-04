@@ -17,6 +17,7 @@ export async function checkBougieVerte(
     if (stopLoop) {
       break;
     }
+    //Stratégie précise : 
     try {
       const fetchPromise = fetchStocks(stock[i].symbol, 4)
         .then((res) => {
@@ -57,17 +58,22 @@ export async function checkBougieVerte(
 
                 async function fetchRsi(symbol: string) {
                   await fetch(
-                    `https://api.twelvedata.com/rsi?symbol=${stock[i].symbol}&interval=1day&time_period=34&apikey=b914fed0677e48cdaf1938b5be42956d`
+                    `https://api.twelvedata.com/rsi?symbol=${stock[i].symbol}&interval=1day&time_period=9&apikey=b914fed0677e48cdaf1938b5be42956d`
                   )
                     .then((res) => {
                       return res.json();
                     })
-                    .then((res)=>{
-                        console.log(`${stock[i].symbol}`+" "+res.values[0].rsi);
+                    .then((res:any) => {
+                      console.log(
+                        `${stock[i].symbol}` + ' avant' + res.values[0].rsi
+                      );
 
-                        if(res.values[0].rsi >50){
-                            action2joursPositifs.push(stock[i].symbol);
-                        }
+                      if (res.values[0].rsi > 50) {
+                        action2joursPositifs.push(stock[i].symbol);
+                        console.log(
+                          `${stock[i].symbol}` + ' après' + res.values[0].rsi
+                        );
+                      }
                     })
                     .catch(() => {
                       console.log('RSI non trouvé', stock[i].symbol);
@@ -75,8 +81,6 @@ export async function checkBougieVerte(
                 }
 
                 fetchRsi(stock[i].symbol);
-
-
               }
             } else {
               console.error("Les données n'ont pas de datetime.");
@@ -100,3 +104,5 @@ export async function checkBougieVerte(
 
   return action2joursPositifs;
 }
+
+// 3 bougie 1 verte : à voir !

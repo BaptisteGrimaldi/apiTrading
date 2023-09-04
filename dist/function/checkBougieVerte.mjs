@@ -40,14 +40,15 @@ export function checkBougieVerte(stock, start, end) {
                                 // faudra typer + truc bizare tous ne passe pas reprendre la meme forme que fetch stock!!!
                                 function fetchRsi(symbol) {
                                     return __awaiter(this, void 0, void 0, function* () {
-                                        yield fetch(`https://api.twelvedata.com/rsi?symbol=${stock[i].symbol}&interval=1day&time_period=34&apikey=b914fed0677e48cdaf1938b5be42956d`)
+                                        yield fetch(`https://api.twelvedata.com/rsi?symbol=${stock[i].symbol}&interval=1day&time_period=9&apikey=b914fed0677e48cdaf1938b5be42956d`)
                                             .then((res) => {
                                             return res.json();
                                         })
                                             .then((res) => {
-                                            console.log(`${stock[i].symbol}` + " " + res.values[0].rsi);
+                                            console.log(`${stock[i].symbol}` + ' avant' + res.values[0].rsi);
                                             if (res.values[0].rsi > 50) {
                                                 action2joursPositifs.push(stock[i].symbol);
+                                                console.log(`${stock[i].symbol}` + ' après' + res.values[0].rsi);
                                             }
                                         })
                                             .catch(() => {
@@ -79,3 +80,4 @@ export function checkBougieVerte(stock, start, end) {
         return action2joursPositifs;
     });
 }
+// 3 bougie 1 verte : à voir !
