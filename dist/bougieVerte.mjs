@@ -22,21 +22,16 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
         .then(([stockData, stockDataLength]) => {
         let listeFinal = [];
         // Ici le nombre d'appel est limité à 500 par minute
-        const nombreCycleIteration = Math.ceil(stockDataLength / 500);
+        const nombreCycleIteration = Math.ceil(stockDataLength / reponsesQuestion[4]);
         resolveAllIndice(nombreCycleIteration).then(() => {
             console.log('VraiListeFinal', listeFinal);
         });
         function resolveAllIndice(nombreCycleIteration) {
             return __awaiter(this, void 0, void 0, function* () {
                 for (let x = 1; x < nombreCycleIteration + 1; x++) {
-                    if (x === 1) {
-                        yield initStrategie((x - 1) * 500, x * 500);
-                    }
-                    else {
-                        console.log('startAttente');
-                        yield waitPromesse(70000);
-                        yield initStrategie((x - 1) * 500, x * 500);
-                    }
+                    console.log('startAttente');
+                    yield waitPromesse(70000);
+                    yield initStrategie((x - 1) * reponsesQuestion[4], x * reponsesQuestion[4]);
                 }
             });
         }

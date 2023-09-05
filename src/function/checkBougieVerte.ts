@@ -1,5 +1,6 @@
 import { fetchStocks } from './fetchStocks';
 import { checkIfPositive } from './checkIfPositive';
+import { fetchRsi } from './fetchRsi';
 import fetch from 'node-fetch';
 
 // Check pour 2 rouge puis 2 vertes
@@ -8,19 +9,19 @@ export async function checkBougieVerte(
   stock: any[],
   start: number,
   end: number,
-  price:number
+  price: number
 ) {
   let action2joursPositifs: string[] = [];
-  let fetchPromises = [];
+  let fetchPromises: any[] = [];
   let stopLoop = false;
 
   for (let i = start; i < end; i++) {
     if (stopLoop) {
       break;
     }
-    //Stratégie précise : 
+    //Stratégie précise :
     try {
-      const fetchPromise = fetchStocks(stock[i].symbol, 4)
+      const fetchPromise = await fetchStocks(stock[i].symbol, 4)
         .then((res) => {
           //Endroit prix action minimum
           if (parseFloat(res.values?.[0].close) > price) {
@@ -57,31 +58,22 @@ export async function checkBougieVerte(
               ) {
                 // vrai fetch rsi ici
 
-                async function fetchRsi(symbol: string) {
-                  await fetch(
-                    `https://api.twelvedata.com/rsi?symbol=${stock[i].symbol}&interval=1day&time_period=14&apikey=b914fed0677e48cdaf1938b5be42956d`
-                  )
-                    .then((res) => {
-                      return res.json();
-                    })
-                    .then((res:any) => {
+                fetchRsi(stock[i].symbol)
+                  .then((res: any) => {
+                    console.log(
+                      `${stock[i].symbol}` + ' avant ' + res.values[0].rsi
+                    );
+
+                    if (res.values[0].rsi > 50) {
+                      action2joursPositifs.push(stock[i].symbol);
                       console.log(
-                        `${stock[i].symbol}` + ' avant ' + res.values[0].rsi
+                        `${stock[i].symbol}` + ' après ' + res.values[0].rsi
                       );
-
-                      if (res.values[0].rsi > 50) {
-                        action2joursPositifs.push(stock[i].symbol);
-                        console.log(
-                          `${stock[i].symbol}` + ' après ' + res.values[0].rsi
-                        );
-                      }
-                    })
-                    .catch(() => {
-                      console.log('RSI non trouvé', stock[i].symbol);
-                    });
-                }
-
-                fetchRsi(stock[i].symbol);
+                    }
+                  })
+                  .catch(() => {
+                    console.log('problème avec le push action2joursPositifs');
+                  });
               }
             } else {
               console.error("Les données n'ont pas de datetime.");
@@ -91,7 +83,7 @@ export async function checkBougieVerte(
         .catch(() => {
           console.error('function fetchStock potentielement problème ! ');
         });
-
+      // }
       fetchPromises.push(fetchPromise);
     } catch {
       console.log(`L'index ${i} n'existe pas`);

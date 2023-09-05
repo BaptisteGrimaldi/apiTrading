@@ -49,8 +49,20 @@ async function questionRsi(question: string) {
   return reponse.prix;
 }
 
+async function cycleApi(question: string) {
+  const reponse = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'api',
+      message: question,
+    },
+  ]);
+
+  return reponse.api;
+}
+
 export async function poserQuestionsEnSeries(): Promise<
-  [string, string, number, number]
+  [string, string, number, number, number]
 > {
   const indice: string = await questionIndice(
     'Quel indice voulez-vous checker ?'
@@ -60,12 +72,14 @@ export async function poserQuestionsEnSeries(): Promise<
   );
   const prix: string = await questionPrix('Quel prix voulez-vous ?');
   const minRsi: string = await questionRsi('Quel rsi minimum voulez-vous ?');
+  const api: string = await cycleApi('Nombre appel api par clycle ?');
 
-  const reponsesQuestion: [string, string, number, number] = [
+  const reponsesQuestion: [string, string, number, number, number] = [
     indice,
     strategie,
     parseInt(prix),
     parseFloat(minRsi),
+    parseInt(api),
   ];
 
   return reponsesQuestion;

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { fetchStocks } from './fetchStocks.mjs';;
 import { checkIfPositive } from './checkIfPositive.mjs';;
-import fetch from 'node-fetch';
+import { fetchRsi } from './fetchRsi.mjs';;
 // Check pour 2 rouge puis 2 vertes
 export function checkBougieVerte(stock, start, end, price) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -20,9 +20,9 @@ export function checkBougieVerte(stock, start, end, price) {
             if (stopLoop) {
                 break;
             }
-            //Stratégie précise : 
+            //Stratégie précise :
             try {
-                const fetchPromise = fetchStocks(stock[i].symbol, 4)
+                const fetchPromise = yield fetchStocks(stock[i].symbol, 4)
                     .then((res) => {
                     var _a, _b, _c, _d, _e, _f;
                     //Endroit prix action minimum
@@ -39,25 +39,17 @@ export function checkBougieVerte(stock, start, end, price) {
                                 day3 === false &&
                                 day4 === false) {
                                 // vrai fetch rsi ici
-                                function fetchRsi(symbol) {
-                                    return __awaiter(this, void 0, void 0, function* () {
-                                        yield fetch(`https://api.twelvedata.com/rsi?symbol=${stock[i].symbol}&interval=1day&time_period=14&apikey=b914fed0677e48cdaf1938b5be42956d`)
-                                            .then((res) => {
-                                            return res.json();
-                                        })
-                                            .then((res) => {
-                                            console.log(`${stock[i].symbol}` + ' avant ' + res.values[0].rsi);
-                                            if (res.values[0].rsi > 50) {
-                                                action2joursPositifs.push(stock[i].symbol);
-                                                console.log(`${stock[i].symbol}` + ' après ' + res.values[0].rsi);
-                                            }
-                                        })
-                                            .catch(() => {
-                                            console.log('RSI non trouvé', stock[i].symbol);
-                                        });
-                                    });
-                                }
-                                fetchRsi(stock[i].symbol);
+                                fetchRsi(stock[i].symbol)
+                                    .then((res) => {
+                                    console.log(`${stock[i].symbol}` + ' avant ' + res.values[0].rsi);
+                                    if (res.values[0].rsi > 50) {
+                                        action2joursPositifs.push(stock[i].symbol);
+                                        console.log(`${stock[i].symbol}` + ' après ' + res.values[0].rsi);
+                                    }
+                                })
+                                    .catch(() => {
+                                    console.log('problème avec le push action2joursPositifs');
+                                });
                             }
                         }
                         else {
@@ -68,6 +60,7 @@ export function checkBougieVerte(stock, start, end, price) {
                     .catch(() => {
                     console.error('function fetchStock potentielement problème ! ');
                 });
+                // }
                 fetchPromises.push(fetchPromise);
             }
             catch (_a) {

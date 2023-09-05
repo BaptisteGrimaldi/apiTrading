@@ -58,17 +58,31 @@ function questionRsi(question) {
         return reponse.prix;
     });
 }
+function cycleApi(question) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const reponse = yield inquirer.prompt([
+            {
+                type: 'input',
+                name: 'api',
+                message: question,
+            },
+        ]);
+        return reponse.api;
+    });
+}
 export function poserQuestionsEnSeries() {
     return __awaiter(this, void 0, void 0, function* () {
         const indice = yield questionIndice('Quel indice voulez-vous checker ?');
         const strategie = yield questionStrategie('Quel stratégie voulez-vous ?');
         const prix = yield questionPrix('Quel prix voulez-vous ?');
         const minRsi = yield questionRsi('Quel rsi minimum voulez-vous ?');
+        const api = yield cycleApi('Nombre appel api par clycle ?');
         const reponsesQuestion = [
             indice,
             strategie,
             parseInt(prix),
             parseFloat(minRsi),
+            parseInt(api),
         ];
         return reponsesQuestion;
     });

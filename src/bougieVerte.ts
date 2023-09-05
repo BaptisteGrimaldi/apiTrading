@@ -22,7 +22,9 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
 
       // Ici le nombre d'appel est limité à 500 par minute
 
-      const nombreCycleIteration = Math.ceil(stockDataLength / 500);
+      const nombreCycleIteration = Math.ceil(
+        stockDataLength / reponsesQuestion[4]
+      );
 
       resolveAllIndice(nombreCycleIteration).then(() => {
         console.log('VraiListeFinal', listeFinal);
@@ -30,13 +32,12 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
 
       async function resolveAllIndice(nombreCycleIteration: number) {
         for (let x = 1; x < nombreCycleIteration + 1; x++) {
-          if (x === 1) {
-            await initStrategie((x - 1) * 500, x * 500);
-          } else {
-            console.log('startAttente');
-            await waitPromesse(70000);
-            await initStrategie((x - 1) * 500, x * 500);
-          }
+          console.log('startAttente');
+          await waitPromesse(70000);
+          await initStrategie(
+            (x - 1) * reponsesQuestion[4],
+            x * reponsesQuestion[4]
+          );
         }
       }
 
@@ -53,7 +54,7 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
               stockData,
               start,
               end,
-              price,
+              price
             );
             await addList(strategie);
             break;
