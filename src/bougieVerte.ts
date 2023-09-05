@@ -5,13 +5,13 @@ import { poserQuestionsEnSeries } from './function/questions';
 
 poserQuestionsEnSeries().then((reponsesQuestion) => {
   const exchangeStock: Promise<any[]> = fetchStocksList(
-    reponsesQuestion[0]
+    reponsesQuestion.indice
   ).then((res) => {
     return res.data;
   });
 
   const exchangeStockLength: Promise<number> = fetchStocksList(
-    reponsesQuestion[0]
+    reponsesQuestion.indice
   ).then((res) => {
     return res.data.length;
   });
@@ -23,7 +23,7 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
       // Ici le nombre d'appel est limité à 500 par minute
 
       const nombreCycleIteration = Math.ceil(
-        stockDataLength / reponsesQuestion[4]
+        stockDataLength / reponsesQuestion.api
       );
 
       resolveAllIndice(nombreCycleIteration).then(() => {
@@ -35,8 +35,8 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
           console.log('startAttente');
           await waitPromesse(70000);
           await initStrategie(
-            (x - 1) * reponsesQuestion[4],
-            x * reponsesQuestion[4]
+            (x - 1) * reponsesQuestion.api,
+            x * reponsesQuestion.api,
           );
         }
       }
@@ -44,9 +44,10 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
       async function initStrategie(
         start: number,
         end: number,
-        strat: string = reponsesQuestion[1],
-        price: number = reponsesQuestion[2],
-        minRsi: number = reponsesQuestion[3]
+        strat: string = reponsesQuestion.strategie,
+        price: number = reponsesQuestion.prix,
+        minRsi: number = reponsesQuestion.minRsi,
+        maxRsi : number = reponsesQuestion.maxRsi
       ) {
         switch (strat) {
           case 'check2BougiesVertes2Rouges':
@@ -54,7 +55,9 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
               stockData,
               start,
               end,
-              price
+              price,
+              minRsi,
+              maxRsi
             );
             await addList(strategie);
             break;

@@ -1,5 +1,14 @@
 import inquirer from 'inquirer';
 
+interface ReponsesQuestion {
+  indice: string;
+  strategie: string;
+  prix: number;
+  minRsi: number;
+  maxRsi: number;
+  api: number;
+}
+
 async function questionIndice(question: string) {
   const reponse = await inquirer.prompt([
     {
@@ -12,6 +21,8 @@ async function questionIndice(question: string) {
 
   return reponse.indice;
 }
+
+
 async function questionStrategie(question: string) {
   const reponse = await inquirer.prompt([
     {
@@ -37,7 +48,7 @@ async function questionPrix(question: string) {
   return reponse.prix;
 }
 
-async function questionRsi(question: string) {
+async function questionMinRsi(question: string) {
   const reponse = await inquirer.prompt([
     {
       type: 'input',
@@ -47,6 +58,18 @@ async function questionRsi(question: string) {
   ]);
 
   return reponse.prix;
+}
+
+async function questionMaxRsI(question: string) {
+  const reponse = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'maxRSI',
+      message: question
+    },
+  ]);
+
+  return reponse.maxRSI;
 }
 
 async function cycleApi(question: string) {
@@ -62,7 +85,7 @@ async function cycleApi(question: string) {
 }
 
 export async function poserQuestionsEnSeries(): Promise<
-  [string, string, number, number, number]
+ReponsesQuestion
 > {
   const indice: string = await questionIndice(
     'Quel indice voulez-vous checker ?'
@@ -70,17 +93,31 @@ export async function poserQuestionsEnSeries(): Promise<
   const strategie: string = await questionStrategie(
     'Quel stratégie voulez-vous ?'
   );
-  const prix: string = await questionPrix('Quel prix voulez-vous ?');
-  const minRsi: string = await questionRsi('Quel rsi minimum voulez-vous ?');
+  const prix: string = await questionPrix('Quel prix minimum voulez-vous ?');
+  const minRsi: string = await questionMinRsi('Quel rsi minimum voulez-vous ?');
+  const maxRsi: string = await questionMaxRsI('Quel rsi maximum voulez-vous ?');
   const api: string = await cycleApi('Nombre appel api par clycle ?');
 
-  const reponsesQuestion: [string, string, number, number, number] = [
-    indice,
-    strategie,
-    parseInt(prix),
-    parseFloat(minRsi),
-    parseInt(api),
-  ];
+  // const reponsesQuestion: [string, string, number, number, number,number] = [
+  //   indice,
+  //   strategie,
+  //   parseInt(prix),
+  //   parseFloat(minRsi),
+  //   parseFloat(maxRsi),
+  //   parseInt(api),
+  // ];
+
+  
+  const reponsesQuestion: ReponsesQuestion = {
+    indice: indice,
+    strategie: strategie,
+    prix: parseInt(prix),
+    minRsi: parseFloat(minRsi),
+    maxRsi: parseFloat(maxRsi),
+    api: parseInt(api),
+  };
 
   return reponsesQuestion;
 }
+
+

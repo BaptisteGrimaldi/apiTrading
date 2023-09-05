@@ -46,7 +46,7 @@ function questionPrix(question) {
         return reponse.prix;
     });
 }
-function questionRsi(question) {
+function questionMinRsi(question) {
     return __awaiter(this, void 0, void 0, function* () {
         const reponse = yield inquirer.prompt([
             {
@@ -56,6 +56,18 @@ function questionRsi(question) {
             },
         ]);
         return reponse.prix;
+    });
+}
+function questionMaxRsI(question) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const reponse = yield inquirer.prompt([
+            {
+                type: 'input',
+                name: 'maxRSI',
+                message: question
+            },
+        ]);
+        return reponse.maxRSI;
     });
 }
 function cycleApi(question) {
@@ -74,16 +86,26 @@ export function poserQuestionsEnSeries() {
     return __awaiter(this, void 0, void 0, function* () {
         const indice = yield questionIndice('Quel indice voulez-vous checker ?');
         const strategie = yield questionStrategie('Quel stratégie voulez-vous ?');
-        const prix = yield questionPrix('Quel prix voulez-vous ?');
-        const minRsi = yield questionRsi('Quel rsi minimum voulez-vous ?');
+        const prix = yield questionPrix('Quel prix minimum voulez-vous ?');
+        const minRsi = yield questionMinRsi('Quel rsi minimum voulez-vous ?');
+        const maxRsi = yield questionMaxRsI('Quel rsi maximum voulez-vous ?');
         const api = yield cycleApi('Nombre appel api par clycle ?');
-        const reponsesQuestion = [
-            indice,
-            strategie,
-            parseInt(prix),
-            parseFloat(minRsi),
-            parseInt(api),
-        ];
+        // const reponsesQuestion: [string, string, number, number, number,number] = [
+        //   indice,
+        //   strategie,
+        //   parseInt(prix),
+        //   parseFloat(minRsi),
+        //   parseFloat(maxRsi),
+        //   parseInt(api),
+        // ];
+        const reponsesQuestion = {
+            indice: indice,
+            strategie: strategie,
+            prix: parseInt(prix),
+            minRsi: parseFloat(minRsi),
+            maxRsi: parseFloat(maxRsi),
+            api: parseInt(api),
+        };
         return reponsesQuestion;
     });
 }

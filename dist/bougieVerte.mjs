@@ -12,17 +12,17 @@ import { checkBougieVerte } from './function/checkBougieVerte.mjs';;
 import { waitPromesse } from './function/waitPromesse.mjs';;
 import { poserQuestionsEnSeries } from './function/questions.mjs';;
 poserQuestionsEnSeries().then((reponsesQuestion) => {
-    const exchangeStock = fetchStocksList(reponsesQuestion[0]).then((res) => {
+    const exchangeStock = fetchStocksList(reponsesQuestion.indice).then((res) => {
         return res.data;
     });
-    const exchangeStockLength = fetchStocksList(reponsesQuestion[0]).then((res) => {
+    const exchangeStockLength = fetchStocksList(reponsesQuestion.indice).then((res) => {
         return res.data.length;
     });
     Promise.all([exchangeStock, exchangeStockLength])
         .then(([stockData, stockDataLength]) => {
         let listeFinal = [];
         // Ici le nombre d'appel est limité à 500 par minute
-        const nombreCycleIteration = Math.ceil(stockDataLength / reponsesQuestion[4]);
+        const nombreCycleIteration = Math.ceil(stockDataLength / reponsesQuestion.api);
         resolveAllIndice(nombreCycleIteration).then(() => {
             console.log('VraiListeFinal', listeFinal);
         });
@@ -31,15 +31,15 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
                 for (let x = 1; x < nombreCycleIteration + 1; x++) {
                     console.log('startAttente');
                     yield waitPromesse(70000);
-                    yield initStrategie((x - 1) * reponsesQuestion[4], x * reponsesQuestion[4]);
+                    yield initStrategie((x - 1) * reponsesQuestion.api, x * reponsesQuestion.api);
                 }
             });
         }
-        function initStrategie(start, end, strat = reponsesQuestion[1], price = reponsesQuestion[2], minRsi = reponsesQuestion[3]) {
+        function initStrategie(start, end, strat = reponsesQuestion.strategie, price = reponsesQuestion.prix, minRsi = reponsesQuestion.minRsi, maxRsi = reponsesQuestion.maxRsi) {
             return __awaiter(this, void 0, void 0, function* () {
                 switch (strat) {
                     case 'check2BougiesVertes2Rouges':
-                        let strategie = yield checkBougieVerte(stockData, start, end, price);
+                        let strategie = yield checkBougieVerte(stockData, start, end, price, minRsi, maxRsi);
                         yield addList(strategie);
                         break;
                 }

@@ -11,7 +11,7 @@ import { fetchStocks } from './fetchStocks.mjs';;
 import { checkIfPositive } from './checkIfPositive.mjs';;
 import { fetchRsi } from './fetchRsi.mjs';;
 // Check pour 2 rouge puis 2 vertes
-export function checkBougieVerte(stock, start, end, price) {
+export function checkBougieVerte(stock, start, end, price, minRsi, maxRsi) {
     return __awaiter(this, void 0, void 0, function* () {
         let action2joursPositifs = [];
         let fetchPromises = [];
@@ -22,8 +22,7 @@ export function checkBougieVerte(stock, start, end, price) {
             }
             //Stratégie précise :
             try {
-                const fetchPromise = yield fetchStocks(stock[i].symbol, 4)
-                    .then((res) => {
+                const fetchPromise = yield fetchStocks(stock[i].symbol, 4).then((res) => {
                     var _a, _b, _c, _d, _e, _f;
                     //Endroit prix action minimum
                     if (parseFloat((_a = res.values) === null || _a === void 0 ? void 0 : _a[0].close) > price) {
@@ -38,17 +37,14 @@ export function checkBougieVerte(stock, start, end, price) {
                                 day2 === true &&
                                 day3 === false &&
                                 day4 === false) {
-                                // vrai fetch rsi ici
-                                fetchRsi(stock[i].symbol)
+                                fetchRsi(stock[i].symbol, minRsi, maxRsi)
                                     .then((res) => {
-                                    console.log(`${stock[i].symbol}` + ' avant ' + res.values[0].rsi);
-                                    if (res.values[0].rsi > 50) {
+                                    if (res === true) {
                                         action2joursPositifs.push(stock[i].symbol);
-                                        console.log(`${stock[i].symbol}` + ' après ' + res.values[0].rsi);
                                     }
                                 })
                                     .catch(() => {
-                                    console.log('problème avec le push action2joursPositifs');
+                                    console.log('RSI non trouvé', stock[i].symbol);
                                 });
                             }
                         }
@@ -56,11 +52,7 @@ export function checkBougieVerte(stock, start, end, price) {
                             console.error("Les données n'ont pas de datetime.");
                         }
                     }
-                })
-                    .catch(() => {
-                    console.error('function fetchStock potentielement problème ! ');
                 });
-                // }
                 fetchPromises.push(fetchPromise);
             }
             catch (_a) {
