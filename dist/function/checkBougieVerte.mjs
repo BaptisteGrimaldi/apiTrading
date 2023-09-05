@@ -11,7 +11,7 @@ import { fetchStocks } from './fetchStocks.mjs';;
 import { checkIfPositive } from './checkIfPositive.mjs';;
 import fetch from 'node-fetch';
 // Check pour 2 rouge puis 2 vertes
-export function checkBougieVerte(stock, start, end) {
+export function checkBougieVerte(stock, start, end, price) {
     return __awaiter(this, void 0, void 0, function* () {
         let action2joursPositifs = [];
         let fetchPromises = [];
@@ -20,12 +20,13 @@ export function checkBougieVerte(stock, start, end) {
             if (stopLoop) {
                 break;
             }
+            //Stratégie précise : 
             try {
                 const fetchPromise = fetchStocks(stock[i].symbol, 4)
                     .then((res) => {
                     var _a, _b, _c, _d, _e, _f;
                     //Endroit prix action minimum
-                    if (parseFloat((_a = res.values) === null || _a === void 0 ? void 0 : _a[0].close) > 20) {
+                    if (parseFloat((_a = res.values) === null || _a === void 0 ? void 0 : _a[0].close) > price) {
                         if (((_c = (_b = res.values) === null || _b === void 0 ? void 0 : _b[0]) === null || _c === void 0 ? void 0 : _c.datetime) &&
                             ((_d = res.values) === null || _d === void 0 ? void 0 : _d[1].datetime) &&
                             ((_f = (_e = res.values) === null || _e === void 0 ? void 0 : _e[2]) === null || _f === void 0 ? void 0 : _f.datetime)) {
@@ -37,18 +38,18 @@ export function checkBougieVerte(stock, start, end) {
                                 day2 === true &&
                                 day3 === false &&
                                 day4 === false) {
-                                // faudra typer + truc bizare tous ne passe pas reprendre la meme forme que fetch stock!!!
+                                // vrai fetch rsi ici
                                 function fetchRsi(symbol) {
                                     return __awaiter(this, void 0, void 0, function* () {
-                                        yield fetch(`https://api.twelvedata.com/rsi?symbol=${stock[i].symbol}&interval=1day&time_period=9&apikey=b914fed0677e48cdaf1938b5be42956d`)
+                                        yield fetch(`https://api.twelvedata.com/rsi?symbol=${stock[i].symbol}&interval=1day&time_period=14&apikey=b914fed0677e48cdaf1938b5be42956d`)
                                             .then((res) => {
                                             return res.json();
                                         })
                                             .then((res) => {
-                                            console.log(`${stock[i].symbol}` + ' avant' + res.values[0].rsi);
+                                            console.log(`${stock[i].symbol}` + ' avant ' + res.values[0].rsi);
                                             if (res.values[0].rsi > 50) {
                                                 action2joursPositifs.push(stock[i].symbol);
-                                                console.log(`${stock[i].symbol}` + ' après' + res.values[0].rsi);
+                                                console.log(`${stock[i].symbol}` + ' après ' + res.values[0].rsi);
                                             }
                                         })
                                             .catch(() => {
