@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "tsc &&  npm run rename-mjs && node ./dist/bougieVerte.mjs",
+    "start": "tsc &&  npm run rename-mjs && node ./dist/main.mjs",
     "rename-mjs": "node renameFiles.js && node ajoutImportMjs.js",
     "prettier": "npx prettier --write ./src/**"
   },

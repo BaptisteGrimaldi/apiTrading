@@ -16,7 +16,7 @@ export function fetchRsi(symbolStock, minRsi, maxRsi) {
         })
             .then((res) => {
             // console.log(`${symbolStock}` + ' avant ' + res.values[0].rsi);
-            if (res.values[0].rsi > minRsi && res.values[0].rsi < maxRsi) {
+            if (res.values[0].rsi >= minRsi && res.values[0].rsi <= maxRsi) {
                 console.log(`${symbolStock}` + ' après ' + res.values[0].rsi);
                 return true;
             }

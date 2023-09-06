@@ -7,7 +7,7 @@ interface ReponsesQuestion {
   minRsi: number;
   maxRsi: number;
   api: number;
-  bougiePattern: string[];
+  bougieConfig: string[];
 }
 
 async function questionIndice(question: string) {
@@ -83,17 +83,19 @@ async function cycleApi(question: string) {
 
   return reponse.api;
 }
-async function bougiePattern(question: string) {
+
+async function questionBougieConfig(question: string) {
   const reponse = await inquirer.prompt([
     {
       type: 'input',
-      name: 'bougiePattern',
+      name: 'bougie',
       message: question,
     },
   ]);
 
-  return reponse.bougiePattern;
+  return reponse.bougie;
 }
+
 
 export async function poserQuestionsEnSeries(): Promise<ReponsesQuestion> {
   const indice: string = await questionIndice(
@@ -106,9 +108,7 @@ export async function poserQuestionsEnSeries(): Promise<ReponsesQuestion> {
   const minRsi: string = await questionMinRsi('Quel rsi minimum voulez-vous ?');
   const maxRsi: string = await questionMaxRsI('Quel rsi maximum voulez-vous ?');
   const api: string = await cycleApi('Nombre appel api par clycle ?');
-  const bougie: string = await bougiePattern(
-    'Quel bougie pattern voulez-vous ? ex:0011 = 2 bougies vertes et 2 rouges plus recent à droite'
-  );
+  const bougieConfig: string = await questionBougieConfig('Quel configuration de bougie voulez-vous ?');
 
   const reponsesQuestion: ReponsesQuestion = {
     indice: indice,
@@ -117,11 +117,8 @@ export async function poserQuestionsEnSeries(): Promise<ReponsesQuestion> {
     minRsi: parseFloat(minRsi),
     maxRsi: parseFloat(maxRsi),
     api: parseInt(api),
-    bougiePattern: bougie.split(''),
+    bougieConfig: bougieConfig.split(''),
   };
-
-  console.log(reponsesQuestion.bougiePattern.length)
-  console.log(reponsesQuestion.bougiePattern)
 
   return reponsesQuestion;
 }

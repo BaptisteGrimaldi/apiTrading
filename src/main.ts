@@ -5,8 +5,6 @@ import { poserQuestionsEnSeries } from './function/questions';
 
 poserQuestionsEnSeries().then((reponsesQuestion) => {
 
-  console.log("price",reponsesQuestion.prix)
-
   const exchangeStock: Promise<any[]> = fetchStocksList(
     reponsesQuestion.indice
   ).then((res) => {
@@ -51,7 +49,7 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
         price: number = reponsesQuestion.prix,
         minRsi: number = reponsesQuestion.minRsi,
         maxRsi: number = reponsesQuestion.maxRsi,
-        bougiePattern: string[] = reponsesQuestion.bougiePattern
+        bougiePattern: string[] = reponsesQuestion.bougieConfig
       ) {
         switch (strat) {
           case 'check2BougiesVertes2Rouges':
@@ -62,7 +60,7 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
               price,
               minRsi,
               maxRsi,
-              bougiePattern
+              bougiePattern,
             );
             await addList(strategie);
             break;

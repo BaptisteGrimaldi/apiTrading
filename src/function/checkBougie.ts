@@ -1,6 +1,7 @@
 import { fetchStocks } from './fetchStocks';
 import { checkIfPositive } from './checkIfPositive';
 import { fetchRsi } from './fetchRsi';
+import { checkDateTime } from './checkDateTime';
 import fetch from 'node-fetch';
 
 // Check pour 2 rouge puis 2 vertes
@@ -12,63 +13,61 @@ export async function checkBougie(
   price: number,
   minRsi: number,
   maxRsi: number,
-  bougiePattern : string[]
+  bougiePattern: string[],
 ) {
   let actionJours: string[] = [];
   let fetchPromises: any[] = [];
   let stopLoop = false;
+  const bougieConfig = bougiePattern.map((bougie) => {
+    return bougie === '1' ? true : false;
+  });
 
-  // Renvoie undefined je sais pas pourquoi
-  // console.log(bougiePattern.length)
+  // console.log("bougieConfig",bougieConfig)
 
   for (let i = start; i < end; i++) {
     if (stopLoop) {
       break;
     }
-    //Stratégie précise :
     try {
-      // try{
-      // // console.log("bougieNumber",bougiePattern.length)
-      // console.log(price)   
-      // }catch{
-      //   console.log("Erreur bougiePattern")
-      // }
 
-      const fetchPromise = await fetchStocks(stock[i].symbol, 4).then((res) => {
+      const fetchPromise = await fetchStocks(stock[i].symbol, bougiePattern.length).then((res) => {
         //Endroit prix action minimum
         if (parseFloat(res.values?.[0].close) > price) {
 
+          const dateTime = checkDateTime(bougiePattern, res)
+
           if (
-            res.values?.[0]?.datetime &&
-            res.values?.[1].datetime &&
-            res.values?.[2]?.datetime
+            dateTime === true 
           ) {
-            const day1 = checkIfPositive(
-              res.values[0].open,
-              res.values[0].close
-            );
 
-            const day2 = checkIfPositive(
-              res.values[1].open,
-              res.values[1].close
-            );
+            const bougiePatternActionEnCour = [];
 
-            const day3 = checkIfPositive(
-              res.values[2].open,
-              res.values[2].close
-            );
+            for(let x = 0; x < bougiePattern.length; x++) {
+              const bougie = checkIfPositive(res.values[x].open, res.values[x].close);
+              bougiePatternActionEnCour.push(bougie);
+            }
 
-            const day4 = checkIfPositive(
-              res.values[3].open,
-              res.values[3].close
-            );
+            function arraysHaveSameOrder(bougieConfig:boolean[], bougiePatternActionEnCour:boolean[]) {
+              if (bougieConfig.length !== bougiePatternActionEnCour.length) {
+                return false;
+              }
+            
+              for (let i = 0; i < bougieConfig.length; i++) {
+                if (bougieConfig[i] !== bougiePatternActionEnCour[i]) {
+                  return false;
+                }
+              }
+            
+              return true;
+            }
 
+            // console.log('bougiePatternActionEnCourAvant',stock[i].symbol,bougiePatternActionEnCour);
+            
             if (
-              day1 === true &&
-              day2 === true &&
-              day3 === false &&
-              day4 === false
+              arraysHaveSameOrder(bougieConfig, bougiePatternActionEnCour)
             ) {
+
+              // console.log('bougiePatternActionEnCourAprès',stock[i].symbol,bougiePatternActionEnCour);
 
               fetchRsi(stock[i].symbol, minRsi,maxRsi)
                 .then((res: boolean) => {

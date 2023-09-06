@@ -19,10 +19,10 @@ interface valueStock {
   status: string;
 }
 
-export async function checkDateTime(
+export function checkDateTime(
   bougiePattern: string[],
   res: valueStock
-): Promise<boolean> {
+):boolean {
   for (let x = 0; x < bougiePattern.length; x++) {
     try {
       if (res.values?.[x]?.datetime) {

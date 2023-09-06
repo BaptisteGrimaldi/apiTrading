@@ -12,7 +12,6 @@ import { checkBougie } from './function/checkBougie.mjs';;
 import { waitPromesse } from './function/waitPromesse.mjs';;
 import { poserQuestionsEnSeries } from './function/questions.mjs';;
 poserQuestionsEnSeries().then((reponsesQuestion) => {
-    console.log("price", reponsesQuestion.prix);
     const exchangeStock = fetchStocksList(reponsesQuestion.indice).then((res) => {
         return res.data;
     });
@@ -36,7 +35,7 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
                 }
             });
         }
-        function initStrategie(start, end, strat = reponsesQuestion.strategie, price = reponsesQuestion.prix, minRsi = reponsesQuestion.minRsi, maxRsi = reponsesQuestion.maxRsi, bougiePattern = reponsesQuestion.bougiePattern) {
+        function initStrategie(start, end, strat = reponsesQuestion.strategie, price = reponsesQuestion.prix, minRsi = reponsesQuestion.minRsi, maxRsi = reponsesQuestion.maxRsi, bougiePattern = reponsesQuestion.bougieConfig) {
             return __awaiter(this, void 0, void 0, function* () {
                 switch (strat) {
                     case 'check2BougiesVertes2Rouges':

@@ -82,16 +82,16 @@ function cycleApi(question) {
         return reponse.api;
     });
 }
-function bougiePattern(question) {
+function questionBougieConfig(question) {
     return __awaiter(this, void 0, void 0, function* () {
         const reponse = yield inquirer.prompt([
             {
                 type: 'input',
-                name: 'bougiePattern',
+                name: 'bougie',
                 message: question,
             },
         ]);
-        return reponse.bougiePattern;
+        return reponse.bougie;
     });
 }
 export function poserQuestionsEnSeries() {
@@ -102,7 +102,7 @@ export function poserQuestionsEnSeries() {
         const minRsi = yield questionMinRsi('Quel rsi minimum voulez-vous ?');
         const maxRsi = yield questionMaxRsI('Quel rsi maximum voulez-vous ?');
         const api = yield cycleApi('Nombre appel api par clycle ?');
-        const bougie = yield bougiePattern('Quel bougie pattern voulez-vous ? ex:0011 = 2 bougies vertes et 2 rouges plus recent à droite');
+        const bougieConfig = yield questionBougieConfig('Quel configuration de bougie voulez-vous ?');
         const reponsesQuestion = {
             indice: indice,
             strategie: strategie,
@@ -110,10 +110,8 @@ export function poserQuestionsEnSeries() {
             minRsi: parseFloat(minRsi),
             maxRsi: parseFloat(maxRsi),
             api: parseInt(api),
-            bougiePattern: bougie.split(''),
+            bougieConfig: bougieConfig.split(''),
         };
-        console.log(reponsesQuestion.bougiePattern.length);
-        console.log(reponsesQuestion.bougiePattern);
         return reponsesQuestion;
     });
 }

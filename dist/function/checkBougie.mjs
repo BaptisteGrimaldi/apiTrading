@@ -10,41 +10,47 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { fetchStocks } from './fetchStocks.mjs';;
 import { checkIfPositive } from './checkIfPositive.mjs';;
 import { fetchRsi } from './fetchRsi.mjs';;
+import { checkDateTime } from './checkDateTime.mjs';;
 // Check pour 2 rouge puis 2 vertes
 export function checkBougie(stock, start, end, price, minRsi, maxRsi, bougiePattern) {
     return __awaiter(this, void 0, void 0, function* () {
         let actionJours = [];
         let fetchPromises = [];
         let stopLoop = false;
-        // Renvoie undefined je sais pas pourquoi
-        // console.log(bougiePattern.length)
+        const bougieConfig = bougiePattern.map((bougie) => {
+            return bougie === '1' ? true : false;
+        });
+        // console.log("bougieConfig",bougieConfig)
         for (let i = start; i < end; i++) {
             if (stopLoop) {
                 break;
             }
-            //Stratégie précise :
             try {
-                // try{
-                // // console.log("bougieNumber",bougiePattern.length)
-                // console.log(price)   
-                // }catch{
-                //   console.log("Erreur bougiePattern")
-                // }
-                const fetchPromise = yield fetchStocks(stock[i].symbol, 4).then((res) => {
-                    var _a, _b, _c, _d, _e, _f;
+                const fetchPromise = yield fetchStocks(stock[i].symbol, bougiePattern.length).then((res) => {
+                    var _a;
                     //Endroit prix action minimum
                     if (parseFloat((_a = res.values) === null || _a === void 0 ? void 0 : _a[0].close) > price) {
-                        if (((_c = (_b = res.values) === null || _b === void 0 ? void 0 : _b[0]) === null || _c === void 0 ? void 0 : _c.datetime) &&
-                            ((_d = res.values) === null || _d === void 0 ? void 0 : _d[1].datetime) &&
-                            ((_f = (_e = res.values) === null || _e === void 0 ? void 0 : _e[2]) === null || _f === void 0 ? void 0 : _f.datetime)) {
-                            const day1 = checkIfPositive(res.values[0].open, res.values[0].close);
-                            const day2 = checkIfPositive(res.values[1].open, res.values[1].close);
-                            const day3 = checkIfPositive(res.values[2].open, res.values[2].close);
-                            const day4 = checkIfPositive(res.values[3].open, res.values[3].close);
-                            if (day1 === true &&
-                                day2 === true &&
-                                day3 === false &&
-                                day4 === false) {
+                        const dateTime = checkDateTime(bougiePattern, res);
+                        if (dateTime === true) {
+                            const bougiePatternActionEnCour = [];
+                            for (let x = 0; x < bougiePattern.length; x++) {
+                                const bougie = checkIfPositive(res.values[x].open, res.values[x].close);
+                                bougiePatternActionEnCour.push(bougie);
+                            }
+                            function arraysHaveSameOrder(bougieConfig, bougiePatternActionEnCour) {
+                                if (bougieConfig.length !== bougiePatternActionEnCour.length) {
+                                    return false;
+                                }
+                                for (let i = 0; i < bougieConfig.length; i++) {
+                                    if (bougieConfig[i] !== bougiePatternActionEnCour[i]) {
+                                        return false;
+                                    }
+                                }
+                                return true;
+                            }
+                            // console.log('bougiePatternActionEnCourAvant',stock[i].symbol,bougiePatternActionEnCour);
+                            if (arraysHaveSameOrder(bougieConfig, bougiePatternActionEnCour)) {
+                                // console.log('bougiePatternActionEnCourAprès',stock[i].symbol,bougiePatternActionEnCour);
                                 fetchRsi(stock[i].symbol, minRsi, maxRsi)
                                     .then((res) => {
                                     if (res === true) {
