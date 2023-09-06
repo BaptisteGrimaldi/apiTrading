@@ -1,9 +1,12 @@
 import { fetchStocksList } from './function/fetchStocksList';
-import { checkBougieVerte } from './function/checkBougieVerte';
+import { checkBougie } from './function/checkBougie';
 import { waitPromesse } from './function/waitPromesse';
 import { poserQuestionsEnSeries } from './function/questions';
 
 poserQuestionsEnSeries().then((reponsesQuestion) => {
+
+  console.log("price",reponsesQuestion.prix)
+
   const exchangeStock: Promise<any[]> = fetchStocksList(
     reponsesQuestion.indice
   ).then((res) => {
@@ -36,7 +39,7 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
           await waitPromesse(70000);
           await initStrategie(
             (x - 1) * reponsesQuestion.api,
-            x * reponsesQuestion.api,
+            x * reponsesQuestion.api
           );
         }
       }
@@ -47,17 +50,19 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
         strat: string = reponsesQuestion.strategie,
         price: number = reponsesQuestion.prix,
         minRsi: number = reponsesQuestion.minRsi,
-        maxRsi : number = reponsesQuestion.maxRsi
+        maxRsi: number = reponsesQuestion.maxRsi,
+        bougiePattern: string[] = reponsesQuestion.bougiePattern
       ) {
         switch (strat) {
           case 'check2BougiesVertes2Rouges':
-            let strategie = await checkBougieVerte(
+            let strategie = await checkBougie(
               stockData,
               start,
               end,
               price,
               minRsi,
-              maxRsi
+              maxRsi,
+              bougiePattern
             );
             await addList(strategie);
             break;

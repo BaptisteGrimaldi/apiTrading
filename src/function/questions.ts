@@ -7,6 +7,7 @@ interface ReponsesQuestion {
   minRsi: number;
   maxRsi: number;
   api: number;
+  bougiePattern: string[];
 }
 
 async function questionIndice(question: string) {
@@ -21,7 +22,6 @@ async function questionIndice(question: string) {
 
   return reponse.indice;
 }
-
 
 async function questionStrategie(question: string) {
   const reponse = await inquirer.prompt([
@@ -65,7 +65,7 @@ async function questionMaxRsI(question: string) {
     {
       type: 'input',
       name: 'maxRSI',
-      message: question
+      message: question,
     },
   ]);
 
@@ -83,10 +83,19 @@ async function cycleApi(question: string) {
 
   return reponse.api;
 }
+async function bougiePattern(question: string) {
+  const reponse = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'bougiePattern',
+      message: question,
+    },
+  ]);
 
-export async function poserQuestionsEnSeries(): Promise<
-ReponsesQuestion
-> {
+  return reponse.bougiePattern;
+}
+
+export async function poserQuestionsEnSeries(): Promise<ReponsesQuestion> {
   const indice: string = await questionIndice(
     'Quel indice voulez-vous checker ?'
   );
@@ -97,17 +106,10 @@ ReponsesQuestion
   const minRsi: string = await questionMinRsi('Quel rsi minimum voulez-vous ?');
   const maxRsi: string = await questionMaxRsI('Quel rsi maximum voulez-vous ?');
   const api: string = await cycleApi('Nombre appel api par clycle ?');
+  const bougie: string = await bougiePattern(
+    'Quel bougie pattern voulez-vous ? ex:0011 = 2 bougies vertes et 2 rouges plus recent à droite'
+  );
 
-  // const reponsesQuestion: [string, string, number, number, number,number] = [
-  //   indice,
-  //   strategie,
-  //   parseInt(prix),
-  //   parseFloat(minRsi),
-  //   parseFloat(maxRsi),
-  //   parseInt(api),
-  // ];
-
-  
   const reponsesQuestion: ReponsesQuestion = {
     indice: indice,
     strategie: strategie,
@@ -115,9 +117,11 @@ ReponsesQuestion
     minRsi: parseFloat(minRsi),
     maxRsi: parseFloat(maxRsi),
     api: parseInt(api),
+    bougiePattern: bougie.split(''),
   };
+
+  console.log(reponsesQuestion.bougiePattern.length)
+  console.log(reponsesQuestion.bougiePattern)
 
   return reponsesQuestion;
 }
-
-

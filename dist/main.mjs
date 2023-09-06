@@ -7,11 +7,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { fetchStocksList } from './function/fetchStocksList.mjs';;;;;;;;;;;;;;;;;;;;;
-import { checkBougie } from './function/checkBougie.mjs';;;;;;;;;;;;;;;;;;;;;
-import { waitPromesse } from './function/waitPromesse.mjs';;;;;;;;;;;;;;;;;;;;;
-import { poserQuestionsEnSeries } from './function/questions.mjs';;;;;;;;;;;;;;;;;;;;;
+import { fetchStocksList } from './function/fetchStocksList.mjs';;
+import { checkBougie } from './function/checkBougie.mjs';;
+import { waitPromesse } from './function/waitPromesse.mjs';;
+import { poserQuestionsEnSeries } from './function/questions.mjs';;
 poserQuestionsEnSeries().then((reponsesQuestion) => {
+    console.log("price", reponsesQuestion.prix);
     const exchangeStock = fetchStocksList(reponsesQuestion.indice).then((res) => {
         return res.data;
     });
@@ -35,11 +36,11 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
                 }
             });
         }
-        function initStrategie(start, end, strat = reponsesQuestion.strategie, price = reponsesQuestion.prix, minRsi = reponsesQuestion.minRsi, maxRsi = reponsesQuestion.maxRsi) {
+        function initStrategie(start, end, strat = reponsesQuestion.strategie, price = reponsesQuestion.prix, minRsi = reponsesQuestion.minRsi, maxRsi = reponsesQuestion.maxRsi, bougiePattern = reponsesQuestion.bougiePattern) {
             return __awaiter(this, void 0, void 0, function* () {
                 switch (strat) {
                     case 'check2BougiesVertes2Rouges':
-                        let strategie = yield checkBougie(stockData, start, end, price, minRsi, maxRsi);
+                        let strategie = yield checkBougie(stockData, start, end, price, minRsi, maxRsi, bougiePattern);
                         yield addList(strategie);
                         break;
                 }

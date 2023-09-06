@@ -7,21 +7,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { fetchStocks } from './fetchStocks.mjs';;;;;;;;;;;;;;;;;;;;;;
-import { checkIfPositive } from './checkIfPositive.mjs';;;;;;;;;;;;;;;;;;;;;;
-import { fetchRsi } from './fetchRsi.mjs';;;;;;;;;;;;;;;;;;;;;;
+import { fetchStocks } from './fetchStocks.mjs';;
+import { checkIfPositive } from './checkIfPositive.mjs';;
+import { fetchRsi } from './fetchRsi.mjs';;
 // Check pour 2 rouge puis 2 vertes
-export function checkBougieVerte(stock, start, end, price, minRsi, maxRsi) {
+export function checkBougie(stock, start, end, price, minRsi, maxRsi, bougiePattern) {
     return __awaiter(this, void 0, void 0, function* () {
-        let action2joursPositifs = [];
+        let actionJours = [];
         let fetchPromises = [];
         let stopLoop = false;
+        // Renvoie undefined je sais pas pourquoi
+        // console.log(bougiePattern.length)
         for (let i = start; i < end; i++) {
             if (stopLoop) {
                 break;
             }
             //Stratégie précise :
             try {
+                // try{
+                // // console.log("bougieNumber",bougiePattern.length)
+                // console.log(price)   
+                // }catch{
+                //   console.log("Erreur bougiePattern")
+                // }
                 const fetchPromise = yield fetchStocks(stock[i].symbol, 4).then((res) => {
                     var _a, _b, _c, _d, _e, _f;
                     //Endroit prix action minimum
@@ -40,7 +48,7 @@ export function checkBougieVerte(stock, start, end, price, minRsi, maxRsi) {
                                 fetchRsi(stock[i].symbol, minRsi, maxRsi)
                                     .then((res) => {
                                     if (res === true) {
-                                        action2joursPositifs.push(stock[i].symbol);
+                                        actionJours.push(stock[i].symbol);
                                     }
                                 })
                                     .catch(() => {
@@ -63,7 +71,7 @@ export function checkBougieVerte(stock, start, end, price, minRsi, maxRsi) {
         yield Promise.all(fetchPromises).catch((error) => {
             console.error("Erreur lors de l'exécution des promesses :", error);
         });
-        return action2joursPositifs;
+        return actionJours;
     });
 }
 // 3 bougie 1 verte : à voir !

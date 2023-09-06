@@ -64,7 +64,7 @@ function questionMaxRsI(question) {
             {
                 type: 'input',
                 name: 'maxRSI',
-                message: question
+                message: question,
             },
         ]);
         return reponse.maxRSI;
@@ -82,6 +82,18 @@ function cycleApi(question) {
         return reponse.api;
     });
 }
+function bougiePattern(question) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const reponse = yield inquirer.prompt([
+            {
+                type: 'input',
+                name: 'bougiePattern',
+                message: question,
+            },
+        ]);
+        return reponse.bougiePattern;
+    });
+}
 export function poserQuestionsEnSeries() {
     return __awaiter(this, void 0, void 0, function* () {
         const indice = yield questionIndice('Quel indice voulez-vous checker ?');
@@ -90,14 +102,7 @@ export function poserQuestionsEnSeries() {
         const minRsi = yield questionMinRsi('Quel rsi minimum voulez-vous ?');
         const maxRsi = yield questionMaxRsI('Quel rsi maximum voulez-vous ?');
         const api = yield cycleApi('Nombre appel api par clycle ?');
-        // const reponsesQuestion: [string, string, number, number, number,number] = [
-        //   indice,
-        //   strategie,
-        //   parseInt(prix),
-        //   parseFloat(minRsi),
-        //   parseFloat(maxRsi),
-        //   parseInt(api),
-        // ];
+        const bougie = yield bougiePattern('Quel bougie pattern voulez-vous ? ex:0011 = 2 bougies vertes et 2 rouges plus recent à droite');
         const reponsesQuestion = {
             indice: indice,
             strategie: strategie,
@@ -105,7 +110,10 @@ export function poserQuestionsEnSeries() {
             minRsi: parseFloat(minRsi),
             maxRsi: parseFloat(maxRsi),
             api: parseInt(api),
+            bougiePattern: bougie.split(''),
         };
+        console.log(reponsesQuestion.bougiePattern.length);
+        console.log(reponsesQuestion.bougiePattern);
         return reponsesQuestion;
     });
 }

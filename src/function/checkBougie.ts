@@ -5,17 +5,21 @@ import fetch from 'node-fetch';
 
 // Check pour 2 rouge puis 2 vertes
 
-export async function checkBougieVerte(
+export async function checkBougie(
   stock: any[],
   start: number,
   end: number,
   price: number,
   minRsi: number,
-  maxRsi: number
+  maxRsi: number,
+  bougiePattern : string[]
 ) {
-  let action2joursPositifs: string[] = [];
+  let actionJours: string[] = [];
   let fetchPromises: any[] = [];
   let stopLoop = false;
+
+  // Renvoie undefined je sais pas pourquoi
+  // console.log(bougiePattern.length)
 
   for (let i = start; i < end; i++) {
     if (stopLoop) {
@@ -23,9 +27,17 @@ export async function checkBougieVerte(
     }
     //Stratégie précise :
     try {
+      // try{
+      // // console.log("bougieNumber",bougiePattern.length)
+      // console.log(price)   
+      // }catch{
+      //   console.log("Erreur bougiePattern")
+      // }
+
       const fetchPromise = await fetchStocks(stock[i].symbol, 4).then((res) => {
         //Endroit prix action minimum
         if (parseFloat(res.values?.[0].close) > price) {
+
           if (
             res.values?.[0]?.datetime &&
             res.values?.[1].datetime &&
@@ -61,7 +73,7 @@ export async function checkBougieVerte(
               fetchRsi(stock[i].symbol, minRsi,maxRsi)
                 .then((res: boolean) => {
                   if (res === true) {
-                    action2joursPositifs.push(stock[i].symbol);
+                    actionJours.push(stock[i].symbol);
                   }
                 })
                 .catch(() => {
@@ -84,7 +96,7 @@ export async function checkBougieVerte(
   await Promise.all(fetchPromises).catch((error: any) => {
     console.error("Erreur lors de l'exécution des promesses :", error);
   });
-  return action2joursPositifs;
+  return actionJours;
 
 }
 
