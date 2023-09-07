@@ -7,21 +7,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import fetch from 'node-fetch';
-export function fetchRsi(symbolStock, minRsi, maxRsi) {
+export function fetchMacd(symbol, nbJour) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield fetch(`https://api.twelvedata.com/rsi?symbol=${symbolStock}&interval=1day&time_period=14&apikey=b914fed0677e48cdaf1938b5be42956d`)
-            .then((res) => {
-            return res.json();
-        })
-            .then((res) => {
-            // console.log(`${symbolStock}` + ' avant ' + res.values[0].rsi);
-            if (res.values[0].rsi >= minRsi && res.values[0].rsi <= maxRsi) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        });
+        try {
+            const response = yield fetch(`https://api.twelvedata.com/macd?symbol=${symbol.toUpperCase()}&interval=1day&outputsize=${nbJour}&format=JSON&apikey=b914fed0677e48cdaf1938b5be42956d`);
+            return response.json();
+        }
+        catch (error) {
+            console.error("L'index de l'action n'existe pas");
+            throw error;
+        }
     });
 }
+//   fetchMacd('AAPL', 1).then((res) => {
+//     console.log('res', res);
+//   });

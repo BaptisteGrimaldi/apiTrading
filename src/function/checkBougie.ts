@@ -2,6 +2,9 @@ import { fetchStocks } from './fetchStocks';
 import { checkIfPositive } from './checkIfPositive';
 import { fetchRsi } from './fetchRsi';
 import { checkDateTime } from './checkDateTime';
+import {arraysHaveSameOrder} from './checkTableauSimilaire';
+import { fetchStockastique } from './fetchStockastique';
+import { fetchMacd } from './fetchMacd';
 import fetch from 'node-fetch';
 
 // Check pour 2 rouge puis 2 vertes
@@ -46,33 +49,30 @@ export async function checkBougie(
               const bougie = checkIfPositive(res.values[x].open, res.values[x].close);
               bougiePatternActionEnCour.push(bougie);
             }
-
-            function arraysHaveSameOrder(bougieConfig:boolean[], bougiePatternActionEnCour:boolean[]) {
-              if (bougieConfig.length !== bougiePatternActionEnCour.length) {
-                return false;
-              }
-            
-              for (let i = 0; i < bougieConfig.length; i++) {
-                if (bougieConfig[i] !== bougiePatternActionEnCour[i]) {
-                  return false;
-                }
-              }
-            
-              return true;
-            }
-
-            // console.log('bougiePatternActionEnCourAvant',stock[i].symbol,bougiePatternActionEnCour);
             
             if (
               arraysHaveSameOrder(bougieConfig, bougiePatternActionEnCour)
             ) {
 
-              // console.log('bougiePatternActionEnCourAprès',stock[i].symbol,bougiePatternActionEnCour);
-
               fetchRsi(stock[i].symbol, minRsi,maxRsi)
                 .then((res: boolean) => {
                   if (res === true) {
-                    actionJours.push(stock[i].symbol);
+
+                    fetchStockastique(stock[i].symbol, 1).then((res) => {
+
+                      if(parseFloat(res.values[0].slow_d) <=  parseFloat(res.values[0].slow_k)) {
+
+                        fetchMacd(stock[i].symbol, 1).then((res) => {
+
+                          if(parseFloat(res.values[0].macd) >=  parseFloat(res.values[0].macd_signal)) {
+
+                            console.log('Action trouvée :', stock[i].symbol);
+                            actionJours.push(stock[i].symbol);
+                          }
+                        })
+                      }
+                    })
+
                   }
                 })
                 .catch(() => {

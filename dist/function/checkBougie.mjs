@@ -11,6 +11,9 @@ import { fetchStocks } from './fetchStocks.mjs';;
 import { checkIfPositive } from './checkIfPositive.mjs';;
 import { fetchRsi } from './fetchRsi.mjs';;
 import { checkDateTime } from './checkDateTime.mjs';;
+import { arraysHaveSameOrder } from './checkTableauSimilaire.mjs';;
+import { fetchStockastique } from './fetchStockastique.mjs';;
+import { fetchMacd } from './fetchMacd.mjs';;
 // Check pour 2 rouge puis 2 vertes
 export function checkBougie(stock, start, end, price, minRsi, maxRsi, bougiePattern) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -37,24 +40,20 @@ export function checkBougie(stock, start, end, price, minRsi, maxRsi, bougiePatt
                                 const bougie = checkIfPositive(res.values[x].open, res.values[x].close);
                                 bougiePatternActionEnCour.push(bougie);
                             }
-                            function arraysHaveSameOrder(bougieConfig, bougiePatternActionEnCour) {
-                                if (bougieConfig.length !== bougiePatternActionEnCour.length) {
-                                    return false;
-                                }
-                                for (let i = 0; i < bougieConfig.length; i++) {
-                                    if (bougieConfig[i] !== bougiePatternActionEnCour[i]) {
-                                        return false;
-                                    }
-                                }
-                                return true;
-                            }
-                            // console.log('bougiePatternActionEnCourAvant',stock[i].symbol,bougiePatternActionEnCour);
                             if (arraysHaveSameOrder(bougieConfig, bougiePatternActionEnCour)) {
-                                // console.log('bougiePatternActionEnCourAprès',stock[i].symbol,bougiePatternActionEnCour);
                                 fetchRsi(stock[i].symbol, minRsi, maxRsi)
                                     .then((res) => {
                                     if (res === true) {
-                                        actionJours.push(stock[i].symbol);
+                                        fetchStockastique(stock[i].symbol, 1).then((res) => {
+                                            if (parseFloat(res.values[0].slow_d) <= parseFloat(res.values[0].slow_k)) {
+                                                fetchMacd(stock[i].symbol, 1).then((res) => {
+                                                    if (parseFloat(res.values[0].macd) >= parseFloat(res.values[0].macd_signal)) {
+                                                        console.log('Action trouvée :', stock[i].symbol);
+                                                        actionJours.push(stock[i].symbol);
+                                                    }
+                                                });
+                                            }
+                                        });
                                     }
                                 })
                                     .catch(() => {
