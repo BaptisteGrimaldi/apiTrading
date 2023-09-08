@@ -28,6 +28,7 @@ interface Meta {
     status: string;
   }
   
+  import fetch from 'node-fetch';
 
 export async function fetchStockastique(
     symbol: string,
