@@ -22,6 +22,10 @@ export function fetchRsi(symbolStock, minRsi, maxRsi) {
             else {
                 return false;
             }
+        })
+            .catch((err) => {
+            console.log('fetch RSI prob');
+            return false;
         });
     });
 }

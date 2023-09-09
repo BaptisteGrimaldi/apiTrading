@@ -2,8 +2,8 @@ import fetch from 'node-fetch';
 
 export async function fetchRsi(
   symbolStock: string,
-  minRsi: number,
-  maxRsi: number
+  minRsi: number | boolean,
+  maxRsi: number | boolean
 ) {
   return await fetch(
     `https://api.twelvedata.com/rsi?symbol=${symbolStock}&interval=1day&time_period=14&apikey=b914fed0677e48cdaf1938b5be42956d`
@@ -19,5 +19,9 @@ export async function fetchRsi(
       } else {
         return false;
       }
+    })
+    .catch((err) => {
+      console.log('fetch RSI prob');
+      return false;
     });
 }

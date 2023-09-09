@@ -1,10 +1,18 @@
 import { fetchStocksList } from './function/fetchStocksList';
 import { checkBougie } from './function/checkBougie';
 import { waitPromesse } from './function/waitPromesse';
-import { poserQuestionsEnSeries } from './function/questions';
+import { poserQuestionsEnSeries } from './function/question/questions';
+
+interface UseOrNotUse {
+  minRsi: () => boolean;
+  maxRsi: () => boolean;
+  stochastiqueSlowKmin: () => boolean;
+  stochastiqueSlowKmax: () => boolean;
+  stochastiqueSlowDmin: () => boolean;
+  stochastiqueSlowDmax: () => boolean;
+}
 
 poserQuestionsEnSeries().then((reponsesQuestion) => {
-
   const exchangeStock: Promise<any[]> = fetchStocksList(
     reponsesQuestion.indice
   ).then((res) => {
@@ -47,9 +55,26 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
         end: number,
         strat: string = reponsesQuestion.strategie,
         price: number = reponsesQuestion.prix,
-        minRsi: number = reponsesQuestion.minRsi,
-        maxRsi: number = reponsesQuestion.maxRsi,
-        bougiePattern: string[] = reponsesQuestion.bougieConfig
+
+        minRsi: number | boolean = reponsesQuestion.minRsi,
+        maxRsi: number | boolean = reponsesQuestion.maxRsi,
+
+        stochastiqueSlowKmin:
+          | number
+          | boolean = reponsesQuestion.stochastiqueSlowKmin,
+        stochoastiqueSlowKmax:
+          | number
+          | boolean = reponsesQuestion.stochastiqueSlowKmax,
+
+        stochastiqueSlowDmin:
+          | number
+          | boolean = reponsesQuestion.stochastiqueSlowDmin,
+        stochastiqueSlowDmax:
+          | number
+          | boolean = reponsesQuestion.stochastiqueSlowDmax,
+
+        bougiePattern: string[] = reponsesQuestion.bougieConfig,
+        useOrNotUse: UseOrNotUse = reponsesQuestion.useOrNotUse
       ) {
         switch (strat) {
           case 'check2BougiesVertes2Rouges':
@@ -60,7 +85,12 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
               price,
               minRsi,
               maxRsi,
+              stochastiqueSlowKmin,
+              stochoastiqueSlowKmax,
+              stochastiqueSlowDmin,
+              stochastiqueSlowDmax,
               bougiePattern,
+              useOrNotUse
             );
             await addList(strategie);
             break;

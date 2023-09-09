@@ -13,9 +13,7 @@ import { fetchRsi } from './fetchRsi.mjs';;
 import { checkDateTime } from './checkDateTime.mjs';;
 import { arraysHaveSameOrder } from './checkTableauSimilaire.mjs';;
 import { fetchStockastique } from './fetchStockastique.mjs';;
-import { fetchMacd } from './fetchMacd.mjs';;
-// Check pour 2 rouge puis 2 vertes
-export function checkBougie(stock, start, end, price, minRsi, maxRsi, bougiePattern) {
+export function checkBougie(stock, start, end, price, minRsi, maxRsi, stochastiqueSlowKmin, stochoastiqueSlowKmax, stochastiqueSlowDmin, stochastiqueSlowDmax, bougiePattern, useOrNotUse) {
     return __awaiter(this, void 0, void 0, function* () {
         let actionJours = [];
         let fetchPromises = [];
@@ -23,7 +21,13 @@ export function checkBougie(stock, start, end, price, minRsi, maxRsi, bougiePatt
         const bougieConfig = bougiePattern.map((bougie) => {
             return bougie === '1' ? true : false;
         });
-        // console.log("bougieConfig",bougieConfig)
+        let useOrNotUseConfig = [
+            useOrNotUse.minRsi(),
+            useOrNotUse.stochastiqueSlowKmin(),
+            useOrNotUse.stochastiqueSlowDmin(),
+        ];
+        useOrNotUseConfig = useOrNotUseConfig.filter((value) => value === true);
+        console.log("useOrNotUseConfig", useOrNotUseConfig);
         for (let i = start; i < end; i++) {
             if (stopLoop) {
                 break;
@@ -41,24 +45,64 @@ export function checkBougie(stock, start, end, price, minRsi, maxRsi, bougiePatt
                                 bougiePatternActionEnCour.push(bougie);
                             }
                             if (arraysHaveSameOrder(bougieConfig, bougiePatternActionEnCour)) {
-                                fetchRsi(stock[i].symbol, minRsi, maxRsi)
-                                    .then((res) => {
-                                    if (res === true) {
-                                        fetchStockastique(stock[i].symbol, 1).then((res) => {
-                                            if (parseFloat(res.values[0].slow_d) <= parseFloat(res.values[0].slow_k)) {
-                                                fetchMacd(stock[i].symbol, 1).then((res) => {
-                                                    if (parseFloat(res.values[0].macd) >= parseFloat(res.values[0].macd_signal)) {
-                                                        console.log('Action trouvée :', stock[i].symbol);
-                                                        actionJours.push(stock[i].symbol);
-                                                    }
-                                                });
+                                const useOrNotUse = [];
+                                function executeAll() {
+                                    return __awaiter(this, void 0, void 0, function* () {
+                                        if (minRsi !== false && maxRsi !== false) {
+                                            const res = yield fetchRsi(stock[i].symbol, minRsi, maxRsi);
+                                            if (res === true) {
+                                                useOrNotUse.push(true);
                                             }
-                                        });
+                                            else {
+                                                return;
+                                            }
+                                        }
+                                        if (typeof stochastiqueSlowKmin === 'number' &&
+                                            typeof stochoastiqueSlowKmax === 'number') {
+                                            try {
+                                                const res = yield fetchStockastique(stock[i].symbol, 1, stochastiqueSlowKmin, stochoastiqueSlowKmax, 666, 666);
+                                                if (res === true) {
+                                                    useOrNotUse.push(true);
+                                                }
+                                                else {
+                                                    return;
+                                                }
+                                            }
+                                            catch (_a) {
+                                                console.log('Erreur stochastiqueSlowKmin');
+                                            }
+                                        }
+                                        if (typeof stochastiqueSlowDmin === 'number' &&
+                                            typeof stochastiqueSlowDmax === 'number') {
+                                            try {
+                                                const res = yield fetchStockastique(stock[i].symbol, 1, 666, 666, stochastiqueSlowDmin, stochastiqueSlowDmax);
+                                                if (res === true) {
+                                                    useOrNotUse.push(true);
+                                                }
+                                                else {
+                                                    return;
+                                                }
+                                            }
+                                            catch (_b) {
+                                                console.log('Erreur stochastiqueSlowDmin');
+                                            }
+                                        }
+                                    });
+                                }
+                                executeAll().then(() => {
+                                    if (arraysHaveSameOrder(useOrNotUseConfig, useOrNotUse)) {
+                                        console.log('Action trouvée :', stock[i].symbol);
+                                        actionJours.push(stock[i].symbol);
                                     }
-                                })
-                                    .catch(() => {
-                                    console.log('RSI non trouvé', stock[i].symbol);
                                 });
+                                // fetchMacd(stock[i].symbol, 1).then((res) => {
+                                //   if (
+                                //     parseFloat(res.values[0].macd) >=
+                                //     parseFloat(res.values[0].macd_signal)
+                                //   ) {
+                                //     console.log('Action trouvée :', stock[i].symbol);
+                                //   }
+                                // });
                             }
                         }
                         else {
@@ -79,4 +123,3 @@ export function checkBougie(stock, start, end, price, minRsi, maxRsi, bougiePatt
         return actionJours;
     });
 }
-// 3 bougie 1 verte : à voir !

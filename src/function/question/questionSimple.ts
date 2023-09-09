@@ -1,15 +1,5 @@
 import inquirer from 'inquirer';
 
-interface ReponsesQuestion {
-  indice: string;
-  strategie: string;
-  prix: number;
-  minRsi: number;
-  maxRsi: number;
-  api: number;
-  bougieConfig: string[];
-}
-
 async function questionIndice(question: string) {
   const reponse = await inquirer.prompt([
     {
@@ -71,6 +61,50 @@ async function questionMaxRsI(question: string) {
 
   return reponse.maxRSI;
 }
+async function questionStochastiqueSlowKmin(question: string) {
+  const reponse = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'stochastiqueSlowKmin',
+      message: question,
+    },
+  ]);
+
+  return reponse.stochastiqueSlowKmin;
+}
+async function questionStochastiqueSlowKmax(question: string) {
+  const reponse = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'stochastiqueSlowKmax',
+      message: question,
+    },
+  ]);
+
+  return reponse.stochastiqueSlowKmax;
+}
+async function questionStochastiqueSlowDmin(question: string) {
+  const reponse = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'stochastiqueSlowDmin',
+      message: question,
+    },
+  ]);
+
+  return reponse.stochastiqueSlowDmin;
+}
+async function questionStochastiqueSlowDmax(question: string) {
+  const reponse = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'stochastiqueSlowDmax',
+      message: question,
+    },
+  ]);
+
+  return reponse.stochastiqueSlowDmax;
+}
 
 async function cycleApi(question: string) {
   const reponse = await inquirer.prompt([
@@ -96,29 +130,16 @@ async function questionBougieConfig(question: string) {
   return reponse.bougie;
 }
 
-
-export async function poserQuestionsEnSeries(): Promise<ReponsesQuestion> {
-  const indice: string = await questionIndice(
-    'Quel indice voulez-vous checker ?'
-  );
-  const strategie: string = await questionStrategie(
-    'Quel stratégie voulez-vous ?'
-  );
-  const prix: string = await questionPrix('Quel prix minimum voulez-vous ?');
-  const minRsi: string = await questionMinRsi('Quel rsi minimum voulez-vous ?');
-  const maxRsi: string = await questionMaxRsI('Quel rsi maximum voulez-vous ?');
-  const api: string = await cycleApi('Nombre appel api par clycle ?');
-  const bougieConfig: string = await questionBougieConfig('Quel configuration de bougie voulez-vous ?');
-
-  const reponsesQuestion: ReponsesQuestion = {
-    indice: indice,
-    strategie: strategie,
-    prix: parseInt(prix),
-    minRsi: parseFloat(minRsi),
-    maxRsi: parseFloat(maxRsi),
-    api: parseInt(api),
-    bougieConfig: bougieConfig.split(''),
-  };
-
-  return reponsesQuestion;
-}
+export {
+  questionBougieConfig,
+  cycleApi,
+  questionStochastiqueSlowDmax,
+  questionStochastiqueSlowDmin,
+  questionStochastiqueSlowKmax,
+  questionStochastiqueSlowKmin,
+  questionMaxRsI,
+  questionMinRsi,
+  questionPrix,
+  questionStrategie,
+  questionIndice,
+};

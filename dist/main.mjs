@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { fetchStocksList } from './function/fetchStocksList.mjs';;
 import { checkBougie } from './function/checkBougie.mjs';;
 import { waitPromesse } from './function/waitPromesse.mjs';;
-import { poserQuestionsEnSeries } from './function/questions.mjs';;
+import { poserQuestionsEnSeries } from './function/question/questions.mjs';;
 poserQuestionsEnSeries().then((reponsesQuestion) => {
     const exchangeStock = fetchStocksList(reponsesQuestion.indice).then((res) => {
         return res.data;
@@ -35,11 +35,11 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
                 }
             });
         }
-        function initStrategie(start, end, strat = reponsesQuestion.strategie, price = reponsesQuestion.prix, minRsi = reponsesQuestion.minRsi, maxRsi = reponsesQuestion.maxRsi, bougiePattern = reponsesQuestion.bougieConfig) {
+        function initStrategie(start, end, strat = reponsesQuestion.strategie, price = reponsesQuestion.prix, minRsi = reponsesQuestion.minRsi, maxRsi = reponsesQuestion.maxRsi, stochastiqueSlowKmin = reponsesQuestion.stochastiqueSlowKmin, stochoastiqueSlowKmax = reponsesQuestion.stochastiqueSlowKmax, stochastiqueSlowDmin = reponsesQuestion.stochastiqueSlowDmin, stochastiqueSlowDmax = reponsesQuestion.stochastiqueSlowDmax, bougiePattern = reponsesQuestion.bougieConfig, useOrNotUse = reponsesQuestion.useOrNotUse) {
             return __awaiter(this, void 0, void 0, function* () {
                 switch (strat) {
                     case 'check2BougiesVertes2Rouges':
-                        let strategie = yield checkBougie(stockData, start, end, price, minRsi, maxRsi, bougiePattern);
+                        let strategie = yield checkBougie(stockData, start, end, price, minRsi, maxRsi, stochastiqueSlowKmin, stochoastiqueSlowKmax, stochastiqueSlowDmin, stochastiqueSlowDmax, bougiePattern, useOrNotUse);
                         yield addList(strategie);
                         break;
                 }

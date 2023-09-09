@@ -15,7 +15,7 @@ export function fetchMacd(symbol, nbJour) {
             return response.json();
         }
         catch (error) {
-            console.error("L'index de l'action n'existe pas");
+            console.error("L'index de l'action  MACD n'existe pas");
             throw error;
         }
     });
