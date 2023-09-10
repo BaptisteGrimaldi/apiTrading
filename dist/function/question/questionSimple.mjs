@@ -94,28 +94,16 @@ function questionStochastiqueSlowKmax(question) {
         return reponse.stochastiqueSlowKmax;
     });
 }
-function questionStochastiqueSlowDmin(question) {
+function ecartSlowkSlowd(question) {
     return __awaiter(this, void 0, void 0, function* () {
         const reponse = yield inquirer.prompt([
             {
                 type: 'input',
-                name: 'stochastiqueSlowDmin',
+                name: 'ecartSlowkSlowd',
                 message: question,
             },
         ]);
-        return reponse.stochastiqueSlowDmin;
-    });
-}
-function questionStochastiqueSlowDmax(question) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const reponse = yield inquirer.prompt([
-            {
-                type: 'input',
-                name: 'stochastiqueSlowDmax',
-                message: question,
-            },
-        ]);
-        return reponse.stochastiqueSlowDmax;
+        return reponse.ecartSlowkSlowd;
     });
 }
 function cycleApi(question) {
@@ -142,4 +130,16 @@ function questionBougieConfig(question) {
         return reponse.bougie;
     });
 }
-export { questionBougieConfig, cycleApi, questionStochastiqueSlowDmax, questionStochastiqueSlowDmin, questionStochastiqueSlowKmax, questionStochastiqueSlowKmin, questionMaxRsI, questionMinRsi, questionPrix, questionStrategie, questionIndice, };
+function questionMacd(question) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const reponse = yield inquirer.prompt([
+            {
+                type: 'input',
+                name: 'macd',
+                message: question,
+            },
+        ]);
+        return reponse.macd;
+    });
+}
+export { questionBougieConfig, cycleApi, questionStochastiqueSlowKmax, questionStochastiqueSlowKmin, questionMaxRsI, questionMinRsi, questionPrix, questionStrategie, questionIndice, ecartSlowkSlowd, questionMacd, };

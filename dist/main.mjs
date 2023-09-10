@@ -35,11 +35,11 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
                 }
             });
         }
-        function initStrategie(start, end, strat = reponsesQuestion.strategie, price = reponsesQuestion.prix, minRsi = reponsesQuestion.minRsi, maxRsi = reponsesQuestion.maxRsi, stochastiqueSlowKmin = reponsesQuestion.stochastiqueSlowKmin, stochoastiqueSlowKmax = reponsesQuestion.stochastiqueSlowKmax, stochastiqueSlowDmin = reponsesQuestion.stochastiqueSlowDmin, stochastiqueSlowDmax = reponsesQuestion.stochastiqueSlowDmax, bougiePattern = reponsesQuestion.bougieConfig, useOrNotUse = reponsesQuestion.useOrNotUse) {
+        function initStrategie(start, end, strat = reponsesQuestion.strategie, price = reponsesQuestion.prix, minRsi = reponsesQuestion.minRsi, maxRsi = reponsesQuestion.maxRsi, stochastiqueSlowKmin = reponsesQuestion.stochastiqueSlowKmin, stochoastiqueSlowKmax = reponsesQuestion.stochastiqueSlowKmax, ecartSlowkSlowd = reponsesQuestion.ecartSlowkSlowd, macd = reponsesQuestion.macd, bougiePattern = reponsesQuestion.bougieConfig, useOrNotUse = reponsesQuestion.useOrNotUse) {
             return __awaiter(this, void 0, void 0, function* () {
                 switch (strat) {
                     case 'check2BougiesVertes2Rouges':
-                        let strategie = yield checkBougie(stockData, start, end, price, minRsi, maxRsi, stochastiqueSlowKmin, stochoastiqueSlowKmax, stochastiqueSlowDmin, stochastiqueSlowDmax, bougiePattern, useOrNotUse);
+                        let strategie = yield checkBougie(stockData, start, end, price, minRsi, maxRsi, stochastiqueSlowKmin, stochoastiqueSlowKmax, ecartSlowkSlowd, macd, bougiePattern, useOrNotUse);
                         yield addList(strategie);
                         break;
                 }

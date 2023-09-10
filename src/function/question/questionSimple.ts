@@ -83,27 +83,16 @@ async function questionStochastiqueSlowKmax(question: string) {
 
   return reponse.stochastiqueSlowKmax;
 }
-async function questionStochastiqueSlowDmin(question: string) {
+
+async function ecartSlowkSlowd(question: string) {
   const reponse = await inquirer.prompt([
     {
       type: 'input',
-      name: 'stochastiqueSlowDmin',
+      name: 'ecartSlowkSlowd',
       message: question,
     },
   ]);
-
-  return reponse.stochastiqueSlowDmin;
-}
-async function questionStochastiqueSlowDmax(question: string) {
-  const reponse = await inquirer.prompt([
-    {
-      type: 'input',
-      name: 'stochastiqueSlowDmax',
-      message: question,
-    },
-  ]);
-
-  return reponse.stochastiqueSlowDmax;
+  return reponse.ecartSlowkSlowd;
 }
 
 async function cycleApi(question: string) {
@@ -130,11 +119,21 @@ async function questionBougieConfig(question: string) {
   return reponse.bougie;
 }
 
+async function questionMacd(question: string) {
+  const reponse = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'macd',
+      message: question,
+    },
+  ]);
+
+  return reponse.macd;
+}
+
 export {
   questionBougieConfig,
   cycleApi,
-  questionStochastiqueSlowDmax,
-  questionStochastiqueSlowDmin,
   questionStochastiqueSlowKmax,
   questionStochastiqueSlowKmin,
   questionMaxRsI,
@@ -142,4 +141,6 @@ export {
   questionPrix,
   questionStrategie,
   questionIndice,
+  ecartSlowkSlowd,
+  questionMacd,
 };

@@ -12,8 +12,8 @@ interface UseOrNotUse {
   maxRsi: () => boolean;
   stochastiqueSlowKmin: () => boolean;
   stochastiqueSlowKmax: () => boolean;
-  stochastiqueSlowDmin: () => boolean;
-  stochastiqueSlowDmax: () => boolean;
+  ecartSlowkSlowd: () => boolean;
+  macd: () => boolean;
 }
 
 export async function checkBougie(
@@ -25,8 +25,8 @@ export async function checkBougie(
   maxRsi: number | boolean,
   stochastiqueSlowKmin: number | boolean,
   stochoastiqueSlowKmax: number | boolean,
-  stochastiqueSlowDmin: number | boolean,
-  stochastiqueSlowDmax: number | boolean,
+  ecartSlowkSlowd: number | boolean,
+  macd: number | boolean,
   bougiePattern: string[],
   useOrNotUse: UseOrNotUse
 ) {
@@ -40,12 +40,13 @@ export async function checkBougie(
   let useOrNotUseConfig: boolean[] = [
     useOrNotUse.minRsi(),
     useOrNotUse.stochastiqueSlowKmin(),
-    useOrNotUse.stochastiqueSlowDmin(),
+    useOrNotUse.ecartSlowkSlowd(),
+    useOrNotUse.macd(),
   ];
 
   useOrNotUseConfig = useOrNotUseConfig.filter((value) => value === true);
 
-  console.log("useOrNotUseConfig",useOrNotUseConfig)
+  console.log('useOrNotUseConfig', useOrNotUseConfig);
 
   for (let i = start; i < end; i++) {
     if (stopLoop) {
@@ -83,7 +84,7 @@ export async function checkBougie(
                     return;
                   }
                 }
-              
+
                 if (
                   typeof stochastiqueSlowKmin === 'number' &&
                   typeof stochoastiqueSlowKmax === 'number'
@@ -93,9 +94,7 @@ export async function checkBougie(
                       stock[i].symbol,
                       1,
                       stochastiqueSlowKmin,
-                      stochoastiqueSlowKmax,
-                      666,
-                      666
+                      stochoastiqueSlowKmax
                     );
                     if (res === true) {
                       useOrNotUse.push(true);
@@ -106,19 +105,19 @@ export async function checkBougie(
                     console.log('Erreur stochastiqueSlowKmin');
                   }
                 }
-              
+
                 if (
-                  typeof stochastiqueSlowDmin === 'number' &&
-                  typeof stochastiqueSlowDmax === 'number'
+                  typeof ecartSlowkSlowd === 'number' &&
+                  typeof stochastiqueSlowKmin === 'number' &&
+                  typeof stochoastiqueSlowKmax === 'number'
                 ) {
                   try {
                     const res = await fetchStockastique(
                       stock[i].symbol,
                       1,
-                      666,
-                      666,
-                      stochastiqueSlowDmin,
-                      stochastiqueSlowDmax
+                      stochastiqueSlowKmin,
+                      stochoastiqueSlowKmax,
+                      ecartSlowkSlowd
                     );
                     if (res === true) {
                       useOrNotUse.push(true);
@@ -126,29 +125,30 @@ export async function checkBougie(
                       return;
                     }
                   } catch {
-                    console.log('Erreur stochastiqueSlowDmin');
+                    console.log('Erreur ecartSlowkSlowd');
                   }
                 }
 
-              
-
+                if (typeof macd === 'number') {
+                  try {
+                    const res = await fetchMacd(stock[i].symbol, 1, macd);
+                    if (res === true) {
+                      useOrNotUse.push(true);
+                    } else {
+                      return;
+                    }
+                  } catch {
+                    console.log('Erreur macd');
+                  }
+                }
               }
-              
+
               executeAll().then(() => {
                 if (arraysHaveSameOrder(useOrNotUseConfig, useOrNotUse)) {
                   console.log('Action trouvée :', stock[i].symbol);
                   actionJours.push(stock[i].symbol);
                 }
               });
-
-              // fetchMacd(stock[i].symbol, 1).then((res) => {
-              //   if (
-              //     parseFloat(res.values[0].macd) >=
-              //     parseFloat(res.values[0].macd_signal)
-              //   ) {
-              //     console.log('Action trouvée :', stock[i].symbol);
-              //   }
-              // });
 
             }
           } else {
@@ -169,5 +169,3 @@ export async function checkBougie(
   });
   return actionJours;
 }
-
-

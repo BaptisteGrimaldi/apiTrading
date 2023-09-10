@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { questionIndice, questionStrategie, questionPrix, questionMinRsi, questionMaxRsI, questionStochastiqueSlowDmin, questionStochastiqueSlowDmax, questionStochastiqueSlowKmin, questionStochastiqueSlowKmax, cycleApi, questionBougieConfig, } from './questionSimple.mjs';;
+import { questionIndice, questionStrategie, questionPrix, questionMinRsi, questionMaxRsI, questionStochastiqueSlowKmin, questionStochastiqueSlowKmax, ecartSlowkSlowd, cycleApi, questionBougieConfig, questionMacd, } from './questionSimple.mjs';;
 export function poserQuestionsEnSeries() {
     return __awaiter(this, void 0, void 0, function* () {
         const indice = yield questionIndice('Quel indice voulez-vous checker ?');
@@ -15,10 +15,10 @@ export function poserQuestionsEnSeries() {
         const prix = yield questionPrix('Quel prix minimum voulez-vous ?');
         const minRsi = yield questionMinRsi('Quel rsi minimum voulez-vous ?');
         const maxRsi = yield questionMaxRsI('Quel rsi maximum voulez-vous ?');
-        const stochastiqueSlowKmin = yield questionStochastiqueSlowKmin('Quel stochastique min slow K voulez-vous ? (barre bleu)');
-        const stochastiqueSlowKmax = yield questionStochastiqueSlowKmax('Quel stochastique max slow K voulez-vous ? (barre bleu)');
-        const stochastiqueSlowDmin = yield questionStochastiqueSlowDmin('Quel stochastique min slow D voulez-vous ? (barre orange)');
-        const stochastiqueSlowDmax = yield questionStochastiqueSlowDmax('Quel stochastique max slow D voulez-vous ? (barre orange)');
+        const stochastiqueSlowKmin = yield questionStochastiqueSlowKmin('Quel stochastique min slow K voulez-vous ? (barre bleu) 666 si juste croisement slow K et slow D');
+        const stochastiqueSlowKmax = yield questionStochastiqueSlowKmax('Quel stochastique max slow K voulez-vous ? (barre bleu) 666 si juste croisement slow K et slow D');
+        const ecartSlowSlowk = yield ecartSlowkSlowd('Quel ecart entre slow K et slow D voulez-vous ?');
+        const macd = yield questionMacd('Quel macd voulez-vous ? 666 si juste macd > macd signal');
         const api = yield cycleApi('Nombre appel api par clycle ?');
         const bougieConfig = yield questionBougieConfig('Quel configuration de bougie voulez-vous ?');
         const useOrNotUse = {
@@ -26,8 +26,8 @@ export function poserQuestionsEnSeries() {
             maxRsi: () => (maxRsi === '' ? false : true),
             stochastiqueSlowKmin: () => (stochastiqueSlowKmin === '' ? false : true),
             stochastiqueSlowKmax: () => (stochastiqueSlowKmax === '' ? false : true),
-            stochastiqueSlowDmin: () => (stochastiqueSlowDmin === '' ? false : true),
-            stochastiqueSlowDmax: () => (stochastiqueSlowDmax === '' ? false : true),
+            ecartSlowkSlowd: () => (ecartSlowSlowk === '' ? false : true),
+            macd: () => (macd === '' ? false : true),
         };
         const reponsesQuestion = {
             indice: indice,
@@ -43,12 +43,10 @@ export function poserQuestionsEnSeries() {
             stochastiqueSlowKmax: useOrNotUse.stochastiqueSlowKmax()
                 ? parseFloat(stochastiqueSlowKmax)
                 : false,
-            stochastiqueSlowDmin: useOrNotUse.stochastiqueSlowDmin()
-                ? parseFloat(stochastiqueSlowDmin)
+            ecartSlowkSlowd: useOrNotUse.ecartSlowkSlowd()
+                ? parseFloat(ecartSlowSlowk)
                 : false,
-            stochastiqueSlowDmax: useOrNotUse.stochastiqueSlowDmax()
-                ? parseFloat(stochastiqueSlowDmax)
-                : false,
+            macd: useOrNotUse.macd() ? parseFloat(macd) : false,
             useOrNotUse: useOrNotUse,
         };
         return reponsesQuestion;

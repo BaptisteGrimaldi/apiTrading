@@ -8,8 +8,8 @@ interface UseOrNotUse {
   maxRsi: () => boolean;
   stochastiqueSlowKmin: () => boolean;
   stochastiqueSlowKmax: () => boolean;
-  stochastiqueSlowDmin: () => boolean;
-  stochastiqueSlowDmax: () => boolean;
+  ecartSlowkSlowd: () => boolean;
+  macd: () => boolean;
 }
 
 poserQuestionsEnSeries().then((reponsesQuestion) => {
@@ -66,12 +66,9 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
           | number
           | boolean = reponsesQuestion.stochastiqueSlowKmax,
 
-        stochastiqueSlowDmin:
-          | number
-          | boolean = reponsesQuestion.stochastiqueSlowDmin,
-        stochastiqueSlowDmax:
-          | number
-          | boolean = reponsesQuestion.stochastiqueSlowDmax,
+        ecartSlowkSlowd: number | boolean = reponsesQuestion.ecartSlowkSlowd,
+
+        macd: number | boolean = reponsesQuestion.macd,
 
         bougiePattern: string[] = reponsesQuestion.bougieConfig,
         useOrNotUse: UseOrNotUse = reponsesQuestion.useOrNotUse
@@ -87,8 +84,8 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
               maxRsi,
               stochastiqueSlowKmin,
               stochoastiqueSlowKmax,
-              stochastiqueSlowDmin,
-              stochastiqueSlowDmax,
+              ecartSlowkSlowd,
+              macd,
               bougiePattern,
               useOrNotUse
             );

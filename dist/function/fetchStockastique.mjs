@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import fetch from 'node-fetch';
-export function fetchStockastique(symbol, nbJour, stochastiqueSlowKmin, stochoastiqueSlowKmax, stochastiqueSlowDmin, stochastiqueSlowDmax) {
+export function fetchStockastique(symbol, nbJour, stochastiqueSlowKmin, stochoastiqueSlowKmax, ecartSlowkSlowd) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const verifBleuEtOrange = [];
@@ -21,27 +21,32 @@ export function fetchStockastique(symbol, nbJour, stochastiqueSlowKmin, stochoas
                 if (stochastiqueSlowKmin !== undefined &&
                     stochoastiqueSlowKmax !== undefined &&
                     (stochastiqueSlowKmin !== 666 || stochoastiqueSlowKmax !== 666)) {
-                    if ((parseFloat(res.values[0].slow_k) >= stochastiqueSlowKmin &&
-                        parseFloat(res.values[0].slow_k) <= stochoastiqueSlowKmax) && res.values[0].slow_k > res.values[0].slow_d) {
-                        // console.log('stochastiqueSlowKmin', parseFloat(res.values[0].slow_k));
-                        // console.log(stochastiqueSlowKmin);
-                        // console.log('res.stochoastiqueSlowKmax[0].slow_k', parseFloat(res.values[0].slow_k));
-                        // console.log(stochoastiqueSlowKmax);
+                    if (parseFloat(res.values[0].slow_k) >= stochastiqueSlowKmin &&
+                        parseFloat(res.values[0].slow_k) <= stochoastiqueSlowKmax &&
+                        parseFloat(res.values[0].slow_k) > parseFloat(res.values[0].slow_d)) {
                         verifBleuEtOrange.push(true);
                     }
                     else {
                         verifBleuEtOrange.push(false);
                     }
                 }
-                if (stochastiqueSlowDmin !== undefined &&
-                    stochastiqueSlowDmax !== undefined &&
-                    (stochastiqueSlowDmin !== 666 || stochastiqueSlowDmax !== 666)) {
-                    // console.log('stochastiqueSlowDmin', parseFloat(res.values[0].slow_k));
-                    // console.log(stochastiqueSlowKmin);
-                    // console.log('stochastiqueSlowDmax', parseFloat(res.values[0].slow_k));
-                    // console.log(stochoastiqueSlowKmax);
-                    if (parseFloat(res.values[0].slow_d) >= stochastiqueSlowDmin &&
-                        parseFloat(res.values[0].slow_d) <= stochastiqueSlowDmax) {
+                else {
+                    verifBleuEtOrange.push(true);
+                }
+                if (stochastiqueSlowKmin === 666 && stochoastiqueSlowKmax === 666) {
+                    if (parseFloat(res.values[0].slow_k) > parseFloat(res.values[0].slow_d)) {
+                        verifBleuEtOrange.push(true);
+                    }
+                    else {
+                        verifBleuEtOrange.push(false);
+                    }
+                }
+                else {
+                    verifBleuEtOrange.push(true);
+                }
+                if (typeof ecartSlowkSlowd === 'number') {
+                    if (parseFloat(res.values[0].slow_k) >
+                        parseFloat(res.values[0].slow_d) + ecartSlowkSlowd) {
                         verifBleuEtOrange.push(true);
                     }
                     else {
@@ -62,6 +67,6 @@ export function fetchStockastique(symbol, nbJour, stochastiqueSlowKmin, stochoas
         }
     });
 }
-// fetchStockastique('CHSCM', 1,60,80,666,666).then((res) => {
+// fetchStockastique('CHSCM', 1,110,120).then((res) => {
 //   console.log('res', res);
 // });

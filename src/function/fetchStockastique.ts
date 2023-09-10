@@ -35,8 +35,7 @@ export async function fetchStockastique(
   nbJour: number,
   stochastiqueSlowKmin?: number,
   stochoastiqueSlowKmax?: number,
-  stochastiqueSlowDmin?: number,
-  stochastiqueSlowDmax?: number
+  ecartSlowkSlowd?: number
 ): Promise<any> {
   try {
     const verifBleuEtOrange: boolean[] = [];
@@ -55,25 +54,36 @@ export async function fetchStockastique(
           (stochastiqueSlowKmin !== 666 || stochoastiqueSlowKmax !== 666)
         ) {
           if (
-            (parseFloat(res.values[0].slow_k) >= stochastiqueSlowKmin &&
-            parseFloat(res.values[0].slow_k) <= stochoastiqueSlowKmax) && res.values[0].slow_k !>res.values[0].slow_d
+            parseFloat(res.values[0].slow_k) >= stochastiqueSlowKmin &&
+            parseFloat(res.values[0].slow_k) <= stochoastiqueSlowKmax &&
+            parseFloat(res.values[0].slow_k) > parseFloat(res.values[0].slow_d)
           ) {
-
             verifBleuEtOrange.push(true);
           } else {
             verifBleuEtOrange.push(false);
           }
+        }else{
+          verifBleuEtOrange.push(true);
         }
 
-        if (
-          stochastiqueSlowDmin !== undefined &&
-          stochastiqueSlowDmax !== undefined &&
-          (stochastiqueSlowDmin !== 666 || stochastiqueSlowDmax !== 666)
-        ) {
 
+        if(stochastiqueSlowKmin === 666 && stochoastiqueSlowKmax === 666){ 
+
+          if(parseFloat(res.values[0].slow_k) > parseFloat(res.values[0].slow_d)){
+            verifBleuEtOrange.push(true);
+          }
+          else{
+            verifBleuEtOrange.push(false);
+          }
+        }else{
+          verifBleuEtOrange.push(true);
+        }
+
+
+        if (typeof ecartSlowkSlowd === 'number') {
           if (
-            parseFloat(res.values[0].slow_d) >= stochastiqueSlowDmin &&
-            parseFloat(res.values[0].slow_d) <= stochastiqueSlowDmax
+            parseFloat(res.values[0].slow_k) >
+            parseFloat(res.values[0].slow_d) + ecartSlowkSlowd
           ) {
             verifBleuEtOrange.push(true);
           } else {
@@ -93,6 +103,6 @@ export async function fetchStockastique(
   }
 }
 
-// fetchStockastique('CHSCM', 1,60,80,666,666).then((res) => {
+// fetchStockastique('CHSCM', 1,110,120).then((res) => {
 //   console.log('res', res);
 // });

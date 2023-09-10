@@ -4,12 +4,12 @@ import {
   questionPrix,
   questionMinRsi,
   questionMaxRsI,
-  questionStochastiqueSlowDmin,
-  questionStochastiqueSlowDmax,
   questionStochastiqueSlowKmin,
   questionStochastiqueSlowKmax,
+  ecartSlowkSlowd,
   cycleApi,
   questionBougieConfig,
+  questionMacd,
 } from './questionSimple';
 
 interface UseOrNotUse {
@@ -17,8 +17,8 @@ interface UseOrNotUse {
   maxRsi: () => boolean;
   stochastiqueSlowKmin: () => boolean;
   stochastiqueSlowKmax: () => boolean;
-  stochastiqueSlowDmin: () => boolean;
-  stochastiqueSlowDmax: () => boolean;
+  ecartSlowkSlowd: () => boolean;
+  macd: () => boolean;
 }
 
 interface ReponsesQuestion {
@@ -32,9 +32,9 @@ interface ReponsesQuestion {
 
   stochastiqueSlowKmin: number | boolean;
   stochastiqueSlowKmax: number | boolean;
+  ecartSlowkSlowd: number | boolean;
+  macd: number | boolean;
 
-  stochastiqueSlowDmin: number | boolean;
-  stochastiqueSlowDmax: number | boolean;
   useOrNotUse: UseOrNotUse;
 }
 
@@ -51,18 +51,17 @@ export async function poserQuestionsEnSeries(): Promise<ReponsesQuestion> {
   const maxRsi: string = await questionMaxRsI('Quel rsi maximum voulez-vous ?');
 
   const stochastiqueSlowKmin: string = await questionStochastiqueSlowKmin(
-    'Quel stochastique min slow K voulez-vous ? (barre bleu)'
+    'Quel stochastique min slow K voulez-vous ? (barre bleu) 666 si juste croisement slow K et slow D'
   );
   const stochastiqueSlowKmax: string = await questionStochastiqueSlowKmax(
-    'Quel stochastique max slow K voulez-vous ? (barre bleu)'
+    'Quel stochastique max slow K voulez-vous ? (barre bleu) 666 si juste croisement slow K et slow D'
   );
 
-  const stochastiqueSlowDmin: string = await questionStochastiqueSlowDmin(
-    'Quel stochastique min slow D voulez-vous ? (barre orange)'
+  const ecartSlowSlowk: string = await ecartSlowkSlowd(
+    'Quel ecart entre slow K et slow D voulez-vous ?'
   );
-  const stochastiqueSlowDmax: string = await questionStochastiqueSlowDmax(
-    'Quel stochastique max slow D voulez-vous ? (barre orange)'
-  );
+
+  const macd: string = await questionMacd('Quel macd voulez-vous ? 666 si juste macd > macd signal');
 
   const api: string = await cycleApi('Nombre appel api par clycle ?');
 
@@ -75,8 +74,8 @@ export async function poserQuestionsEnSeries(): Promise<ReponsesQuestion> {
     maxRsi: () => (maxRsi === '' ? false : true),
     stochastiqueSlowKmin: () => (stochastiqueSlowKmin === '' ? false : true),
     stochastiqueSlowKmax: () => (stochastiqueSlowKmax === '' ? false : true),
-    stochastiqueSlowDmin: () => (stochastiqueSlowDmin === '' ? false : true),
-    stochastiqueSlowDmax: () => (stochastiqueSlowDmax === '' ? false : true),
+    ecartSlowkSlowd: () => (ecartSlowSlowk === '' ? false : true),
+    macd: () => (macd === '' ? false : true),
   };
 
   const reponsesQuestion: ReponsesQuestion = {
@@ -97,12 +96,11 @@ export async function poserQuestionsEnSeries(): Promise<ReponsesQuestion> {
       ? parseFloat(stochastiqueSlowKmax)
       : false,
 
-    stochastiqueSlowDmin: useOrNotUse.stochastiqueSlowDmin()
-      ? parseFloat(stochastiqueSlowDmin)
+    ecartSlowkSlowd: useOrNotUse.ecartSlowkSlowd()
+      ? parseFloat(ecartSlowSlowk)
       : false,
-    stochastiqueSlowDmax: useOrNotUse.stochastiqueSlowDmax()
-      ? parseFloat(stochastiqueSlowDmax)
-      : false,
+
+    macd: useOrNotUse.macd() ? parseFloat(macd) : false,
 
     useOrNotUse: useOrNotUse,
   };

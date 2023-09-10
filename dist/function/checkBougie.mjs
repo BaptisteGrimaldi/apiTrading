@@ -13,7 +13,8 @@ import { fetchRsi } from './fetchRsi.mjs';;
 import { checkDateTime } from './checkDateTime.mjs';;
 import { arraysHaveSameOrder } from './checkTableauSimilaire.mjs';;
 import { fetchStockastique } from './fetchStockastique.mjs';;
-export function checkBougie(stock, start, end, price, minRsi, maxRsi, stochastiqueSlowKmin, stochoastiqueSlowKmax, stochastiqueSlowDmin, stochastiqueSlowDmax, bougiePattern, useOrNotUse) {
+import { fetchMacd } from './fetchMacd.mjs';;
+export function checkBougie(stock, start, end, price, minRsi, maxRsi, stochastiqueSlowKmin, stochoastiqueSlowKmax, ecartSlowkSlowd, macd, bougiePattern, useOrNotUse) {
     return __awaiter(this, void 0, void 0, function* () {
         let actionJours = [];
         let fetchPromises = [];
@@ -24,10 +25,11 @@ export function checkBougie(stock, start, end, price, minRsi, maxRsi, stochastiq
         let useOrNotUseConfig = [
             useOrNotUse.minRsi(),
             useOrNotUse.stochastiqueSlowKmin(),
-            useOrNotUse.stochastiqueSlowDmin(),
+            useOrNotUse.ecartSlowkSlowd(),
+            useOrNotUse.macd(),
         ];
         useOrNotUseConfig = useOrNotUseConfig.filter((value) => value === true);
-        console.log("useOrNotUseConfig", useOrNotUseConfig);
+        console.log('useOrNotUseConfig', useOrNotUseConfig);
         for (let i = start; i < end; i++) {
             if (stopLoop) {
                 break;
@@ -60,7 +62,7 @@ export function checkBougie(stock, start, end, price, minRsi, maxRsi, stochastiq
                                         if (typeof stochastiqueSlowKmin === 'number' &&
                                             typeof stochoastiqueSlowKmax === 'number') {
                                             try {
-                                                const res = yield fetchStockastique(stock[i].symbol, 1, stochastiqueSlowKmin, stochoastiqueSlowKmax, 666, 666);
+                                                const res = yield fetchStockastique(stock[i].symbol, 1, stochastiqueSlowKmin, stochoastiqueSlowKmax);
                                                 if (res === true) {
                                                     useOrNotUse.push(true);
                                                 }
@@ -72,10 +74,11 @@ export function checkBougie(stock, start, end, price, minRsi, maxRsi, stochastiq
                                                 console.log('Erreur stochastiqueSlowKmin');
                                             }
                                         }
-                                        if (typeof stochastiqueSlowDmin === 'number' &&
-                                            typeof stochastiqueSlowDmax === 'number') {
+                                        if (typeof ecartSlowkSlowd === 'number' &&
+                                            typeof stochastiqueSlowKmin === 'number' &&
+                                            typeof stochoastiqueSlowKmax === 'number') {
                                             try {
-                                                const res = yield fetchStockastique(stock[i].symbol, 1, 666, 666, stochastiqueSlowDmin, stochastiqueSlowDmax);
+                                                const res = yield fetchStockastique(stock[i].symbol, 1, stochastiqueSlowKmin, stochoastiqueSlowKmax, ecartSlowkSlowd);
                                                 if (res === true) {
                                                     useOrNotUse.push(true);
                                                 }
@@ -84,7 +87,21 @@ export function checkBougie(stock, start, end, price, minRsi, maxRsi, stochastiq
                                                 }
                                             }
                                             catch (_b) {
-                                                console.log('Erreur stochastiqueSlowDmin');
+                                                console.log('Erreur ecartSlowkSlowd');
+                                            }
+                                        }
+                                        if (typeof macd === 'number') {
+                                            try {
+                                                const res = yield fetchMacd(stock[i].symbol, 1, macd);
+                                                if (res === true) {
+                                                    useOrNotUse.push(true);
+                                                }
+                                                else {
+                                                    return;
+                                                }
+                                            }
+                                            catch (_c) {
+                                                console.log('Erreur macd');
                                             }
                                         }
                                     });
@@ -95,14 +112,6 @@ export function checkBougie(stock, start, end, price, minRsi, maxRsi, stochastiq
                                         actionJours.push(stock[i].symbol);
                                     }
                                 });
-                                // fetchMacd(stock[i].symbol, 1).then((res) => {
-                                //   if (
-                                //     parseFloat(res.values[0].macd) >=
-                                //     parseFloat(res.values[0].macd_signal)
-                                //   ) {
-                                //     console.log('Action trouvée :', stock[i].symbol);
-                                //   }
-                                // });
                             }
                         }
                         else {
