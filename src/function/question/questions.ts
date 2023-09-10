@@ -38,14 +38,30 @@ interface ReponsesQuestion {
   useOrNotUse: UseOrNotUse;
 }
 
+
+
 export async function poserQuestionsEnSeries(): Promise<ReponsesQuestion> {
+
+  //obligatoire
+
   const indice: string = await questionIndice(
     'Quel indice voulez-vous checker ?'
   );
+
+  const prix: string = await questionPrix('Quel prix minimum voulez-vous ?');
+
+  const api: string = await cycleApi('Nombre appel api par clycle ?');
+
+  const bougieConfig: string = await questionBougieConfig(
+    'Quel configuration de bougie voulez-vous ?'
+  );
+  
   const strategie: string = await questionStrategie(
     'Quel stratégie voulez-vous ?'
   );
-  const prix: string = await questionPrix('Quel prix minimum voulez-vous ?');
+
+
+  //optionel
 
   const minRsi: string = await questionMinRsi('Quel rsi minimum voulez-vous ?');
   const maxRsi: string = await questionMaxRsI('Quel rsi maximum voulez-vous ?');
@@ -63,11 +79,7 @@ export async function poserQuestionsEnSeries(): Promise<ReponsesQuestion> {
 
   const macd: string = await questionMacd('Quel macd voulez-vous ? 666 si juste macd > macd signal');
 
-  const api: string = await cycleApi('Nombre appel api par clycle ?');
 
-  const bougieConfig: string = await questionBougieConfig(
-    'Quel configuration de bougie voulez-vous ?'
-  );
 
   const useOrNotUse: UseOrNotUse = {
     minRsi: () => (minRsi === '' ? false : true),

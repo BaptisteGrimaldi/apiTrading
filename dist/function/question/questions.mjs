@@ -10,17 +10,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { questionIndice, questionStrategie, questionPrix, questionMinRsi, questionMaxRsI, questionStochastiqueSlowKmin, questionStochastiqueSlowKmax, ecartSlowkSlowd, cycleApi, questionBougieConfig, questionMacd, } from './questionSimple.mjs';;
 export function poserQuestionsEnSeries() {
     return __awaiter(this, void 0, void 0, function* () {
+        //obligatoire
         const indice = yield questionIndice('Quel indice voulez-vous checker ?');
-        const strategie = yield questionStrategie('Quel stratégie voulez-vous ?');
         const prix = yield questionPrix('Quel prix minimum voulez-vous ?');
+        const api = yield cycleApi('Nombre appel api par clycle ?');
+        const bougieConfig = yield questionBougieConfig('Quel configuration de bougie voulez-vous ?');
+        const strategie = yield questionStrategie('Quel stratégie voulez-vous ?');
+        //optionel
         const minRsi = yield questionMinRsi('Quel rsi minimum voulez-vous ?');
         const maxRsi = yield questionMaxRsI('Quel rsi maximum voulez-vous ?');
         const stochastiqueSlowKmin = yield questionStochastiqueSlowKmin('Quel stochastique min slow K voulez-vous ? (barre bleu) 666 si juste croisement slow K et slow D');
         const stochastiqueSlowKmax = yield questionStochastiqueSlowKmax('Quel stochastique max slow K voulez-vous ? (barre bleu) 666 si juste croisement slow K et slow D');
         const ecartSlowSlowk = yield ecartSlowkSlowd('Quel ecart entre slow K et slow D voulez-vous ?');
         const macd = yield questionMacd('Quel macd voulez-vous ? 666 si juste macd > macd signal');
-        const api = yield cycleApi('Nombre appel api par clycle ?');
-        const bougieConfig = yield questionBougieConfig('Quel configuration de bougie voulez-vous ?');
         const useOrNotUse = {
             minRsi: () => (minRsi === '' ? false : true),
             maxRsi: () => (maxRsi === '' ? false : true),

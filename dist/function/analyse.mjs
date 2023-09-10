@@ -7,16 +7,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { fetchStocks } from './fetchStocks.mjs';;;;;;;;;;;
-import { checkIfPositive } from './checkIfPositive.mjs';;;;;;;;;;;
-import { fetchRsi } from './fetchRsi.mjs';;;;;;;;;;;
-import { checkDateTime } from './checkDateTime.mjs';;;;;;;;;;;
-import { arraysHaveSameOrder } from './checkTableauSimilaire.mjs';;;;;;;;;;;
-import { fetchStockastique } from './fetchStockastique.mjs';;;;;;;;;;;
-import { fetchMacd } from './fetchMacd.mjs';;;;;;;;;;;
-export function checkBougie(stock, start, end, price, minRsi, maxRsi, stochastiqueSlowKmin, stochoastiqueSlowKmax, ecartSlowkSlowd, macd, bougiePattern, useOrNotUse) {
+import { fetchStocks } from './fetchStock/fetchStocks.mjs';;
+import { checkIfPositive } from './logistique/checkIfPositive.mjs';;
+import { fetchRsi } from './indicateurs/rsi/fetchRsi.mjs';;
+import { checkDateTime } from './logistique/checkDateTime.mjs';;
+import { arraysHaveSameOrder } from './logistique/checkTableauSimilaire.mjs';;
+import { fetchStockastique } from './indicateurs/fetchStockastique.mjs';;
+import { fetchMacd } from './indicateurs/fetchMacd.mjs';;
+export function analyse(stock, start, end, price, minRsi, maxRsi, stochastiqueSlowKmin, stochoastiqueSlowKmax, ecartSlowkSlowd, macd, bougiePattern, useOrNotUse) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log(minRsi, maxRsi, stochastiqueSlowKmin, stochoastiqueSlowKmax, ecartSlowkSlowd, macd, bougiePattern, useOrNotUse);
         if (bougiePattern !== undefined && useOrNotUse !== undefined && minRsi !== undefined && maxRsi !== undefined && stochastiqueSlowKmin !== undefined && stochoastiqueSlowKmax !== undefined && ecartSlowkSlowd !== undefined && macd !== undefined) {
             let actionJours = [];
             let fetchPromises = [];
@@ -31,7 +30,7 @@ export function checkBougie(stock, start, end, price, minRsi, maxRsi, stochastiq
                 useOrNotUse.macd(),
             ];
             useOrNotUseConfig = useOrNotUseConfig.filter((value) => value === true);
-            console.log('useOrNotUseConfig', useOrNotUseConfig);
+            // console.log('useOrNotUseConfig', useOrNotUseConfig);
             for (let i = start; i < end; i++) {
                 if (stopLoop) {
                     break;

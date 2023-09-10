@@ -1,7 +1,8 @@
-import { fetchStocksList } from './function/fetchStocksList';
-import { checkBougie } from './function/checkBougie';
-import { waitPromesse } from './function/waitPromesse';
+import { fetchStocksList } from './function/fetchStock/fetchStocksList';
+import { analyse } from './function/analyse';
+import { waitPromesse } from './function/logistique/waitPromesse';
 import { poserQuestionsEnSeries } from './function/question/questions';
+import { checkRsiIndex } from './function/indicateurs/rsi/checkRsiIndex';
 
 interface UseOrNotUse {
   minRsi: () => boolean;
@@ -39,7 +40,7 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
         console.log('VraiListeFinal', listeFinal);
       });
 
-      async function resolveAllIndice(nombreCycleIteration: number) {
+      async function resolveAllIndice(nombreCycleIteration: number) { 
         for (let x = 1; x < nombreCycleIteration + 1; x++) {
           console.log('startAttente');
           await waitPromesse(70000);
@@ -75,7 +76,7 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
       ) {
         switch (strat) {
           case 'check2BougiesVertes2Rouges':
-            let strategie = await checkBougie(
+            let strategie = await analyse(
               stockData,
               start,
               end,
@@ -90,6 +91,27 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
               useOrNotUse
             );
             await addList(strategie);
+            break;
+          case 'rsiBas':
+            let strategie2 = await analyse(
+              stockData,
+              start,
+              end,
+              price,
+              minRsi,
+              maxRsi,
+              stochastiqueSlowKmin,
+              stochoastiqueSlowKmax,
+              ecartSlowkSlowd,
+              macd,
+              bougiePattern,
+              useOrNotUse
+            )
+              .then((res) => {
+                return checkRsiIndex(res);
+                }
+              )
+            await addList(strategie2);
             break;
         }
       }

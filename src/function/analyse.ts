@@ -1,10 +1,10 @@
-import { fetchStocks } from './fetchStocks';
-import { checkIfPositive } from './checkIfPositive';
-import { fetchRsi } from './fetchRsi';
-import { checkDateTime } from './checkDateTime';
-import { arraysHaveSameOrder } from './checkTableauSimilaire';
-import { fetchStockastique } from './fetchStockastique';
-import { fetchMacd } from './fetchMacd';
+import { fetchStocks } from './fetchStock/fetchStocks';
+import { checkIfPositive } from './logistique/checkIfPositive';
+import { fetchRsi } from './indicateurs/rsi/fetchRsi';
+import { checkDateTime } from './logistique/checkDateTime';
+import { arraysHaveSameOrder } from './logistique/checkTableauSimilaire';
+import { fetchStockastique } from './indicateurs/fetchStockastique';
+import { fetchMacd } from './indicateurs/fetchMacd';
 import fetch from 'node-fetch';
 
 interface UseOrNotUse {
@@ -16,20 +16,24 @@ interface UseOrNotUse {
   macd: () => boolean;
 }
 
-export async function checkBougie(
+export async function analyse(
   stock: any[],
   start: number,
   end: number,
   price: number,
-  minRsi: number | boolean,
-  maxRsi: number | boolean,
-  stochastiqueSlowKmin: number | boolean,
-  stochoastiqueSlowKmax: number | boolean,
-  ecartSlowkSlowd: number | boolean,
-  macd: number | boolean,
-  bougiePattern: string[],
-  useOrNotUse: UseOrNotUse
+  minRsi?: number | boolean,
+  maxRsi?: number | boolean,
+  stochastiqueSlowKmin?: number | boolean,
+  stochoastiqueSlowKmax?: number | boolean,
+  ecartSlowkSlowd?: number | boolean,
+  macd?: number | boolean,
+  bougiePattern?: string[],
+  useOrNotUse?: UseOrNotUse
 ) {
+
+  if(bougiePattern !== undefined && useOrNotUse !== undefined && minRsi !== undefined && maxRsi !== undefined && stochastiqueSlowKmin !== undefined && stochoastiqueSlowKmax !== undefined && ecartSlowkSlowd !== undefined && macd !== undefined){
+  
+
   let actionJours: string[] = [];
   let fetchPromises: any[] = [];
   let stopLoop = false;
@@ -46,7 +50,7 @@ export async function checkBougie(
 
   useOrNotUseConfig = useOrNotUseConfig.filter((value) => value === true);
 
-  console.log('useOrNotUseConfig', useOrNotUseConfig);
+  // console.log('useOrNotUseConfig', useOrNotUseConfig);
 
   for (let i = start; i < end; i++) {
     if (stopLoop) {
@@ -76,7 +80,7 @@ export async function checkBougie(
               const useOrNotUse: boolean[] = [];
 
               async function executeAll() {
-                if (minRsi !== false && maxRsi !== false) {
+                if (minRsi !== false && maxRsi !== false && typeof minRsi === 'number' && typeof maxRsi === 'number') {
                   const res = await fetchRsi(stock[i].symbol, minRsi, maxRsi);
                   if (res === true) {
                     useOrNotUse.push(true);
@@ -145,7 +149,6 @@ export async function checkBougie(
 
               executeAll().then(() => {
                 if (arraysHaveSameOrder(useOrNotUseConfig, useOrNotUse)) {
-                  console.log('Action trouvée :', stock[i].symbol);
                   actionJours.push(stock[i].symbol);
                 }
               });
@@ -168,4 +171,7 @@ export async function checkBougie(
     console.error("Erreur lors de l'exécution des promesses :", error);
   });
   return actionJours;
+}else{
+  return [];
+}
 }

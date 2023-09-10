@@ -7,10 +7,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { fetchStocksList } from './function/fetchStocksList.mjs';;
-import { checkBougie } from './function/checkBougie.mjs';;
-import { waitPromesse } from './function/waitPromesse.mjs';;
+import { fetchStocksList } from './function/fetchStock/fetchStocksList.mjs';;
+import { analyse } from './function/analyse.mjs';;
+import { waitPromesse } from './function/logistique/waitPromesse.mjs';;
 import { poserQuestionsEnSeries } from './function/question/questions.mjs';;
+import { checkRsiIndex } from './function/indicateurs/rsi/checkRsiIndex.mjs';;
 poserQuestionsEnSeries().then((reponsesQuestion) => {
     const exchangeStock = fetchStocksList(reponsesQuestion.indice).then((res) => {
         return res.data;
@@ -39,8 +40,15 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
             return __awaiter(this, void 0, void 0, function* () {
                 switch (strat) {
                     case 'check2BougiesVertes2Rouges':
-                        let strategie = yield checkBougie(stockData, start, end, price, minRsi, maxRsi, stochastiqueSlowKmin, stochoastiqueSlowKmax, ecartSlowkSlowd, macd, bougiePattern, useOrNotUse);
+                        let strategie = yield analyse(stockData, start, end, price, minRsi, maxRsi, stochastiqueSlowKmin, stochoastiqueSlowKmax, ecartSlowkSlowd, macd, bougiePattern, useOrNotUse);
                         yield addList(strategie);
+                        break;
+                    case 'rsiBas':
+                        let strategie2 = yield analyse(stockData, start, end, price, minRsi, maxRsi, stochastiqueSlowKmin, stochoastiqueSlowKmax, ecartSlowkSlowd, macd, bougiePattern, useOrNotUse)
+                            .then((res) => {
+                            return checkRsiIndex(res);
+                        });
+                        yield addList(strategie2);
                         break;
                 }
             });
