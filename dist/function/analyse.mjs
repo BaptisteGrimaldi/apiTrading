@@ -109,7 +109,6 @@ export function analyse(stock, start, end, price, minRsi, maxRsi, stochastiqueSl
                                     }
                                     executeAll().then(() => {
                                         if (arraysHaveSameOrder(useOrNotUseConfig, useOrNotUse)) {
-                                            console.log('Action trouvée :', stock[i].symbol);
                                             actionJours.push(stock[i].symbol);
                                         }
                                     });

@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-export async function checkRsiIndex(listeActionPattern: string[]) {
+export async function checkRsiIndex(listeActionPattern: string[],bougiePattern: string[]) {
     const actionRsiPatternOk: string[] = [];
     const promises = [];
 
@@ -10,9 +10,33 @@ export async function checkRsiIndex(listeActionPattern: string[]) {
         )
             .then((res) => res.json())
             .then((res:any) => {
-                if (res.values[0].rsi >= 30 && res.values[1].rsi < 30) {
+
+                const tableauPatternRsi:boolean[] = [];
+
+                for(let i = 0; i < bougiePattern.length; i++){
+                    if(bougiePattern[i] === '1'){
+                        if(res.values[i].rsi > 30){
+                            tableauPatternRsi.push(true) ;
+                        }else{
+                            tableauPatternRsi.push(false) ;
+                        }
+                    }
+                    if(bougiePattern[i] === '0'){
+                        if(res.values[i].rsi < 30){
+                            tableauPatternRsi.push(true) ;
+                        }else{
+                            tableauPatternRsi.push(false) ;
+                        }
+                    }
+                }
+
+                if(tableauPatternRsi[0] && tableauPatternRsi[tableauPatternRsi.length-1]){
                     actionRsiPatternOk.push(action);
                 }
+
+                // if (res.values[0].rsi >= 30 && res.values[1].rsi < 30) {
+                //     actionRsiPatternOk.push(action);
+                // }
             });
         promises.push(promise);
     }

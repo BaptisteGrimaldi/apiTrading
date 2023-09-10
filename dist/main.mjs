@@ -46,7 +46,7 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
                     case 'rsiBas':
                         let strategie2 = yield analyse(stockData, start, end, price, minRsi, maxRsi, stochastiqueSlowKmin, stochoastiqueSlowKmax, ecartSlowkSlowd, macd, bougiePattern, useOrNotUse)
                             .then((res) => {
-                            return checkRsiIndex(res);
+                            return checkRsiIndex(res, bougiePattern);
                         });
                         yield addList(strategie2);
                         break;
