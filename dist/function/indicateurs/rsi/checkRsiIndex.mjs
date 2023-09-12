@@ -35,7 +35,8 @@ export function checkRsiIndex(listeActionPattern, bougiePattern) {
                         }
                     }
                 }
-                if (tableauPatternRsi[0] && tableauPatternRsi[tableauPatternRsi.length - 1]) {
+                if (tableauPatternRsi[0] &&
+                    tableauPatternRsi[tableauPatternRsi.length - 1]) {
                     actionRsiPatternOk.push(action);
                 }
                 // if (res.values[0].rsi >= 30 && res.values[1].rsi < 30) {

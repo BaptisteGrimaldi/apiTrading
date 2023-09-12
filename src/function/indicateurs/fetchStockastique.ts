@@ -62,23 +62,21 @@ export async function fetchStockastique(
           } else {
             verifBleuEtOrange.push(false);
           }
-        }else{
+        } else {
           verifBleuEtOrange.push(true);
         }
 
-
-        if(stochastiqueSlowKmin === 666 && stochoastiqueSlowKmax === 666){ 
-
-          if(parseFloat(res.values[0].slow_k) > parseFloat(res.values[0].slow_d)){
+        if (stochastiqueSlowKmin === 666 && stochoastiqueSlowKmax === 666) {
+          if (
+            parseFloat(res.values[0].slow_k) > parseFloat(res.values[0].slow_d)
+          ) {
             verifBleuEtOrange.push(true);
-          }
-          else{
+          } else {
             verifBleuEtOrange.push(false);
           }
-        }else{
+        } else {
           verifBleuEtOrange.push(true);
         }
-
 
         if (typeof ecartSlowkSlowd === 'number') {
           if (

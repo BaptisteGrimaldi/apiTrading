@@ -44,4 +44,4 @@ export function fetchMacd(symbol, nbJour, macd) {
 }
 // fetchMacd('IBKR', 1,666).then((res) => {
 //   console.log('macd', res);
-// }); 
+// });

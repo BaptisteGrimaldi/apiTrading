@@ -38,36 +38,30 @@ interface ReponsesQuestion {
   useOrNotUse: UseOrNotUse;
 }
 
-
-
 export async function poserQuestionsEnSeries(): Promise<ReponsesQuestion> {
-
   //obligatoire
 
-  async function questionObligatoire(){
-
+  async function questionObligatoire() {
     const indice: string = await questionIndice(
       'Quel indice voulez-vous checker ?'
     );
-  
+
     const prix: string = await questionPrix('Quel prix minimum voulez-vous ?');
-  
+
     const api: string = await cycleApi('Nombre appel api par clycle ?');
-  
+
     const bougieConfig: string = await questionBougieConfig(
       'Quel configuration de bougie voulez-vous ?'
     );
-    
+
     const strategie: string = await questionStrategie(
       'Quel stratégie voulez-vous ?'
     );
 
-    return {indice, prix, api, bougieConfig, strategie}
-
+    return { indice, prix, api, bougieConfig, strategie };
   }
 
-  const questionObli = await questionObligatoire()
-
+  const questionObli = await questionObligatoire();
 
   interface QuestionOptionelStrat {
     minRsi: string;
@@ -78,32 +72,50 @@ export async function poserQuestionsEnSeries(): Promise<ReponsesQuestion> {
     macd: string;
   }
 
-  let questionOptionelStrat:QuestionOptionelStrat = {minRsi: '', maxRsi: '', stochastiqueSlowKmin: '', stochastiqueSlowKmax: '', ecartSlowSlowk: '', macd: ''};
+  let questionOptionelStrat: QuestionOptionelStrat = {
+    minRsi: '',
+    maxRsi: '',
+    stochastiqueSlowKmin: '',
+    stochastiqueSlowKmax: '',
+    ecartSlowSlowk: '',
+    macd: '',
+  };
 
+  switch (questionObli.strategie) {
+    case 'check2BougiesVertes2Rouges':
+      const minRsi: string = await questionMinRsi(
+        'Quel rsi minimum voulez-vous ?'
+      );
+      const maxRsi: string = await questionMaxRsI(
+        'Quel rsi maximum voulez-vous ?'
+      );
+      const stochastiqueSlowKmin: string = await questionStochastiqueSlowKmin(
+        'Quel stochastique min slow K voulez-vous ? (barre bleu) 666 si juste croisement slow K et slow D'
+      );
+      const stochastiqueSlowKmax: string = await questionStochastiqueSlowKmax(
+        'Quel stochastique max slow K voulez-vous ? (barre bleu) 666 si juste croisement slow K et slow D'
+      );
 
-   switch (questionObli.strategie) {
-    case 'check2BougiesVertes2Rouges': 
+      const ecartSlowSlowk: string = await ecartSlowkSlowd(
+        'Quel ecart entre slow K et slow D voulez-vous ?'
+      );
 
-    const minRsi: string = await questionMinRsi('Quel rsi minimum voulez-vous ?');
-    const maxRsi: string = await questionMaxRsI('Quel rsi maximum voulez-vous ?');
-    const stochastiqueSlowKmin: string = await questionStochastiqueSlowKmin(
-      'Quel stochastique min slow K voulez-vous ? (barre bleu) 666 si juste croisement slow K et slow D'
-    );
-    const stochastiqueSlowKmax: string = await questionStochastiqueSlowKmax(
-      'Quel stochastique max slow K voulez-vous ? (barre bleu) 666 si juste croisement slow K et slow D'
-    );
-  
-    const ecartSlowSlowk: string = await ecartSlowkSlowd(
-      'Quel ecart entre slow K et slow D voulez-vous ?'
-    );
-  
-    const macd: string = await questionMacd('Quel macd voulez-vous ? 666 si juste macd > macd signal');
-  
-    questionOptionelStrat =  {minRsi : minRsi, maxRsi : maxRsi, stochastiqueSlowKmin :stochastiqueSlowKmin, stochastiqueSlowKmax : stochastiqueSlowKmax, ecartSlowSlowk : ecartSlowSlowk, macd : macd}
-    break;
+      const macd: string = await questionMacd(
+        'Quel macd voulez-vous ? 666 si juste macd > macd signal'
+      );
+
+      questionOptionelStrat = {
+        minRsi: minRsi,
+        maxRsi: maxRsi,
+        stochastiqueSlowKmin: stochastiqueSlowKmin,
+        stochastiqueSlowKmax: stochastiqueSlowKmax,
+        ecartSlowSlowk: ecartSlowSlowk,
+        macd: macd,
+      };
+      break;
 
     case 'rsiBas':
-    break
+      break;
   }
 
   //optionel
@@ -111,9 +123,12 @@ export async function poserQuestionsEnSeries(): Promise<ReponsesQuestion> {
   const useOrNotUse: UseOrNotUse = {
     minRsi: () => (questionOptionelStrat.minRsi === '' ? false : true),
     maxRsi: () => (questionOptionelStrat.maxRsi === '' ? false : true),
-    stochastiqueSlowKmin: () => (questionOptionelStrat.stochastiqueSlowKmin === '' ? false : true),
-    stochastiqueSlowKmax: () => (questionOptionelStrat.stochastiqueSlowKmax === '' ? false : true),
-    ecartSlowkSlowd: () => (questionOptionelStrat.ecartSlowSlowk === '' ? false : true),
+    stochastiqueSlowKmin: () =>
+      questionOptionelStrat.stochastiqueSlowKmin === '' ? false : true,
+    stochastiqueSlowKmax: () =>
+      questionOptionelStrat.stochastiqueSlowKmax === '' ? false : true,
+    ecartSlowkSlowd: () =>
+      questionOptionelStrat.ecartSlowSlowk === '' ? false : true,
     macd: () => (questionOptionelStrat.macd === '' ? false : true),
   };
 
@@ -122,8 +137,12 @@ export async function poserQuestionsEnSeries(): Promise<ReponsesQuestion> {
     strategie: questionObli.strategie,
     prix: parseInt(questionObli.prix),
 
-    minRsi: useOrNotUse.minRsi() ? parseFloat(questionOptionelStrat.minRsi) : false,
-    maxRsi: useOrNotUse.maxRsi() ? parseFloat(questionOptionelStrat.maxRsi) : false,
+    minRsi: useOrNotUse.minRsi()
+      ? parseFloat(questionOptionelStrat.minRsi)
+      : false,
+    maxRsi: useOrNotUse.maxRsi()
+      ? parseFloat(questionOptionelStrat.maxRsi)
+      : false,
 
     api: parseInt(questionObli.api),
     bougieConfig: questionObli.bougieConfig.split(''),

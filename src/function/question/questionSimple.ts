@@ -19,7 +19,7 @@ async function questionStrategie(question: string) {
       type: 'list',
       name: 'strategie',
       message: question,
-      choices: ['check2BougiesVertes2Rouges','rsiBas'],
+      choices: ['check2BougiesVertes2Rouges', 'rsiBas'],
     },
   ]);
 

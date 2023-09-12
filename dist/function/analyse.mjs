@@ -16,7 +16,14 @@ import { fetchStockastique } from './indicateurs/fetchStockastique.mjs';;
 import { fetchMacd } from './indicateurs/fetchMacd.mjs';;
 export function analyse(stock, start, end, price, minRsi, maxRsi, stochastiqueSlowKmin, stochoastiqueSlowKmax, ecartSlowkSlowd, macd, bougiePattern, useOrNotUse) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (bougiePattern !== undefined && useOrNotUse !== undefined && minRsi !== undefined && maxRsi !== undefined && stochastiqueSlowKmin !== undefined && stochoastiqueSlowKmax !== undefined && ecartSlowkSlowd !== undefined && macd !== undefined) {
+        if (bougiePattern !== undefined &&
+            useOrNotUse !== undefined &&
+            minRsi !== undefined &&
+            maxRsi !== undefined &&
+            stochastiqueSlowKmin !== undefined &&
+            stochoastiqueSlowKmax !== undefined &&
+            ecartSlowkSlowd !== undefined &&
+            macd !== undefined) {
             let actionJours = [];
             let fetchPromises = [];
             let stopLoop = false;
@@ -51,7 +58,10 @@ export function analyse(stock, start, end, price, minRsi, maxRsi, stochastiqueSl
                                     const useOrNotUse = [];
                                     function executeAll() {
                                         return __awaiter(this, void 0, void 0, function* () {
-                                            if (minRsi !== false && maxRsi !== false && typeof minRsi === 'number' && typeof maxRsi === 'number') {
+                                            if (minRsi !== false &&
+                                                maxRsi !== false &&
+                                                typeof minRsi === 'number' &&
+                                                typeof maxRsi === 'number') {
                                                 const res = yield fetchRsi(stock[i].symbol, minRsi, maxRsi);
                                                 if (res === true) {
                                                     useOrNotUse.push(true);

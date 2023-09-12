@@ -40,7 +40,7 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
         console.log('VraiListeFinal', listeFinal);
       });
 
-      async function resolveAllIndice(nombreCycleIteration: number) { 
+      async function resolveAllIndice(nombreCycleIteration: number) {
         for (let x = 1; x < nombreCycleIteration + 1; x++) {
           console.log('startAttente');
           await waitPromesse(70000);
@@ -106,11 +106,9 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
               macd,
               bougiePattern,
               useOrNotUse
-            )
-              .then((res) => {
-                return checkRsiIndex(res,bougiePattern);
-                }
-              )
+            ).then((res) => {
+              return checkRsiIndex(res, bougiePattern);
+            });
             await addList(strategie2);
             break;
         }

@@ -70,6 +70,6 @@ export async function fetchMacd(
     });
 }
 
-  // fetchMacd('IBKR', 1,666).then((res) => {
-  //   console.log('macd', res);
-  // }); 
+// fetchMacd('IBKR', 1,666).then((res) => {
+//   console.log('macd', res);
+// });
