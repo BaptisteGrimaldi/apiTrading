@@ -49,3 +49,4 @@ export function checkRsiIndex(listeActionPattern, bougiePattern) {
         return actionRsiPatternOk;
     });
 }
+checkRsiIndex(['AAPL', 'MSFT', 'TSLA'], ['1', '0']);

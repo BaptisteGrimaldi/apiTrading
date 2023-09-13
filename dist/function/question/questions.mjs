@@ -48,6 +48,16 @@ export function poserQuestionsEnSeries() {
                 };
                 break;
             case 'rsiBas':
+                const minRsiRsiBas = yield questionMinRsi('Quel rsi minimum voulez-vous ?');
+                const maxRsiRsiBas = yield questionMaxRsI('Quel rsi maximum voulez-vous ?');
+                questionOptionelStrat = {
+                    minRsi: minRsiRsiBas,
+                    maxRsi: maxRsiRsiBas,
+                    stochastiqueSlowKmin: '',
+                    stochastiqueSlowKmax: '',
+                    ecartSlowSlowk: '',
+                    macd: '',
+                };
                 break;
         }
         //optionel

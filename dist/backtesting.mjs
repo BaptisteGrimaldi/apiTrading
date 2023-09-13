@@ -49,7 +49,7 @@ backTesting('ATRC')
     // const patternNonValide:string[] = [];
     // for(let i = 0; i < resultBougiePattern.length; i++) {
     //     if(resultBougiePattern[i] === false && resultBougiePattern[i+1] === true) {
-    //         checkRsiIndex(['ATRC'], ['1','1','0'])
+    //         checkRsiIndex(['ATRC'], ['0','1','1'])
     //         .then((res:string[]) => {
     //             if(res.length > 0){
     //                 patternValide.push(resultDateTimeBougiePatternActionEnCour[i+1]);  

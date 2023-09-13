@@ -2,7 +2,7 @@ import { fetchStocksList } from './function/fetchStock/fetchStocksList';
 import { analyse } from './function/analyse';
 import { waitPromesse } from './function/logistique/waitPromesse';
 import { poserQuestionsEnSeries } from './function/question/questions';
-import { checkRsiIndex } from './function/indicateurs/rsi/checkRsiIndex';
+import { checkRsiIndexRsiBas10 } from './function/indicateurs/rsi/checkRsiIndexRsiBas10';
 
 interface UseOrNotUse {
   minRsi: () => boolean;
@@ -92,7 +92,7 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
             );
             await addList(strategie);
             break;
-          case 'rsiBas':
+          case 'rsiBas10':
             let strategie2 = await analyse(
               stockData,
               start,
@@ -107,7 +107,8 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
               bougiePattern,
               useOrNotUse
             ).then((res) => {
-              return checkRsiIndex(res, bougiePattern);
+              return checkRsiIndexRsiBas10(res, bougiePattern);
+
             });
             await addList(strategie2);
             break;

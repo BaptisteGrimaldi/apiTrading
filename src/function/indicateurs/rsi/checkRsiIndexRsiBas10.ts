@@ -1,8 +1,8 @@
 import fetch from 'node-fetch';
 
-export async function checkRsiIndex(
+export async function checkRsiIndexRsiBas10(
   listeActionPattern: string[],
-  bougiePattern: string[]
+  bougiePattern: string[],
 ) {
   const actionRsiPatternOk: string[] = [];
   const promises = [];
@@ -16,6 +16,8 @@ export async function checkRsiIndex(
         const tableauPatternRsi: boolean[] = [];
 
         for (let i = 0; i < bougiePattern.length; i++) {
+          
+
           if (bougiePattern[i] === '1') {
             if (res.values[i].rsi > 30) {
               tableauPatternRsi.push(true);
@@ -39,9 +41,6 @@ export async function checkRsiIndex(
           actionRsiPatternOk.push(action);
         }
 
-        // if (res.values[0].rsi >= 30 && res.values[1].rsi < 30) {
-        //     actionRsiPatternOk.push(action);
-        // }
       });
     promises.push(promise);
   }
@@ -50,3 +49,5 @@ export async function checkRsiIndex(
 
   return actionRsiPatternOk;
 }
+
+// checkRsiIndex(['AAPL', 'MSFT', 'TSLA'], ['1', '0'])
