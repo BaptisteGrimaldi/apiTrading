@@ -108,7 +108,6 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
               useOrNotUse
             ).then((res) => {
               return checkRsiIndexRsiBas10(res, bougiePattern);
-
             });
             await addList(strategie2);
             break;

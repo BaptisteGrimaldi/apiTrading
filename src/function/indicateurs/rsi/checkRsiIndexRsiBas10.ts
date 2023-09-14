@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 export async function checkRsiIndexRsiBas10(
   listeActionPattern: string[],
-  bougiePattern: string[],
+  bougiePattern: string[]
 ) {
   const actionRsiPatternOk: string[] = [];
   const promises = [];
@@ -16,17 +16,15 @@ export async function checkRsiIndexRsiBas10(
         const tableauPatternRsi: boolean[] = [];
 
         for (let i = 0; i < bougiePattern.length; i++) {
-          
-
           if (bougiePattern[i] === '1') {
-            if (res.values[i].rsi > 30) {
+            if (res.values[i].rsi >= 30) {
               tableauPatternRsi.push(true);
             } else {
               tableauPatternRsi.push(false);
             }
           }
           if (bougiePattern[i] === '0') {
-            if (res.values[i].rsi < 30) {
+            if (res.values[i].rsi <= 30) {
               tableauPatternRsi.push(true);
             } else {
               tableauPatternRsi.push(false);
@@ -40,7 +38,6 @@ export async function checkRsiIndexRsiBas10(
         ) {
           actionRsiPatternOk.push(action);
         }
-
       });
     promises.push(promise);
   }

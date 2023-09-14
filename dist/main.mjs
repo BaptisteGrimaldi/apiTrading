@@ -11,7 +11,7 @@ import { fetchStocksList } from './function/fetchStock/fetchStocksList.mjs';;
 import { analyse } from './function/analyse.mjs';;
 import { waitPromesse } from './function/logistique/waitPromesse.mjs';;
 import { poserQuestionsEnSeries } from './function/question/questions.mjs';;
-import { checkRsiIndex } from './function/indicateurs/rsi/checkRsiIndex.mjs';;
+import { checkRsiIndexRsiBas10 } from './function/indicateurs/rsi/checkRsiIndexRsiBas10.mjs';;
 poserQuestionsEnSeries().then((reponsesQuestion) => {
     const exchangeStock = fetchStocksList(reponsesQuestion.indice).then((res) => {
         return res.data;
@@ -43,9 +43,9 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
                         let strategie = yield analyse(stockData, start, end, price, minRsi, maxRsi, stochastiqueSlowKmin, stochoastiqueSlowKmax, ecartSlowkSlowd, macd, bougiePattern, useOrNotUse);
                         yield addList(strategie);
                         break;
-                    case 'rsiBas':
+                    case 'rsiBas10':
                         let strategie2 = yield analyse(stockData, start, end, price, minRsi, maxRsi, stochastiqueSlowKmin, stochoastiqueSlowKmax, ecartSlowkSlowd, macd, bougiePattern, useOrNotUse).then((res) => {
-                            return checkRsiIndex(res, bougiePattern);
+                            return checkRsiIndexRsiBas10(res, bougiePattern);
                         });
                         yield addList(strategie2);
                         break;
