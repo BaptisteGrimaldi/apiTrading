@@ -7,14 +7,8 @@ import { fetchStockastique } from './indicateurs/fetchStockastique';
 import { fetchMacd } from './indicateurs/fetchMacd';
 import fetch from 'node-fetch';
 
-interface UseOrNotUse {
-  minRsi: () => boolean;
-  maxRsi: () => boolean;
-  stochastiqueSlowKmin: () => boolean;
-  stochastiqueSlowKmax: () => boolean;
-  ecartSlowkSlowd: () => boolean;
-  macd: () => boolean;
-}
+import { UseOrNotUse } from './types/useOrNotUse';
+
 
 export async function analyse(
   stock: any[],

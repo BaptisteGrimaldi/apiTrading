@@ -15,11 +15,16 @@ export function fetchRsi(symbolStock, minRsi, maxRsi) {
             return res.json();
         })
             .then((res) => {
-            // console.log(`${symbolStock}` + ' avant ' + res.values[0].rsi);
-            if (res.values[0].rsi >= minRsi && res.values[0].rsi <= maxRsi) {
-                return true;
+            if (typeof minRsi === 'number' && typeof maxRsi === 'number') {
+                if (parseFloat(res.values[0].rsi) >= minRsi && parseFloat(res.values[0].rsi) <= maxRsi) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
             }
             else {
+                console.log("c'est pas censé arriver");
                 return false;
             }
         })

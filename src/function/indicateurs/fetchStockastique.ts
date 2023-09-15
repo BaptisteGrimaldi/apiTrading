@@ -1,32 +1,4 @@
-interface Meta {
-  symbol: string;
-  interval: string;
-  currency: string;
-  exchange_timezone: string;
-  exchange: string;
-  mic_code: string;
-  type: string;
-  indicator: {
-    name: string;
-    fast_k_period: number;
-    slow_d_period: number;
-    slow_dma_type: string;
-    slow_k_period: number;
-    slow_kma_type: string;
-  };
-}
-
-interface Value {
-  datetime: string;
-  slow_k: string;
-  slow_d: string;
-}
-
-interface StochasticData {
-  meta: Meta;
-  values: Value[];
-  status: string;
-}
+import { StochasticData } from '../types/stochasticData';
 
 import fetch from 'node-fetch';
 
@@ -36,7 +8,7 @@ export async function fetchStockastique(
   stochastiqueSlowKmin?: number,
   stochoastiqueSlowKmax?: number,
   ecartSlowkSlowd?: number
-): Promise<any> {
+): Promise<boolean> {
   try {
     const verifBleuEtOrange: boolean[] = [];
 
@@ -44,10 +16,10 @@ export async function fetchStockastique(
       `https://api.twelvedata.com/stoch?symbol=${symbol.toUpperCase()}&interval=1day&outputsize=${nbJour}&format=JSON&apikey=b914fed0677e48cdaf1938b5be42956d`
     )
       .then((res: any) => {
-        return res.json();
+        return res.json() as Promise<StochasticData>;
       })
       .then((res: StochasticData) => {
-        // console.log('res', res);
+
         if (
           stochastiqueSlowKmin !== undefined &&
           stochoastiqueSlowKmax !== undefined &&

@@ -5,26 +5,6 @@ import { waitPromesse } from './function/logistique/waitPromesse';
 import fetch from 'node-fetch';
 import { fetchRsiDateTime } from './function/indicateurs/rsi/fetchRsiDateTime';
 
-interface valueStock {
-  meta: {
-    symbol: string;
-    interval: string;
-    currency: string;
-    exchange_timezone: string;
-    exchange: string;
-    mic_code: string;
-    type: string;
-  };
-  values: Array<{
-    datetime: string;
-    open: string;
-    high: string;
-    low: string;
-    close: string;
-    volume: string;
-  }>;
-  status: string;
-}
 
 async function backTesting(action: string) {
   try {
@@ -105,7 +85,7 @@ backTesting(actionAcheck)
           const day1 = await fetchRsiDateTime(actionAcheck, resultDateTimeBougiePatternActionEnCour[i]);
           const day2 = await fetchRsiDateTime(actionAcheck, resultDateTimeBougiePatternActionEnCour[i + 1]);
 
-          
+
         }
       }
     }

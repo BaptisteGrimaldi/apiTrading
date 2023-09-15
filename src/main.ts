@@ -4,14 +4,8 @@ import { waitPromesse } from './function/logistique/waitPromesse';
 import { poserQuestionsEnSeries } from './function/question/questions';
 import { checkRsiIndexRsiBas10 } from './function/indicateurs/rsi/checkRsiIndexRsiBas10';
 
-interface UseOrNotUse {
-  minRsi: () => boolean;
-  maxRsi: () => boolean;
-  stochastiqueSlowKmin: () => boolean;
-  stochastiqueSlowKmax: () => boolean;
-  ecartSlowkSlowd: () => boolean;
-  macd: () => boolean;
-}
+import { UseOrNotUse } from './function/types/useOrNotUse';
+
 
 poserQuestionsEnSeries().then((reponsesQuestion) => {
   const exchangeStock: Promise<any[]> = fetchStocksList(

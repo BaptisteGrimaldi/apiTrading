@@ -17,7 +17,6 @@ export function fetchStockastique(symbol, nbJour, stochastiqueSlowKmin, stochoas
                 return res.json();
             })
                 .then((res) => {
-                // console.log('res', res);
                 if (stochastiqueSlowKmin !== undefined &&
                     stochoastiqueSlowKmax !== undefined &&
                     (stochastiqueSlowKmin !== 666 || stochoastiqueSlowKmax !== 666)) {

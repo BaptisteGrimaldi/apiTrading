@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { checkIfPositive } from './function/logistique/checkIfPositive.mjs';;
 import { waitPromesse } from './function/logistique/waitPromesse.mjs';;
 import fetch from 'node-fetch';
+import { fetchRsiDateTime } from './function/indicateurs/rsi/fetchRsiDateTime.mjs';;
 function backTesting(action) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -44,33 +45,35 @@ function backTesting(action) {
             }
             return {
                 bougiePatternActionEnCour: bougiePatternActionEnCour.reverse(),
-                dateTimeBougiePatternActionEnCour: dateTimeBougiePatternActionEnCour.reverse()
+                dateTimeBougiePatternActionEnCour: dateTimeBougiePatternActionEnCour.reverse(),
             };
         }
         catch (error) {
-            console.error("fetch ?");
+            console.error('fetch ?');
         }
     });
 }
-backTesting('ATRC')
+const actionAcheck = 'ATRC';
+backTesting(actionAcheck)
     .then((res) => {
-    const resultBougiePattern = res.bougiePatternActionEnCour;
-    const resultDateTimeBougiePatternActionEnCour = res.dateTimeBougiePatternActionEnCour;
-    console.log('resultBougiePattern', resultBougiePattern);
-    console.log('resultDateTimeBougiePatternActionEnCour', resultDateTimeBougiePatternActionEnCour);
-    // const patternValide:string[] = [];
-    // const patternNonValide:string[] = [];
-    // for(let i = 0; i < resultBougiePattern.length; i++) {
-    //     if(resultBougiePattern[i] === false && resultBougiePattern[i+1] === true) {
-    //       checkRsiIndexRsiBas10(['ATRC'], ['0','1','1'])
-    //         .then((res:string[]) => {
-    //             if(res.length > 0){
-    //                 patternValide.push(resultDateTimeBougiePatternActionEnCour[i+1]);  
-    //             }else {
-    //                 patternNonValide.push(resultDateTimeBougiePatternActionEnCour[i+1]);
-    //             }
-    //         })
-    //     }
-    // }
+    function execFetchTimeRsi() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const resultBougiePattern = res.bougiePatternActionEnCour;
+            const resultDateTimeBougiePatternActionEnCour = res.dateTimeBougiePatternActionEnCour;
+            console.log('resultBougiePattern', resultBougiePattern);
+            console.log('resultDateTimeBougiePatternActionEnCour', resultDateTimeBougiePatternActionEnCour);
+            const patternValide = [];
+            const patternNonValide = [];
+            for (let i = 0; i < resultBougiePattern.length; i++) {
+                if (resultBougiePattern[i] === false &&
+                    resultBougiePattern[i + 1] === true) {
+                    const day1 = yield fetchRsiDateTime(actionAcheck, resultDateTimeBougiePatternActionEnCour[i]);
+                    const day2 = yield fetchRsiDateTime(actionAcheck, resultDateTimeBougiePatternActionEnCour[i + 1]);
+                }
+            }
+        });
+    }
+    execFetchTimeRsi();
 })
     .catch((error) => console.error('Erreur principale :', "erreur dans l'execution de l'api"));
+// https://api.twelvedata.com/rsi?symbol=ATRC&interval=1day&outputsize=5&format=JSON&start_date=2023-09-11%209:45%20PM&end_date=2023-09-12%209:47%20PM&apikey=b914fed0677e48cdaf1938b5be42956d

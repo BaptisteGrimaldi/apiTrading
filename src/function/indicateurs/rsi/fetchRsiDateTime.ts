@@ -1,3 +1,5 @@
+
+
 export async function fetchRsiDateTime(actionAcheck: string, dateTime: string) {
     try {
       const response = await fetch(
@@ -16,4 +18,4 @@ export async function fetchRsiDateTime(actionAcheck: string, dateTime: string) {
       throw error; // Vous pouvez choisir de relancer l'erreur ici ou de la gérer différemment
     }
   }
-  
+

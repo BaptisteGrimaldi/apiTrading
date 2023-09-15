@@ -17,7 +17,7 @@ export function fetchMacd(symbol, nbJour, macd) {
             .then((res) => {
             const macdVerif = [];
             if (macd !== 666) {
-                if (res.values[0].macd > macd) {
+                if (parseFloat(res.values[0].macd) > macd) {
                     macdVerif.push(true);
                 }
                 else {

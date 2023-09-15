@@ -19,7 +19,7 @@ export function checkRsiIndexRsiBas10(listeActionPattern, bougiePattern) {
                 const tableauPatternRsi = [];
                 for (let i = 0; i < bougiePattern.length; i++) {
                     if (bougiePattern[i] === '1') {
-                        if (res.values[i].rsi >= 30) {
+                        if (parseFloat(res.values[i].rsi) >= 32) {
                             tableauPatternRsi.push(true);
                         }
                         else {
@@ -27,7 +27,7 @@ export function checkRsiIndexRsiBas10(listeActionPattern, bougiePattern) {
                         }
                     }
                     if (bougiePattern[i] === '0') {
-                        if (res.values[i].rsi <= 30) {
+                        if (parseFloat(res.values[i].rsi) <= 28) {
                             tableauPatternRsi.push(true);
                         }
                         else {
