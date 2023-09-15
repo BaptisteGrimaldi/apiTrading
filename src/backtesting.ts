@@ -5,11 +5,13 @@ import { waitPromesse } from './function/logistique/waitPromesse';
 import fetch from 'node-fetch';
 import { fetchRsiDateTime } from './function/indicateurs/rsi/fetchRsiDateTime';
 
+// start_date=08/05/2005
+// end_date=09/11/2023
 
-async function backTesting(action: string) {
+async function backTesting(action: string,startDate:string,endDate:string) {
   try {
     const response = await fetch(
-      `https://api.twelvedata.com/time_series?symbol=${action}&interval=1day&format=JSON&dp=2&start_date=08/05/2005 6:05 PM&end_date=09/11/2023 6:05 PM&apikey=b914fed0677e48cdaf1938b5be42956d`
+      `https://api.twelvedata.com/time_series?symbol=${action}&interval=1day&format=JSON&dp=2&start_date=${startDate} 6:05 PM&end_date=${endDate} 6:05 PM&apikey=b914fed0677e48cdaf1938b5be42956d`
     );
 
     if (!response.ok) {
@@ -60,8 +62,11 @@ async function backTesting(action: string) {
 
 const actionAcheck = 'ATRC';
 
-backTesting(actionAcheck)
+backTesting(actionAcheck,"08/05/2005","09/11/2023")
   .then((res: any) => {
+    const resultSucess:object[] = [];
+    const resultFail:object[] = [];
+
     async function execFetchTimeRsi (){
       const resultBougiePattern = res.bougiePatternActionEnCour;
       const resultDateTimeBougiePatternActionEnCour =
@@ -73,9 +78,6 @@ backTesting(actionAcheck)
         resultDateTimeBougiePatternActionEnCour
       );
   
-      const patternValide: string[] = [];
-      const patternNonValide: string[] = [];
-  
       for (let i = 0; i < resultBougiePattern.length; i++) {
         if (
           resultBougiePattern[i] === false &&
@@ -85,11 +87,28 @@ backTesting(actionAcheck)
           const day1 = await fetchRsiDateTime(actionAcheck, resultDateTimeBougiePatternActionEnCour[i]);
           const day2 = await fetchRsiDateTime(actionAcheck, resultDateTimeBougiePatternActionEnCour[i + 1]);
 
+          if( parseFloat(day1)<30 && parseFloat(day2)>30){
+            
+            if(resultBougiePattern[i+2] === true){
+              resultSucess.push({
+                date: resultDateTimeBougiePatternActionEnCour[i],
+                action: actionAcheck,
+                result: 'oui',
+              });
+            }else {
+              resultFail.push({
+                date: resultDateTimeBougiePatternActionEnCour[i],
+                action: actionAcheck,
+                result: 'non',
+              });
+            }
+          }
 
         }
       }
     }
-    execFetchTimeRsi();
+    execFetchTimeRsi()
+    .then(()=>console.log('result', resultSucess,resultFail))
   })
   .catch((error) =>
     console.error('Erreur principale :', "erreur dans l'execution de l'api")

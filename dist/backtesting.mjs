@@ -56,24 +56,41 @@ function backTesting(action) {
 const actionAcheck = 'ATRC';
 backTesting(actionAcheck)
     .then((res) => {
+    const resultSucess = [];
+    const resultFail = [];
     function execFetchTimeRsi() {
         return __awaiter(this, void 0, void 0, function* () {
             const resultBougiePattern = res.bougiePatternActionEnCour;
             const resultDateTimeBougiePatternActionEnCour = res.dateTimeBougiePatternActionEnCour;
             console.log('resultBougiePattern', resultBougiePattern);
             console.log('resultDateTimeBougiePatternActionEnCour', resultDateTimeBougiePatternActionEnCour);
-            const patternValide = [];
-            const patternNonValide = [];
             for (let i = 0; i < resultBougiePattern.length; i++) {
                 if (resultBougiePattern[i] === false &&
                     resultBougiePattern[i + 1] === true) {
                     const day1 = yield fetchRsiDateTime(actionAcheck, resultDateTimeBougiePatternActionEnCour[i]);
                     const day2 = yield fetchRsiDateTime(actionAcheck, resultDateTimeBougiePatternActionEnCour[i + 1]);
+                    if (parseFloat(day1) < 30 && parseFloat(day2) > 30) {
+                        if (resultBougiePattern[i + 2] === true) {
+                            resultSucess.push({
+                                date: resultDateTimeBougiePatternActionEnCour[i],
+                                action: actionAcheck,
+                                result: 'oui',
+                            });
+                        }
+                        else {
+                            resultFail.push({
+                                date: resultDateTimeBougiePatternActionEnCour[i],
+                                action: actionAcheck,
+                                result: 'non',
+                            });
+                        }
+                    }
                 }
             }
         });
     }
-    execFetchTimeRsi();
+    execFetchTimeRsi()
+        .then(() => console.log('result', resultSucess, resultFail));
 })
     .catch((error) => console.error('Erreur principale :', "erreur dans l'execution de l'api"));
 // https://api.twelvedata.com/rsi?symbol=ATRC&interval=1day&outputsize=5&format=JSON&start_date=2023-09-11%209:45%20PM&end_date=2023-09-12%209:47%20PM&apikey=b914fed0677e48cdaf1938b5be42956d

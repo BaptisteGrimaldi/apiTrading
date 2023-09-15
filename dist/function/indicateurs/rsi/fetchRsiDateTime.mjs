@@ -7,6 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import fetch from 'node-fetch';
 export function fetchRsiDateTime(actionAcheck, dateTime) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -15,7 +16,6 @@ export function fetchRsiDateTime(actionAcheck, dateTime) {
                 throw new Error('La requête a échoué avec un statut non OK');
             }
             const data = yield response.json();
-            // Faites quelque chose avec 'data' si nécessaire
             return data.values[0].rsi;
         }
         catch (error) {
