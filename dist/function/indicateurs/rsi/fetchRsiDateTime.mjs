@@ -19,8 +19,8 @@ export function fetchRsiDateTime(actionAcheck, dateTime) {
             return data.values[0].rsi;
         }
         catch (error) {
-            console.error('Une erreur s\'est produite :', error);
-            throw error; // Vous pouvez choisir de relancer l'erreur ici ou de la gérer différemment
+            console.log(`l ' ${actionAcheck} à ${dateTime} n'a pas pu être récupéré`);
+            return 'error';
         }
     });
 }

@@ -11,10 +11,12 @@ import { checkIfPositive } from './function/logistique/checkIfPositive.mjs';;
 import { waitPromesse } from './function/logistique/waitPromesse.mjs';;
 import fetch from 'node-fetch';
 import { fetchRsiDateTime } from './function/indicateurs/rsi/fetchRsiDateTime.mjs';;
-function backTesting(action) {
+//Debuging code :
+// import {ecrireDansFichier} from './debugging/ecrireDansFichier.mjs';;
+function backTesting(action, startDate, endDate) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const response = yield fetch(`https://api.twelvedata.com/time_series?symbol=${action}&interval=1day&format=JSON&dp=2&start_date=08/05/2005 6:05 PM&end_date=09/11/2023 6:05 PM&apikey=b914fed0677e48cdaf1938b5be42956d`);
+            const response = yield fetch(`https://api.twelvedata.com/time_series?symbol=${action}&interval=1day&format=JSON&dp=2&start_date=${startDate} 6:05 PM&end_date=${endDate} 6:05 PM&apikey=b914fed0677e48cdaf1938b5be42956d`);
             if (!response.ok) {
                 throw new Error("Échec de la récupération des données depuis l'API");
             }
@@ -30,10 +32,10 @@ function backTesting(action) {
                     try {
                         const bougie = checkIfPositive(data.values[x].open, data.values[x].close);
                         const dateTime = data.values[x].datetime;
-                        console.log('dateTime', dateTime);
-                        console.log('bougie', bougie);
-                        console.log(data.values[x].open);
-                        console.log(data.values[x].close);
+                        // console.log('dateTime', dateTime);
+                        // console.log('bougie', bougie);
+                        // console.log(data.values[x].open);
+                        // console.log(data.values[x].close);
                         bougiePatternActionEnCour.push(bougie);
                         dateTimeBougiePatternActionEnCour.push(dateTime);
                     }
@@ -49,12 +51,13 @@ function backTesting(action) {
             };
         }
         catch (error) {
-            console.error('fetch ?');
+            console.error('backTesting function error');
+            throw error;
         }
     });
 }
 const actionAcheck = 'ATRC';
-backTesting(actionAcheck)
+backTesting(actionAcheck, "08/05/2005", "09/11/2023")
     .then((res) => {
     const resultSucess = [];
     const resultFail = [];
@@ -67,9 +70,10 @@ backTesting(actionAcheck)
             for (let i = 0; i < resultBougiePattern.length; i++) {
                 if (resultBougiePattern[i] === false &&
                     resultBougiePattern[i + 1] === true) {
+                    // await waitPromesse(500);
                     const day1 = yield fetchRsiDateTime(actionAcheck, resultDateTimeBougiePatternActionEnCour[i]);
                     const day2 = yield fetchRsiDateTime(actionAcheck, resultDateTimeBougiePatternActionEnCour[i + 1]);
-                    if (parseFloat(day1) < 30 && parseFloat(day2) > 30) {
+                    if (parseFloat(day1) < 30 && parseFloat(day2) > 30 && day1 !== 'error' && day2 !== 'error') {
                         if (resultBougiePattern[i + 2] === true) {
                             resultSucess.push({
                                 date: resultDateTimeBougiePatternActionEnCour[i],
@@ -87,10 +91,12 @@ backTesting(actionAcheck)
                     }
                 }
             }
+            console.log('resultSucess', resultSucess, 'resultFail', resultFail);
+            // ecrireDansFichier(`${resultBougiePattern}`, `${resultDateTimeBougiePatternActionEnCour}`, 'backTestingRsi.mjs');
         });
     }
     execFetchTimeRsi()
-        .then(() => console.log('result', resultSucess, resultFail));
+        .catch(() => console.log('Erreur dans execFetchTimeRsi'));
 })
     .catch((error) => console.error('Erreur principale :', "erreur dans l'execution de l'api"));
 // https://api.twelvedata.com/rsi?symbol=ATRC&interval=1day&outputsize=5&format=JSON&start_date=2023-09-11%209:45%20PM&end_date=2023-09-12%209:47%20PM&apikey=b914fed0677e48cdaf1938b5be42956d

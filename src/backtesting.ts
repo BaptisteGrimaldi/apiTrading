@@ -5,10 +5,16 @@ import { waitPromesse } from './function/logistique/waitPromesse';
 import fetch from 'node-fetch';
 import { fetchRsiDateTime } from './function/indicateurs/rsi/fetchRsiDateTime';
 
-// start_date=08/05/2005
-// end_date=09/11/2023
+//Types : 
+import { valueStock } from './function/types/valueStock';
+import { backTestingReturn } from './function/types/backTestingReturn';
 
-async function backTesting(action: string,startDate:string,endDate:string) {
+//Debuging code :
+
+// import {ecrireDansFichier} from './debugging/ecrireDansFichier';
+
+
+async function backTesting(action: string,startDate:string,endDate:string):Promise<backTestingReturn> {
   try {
     const response = await fetch(
       `https://api.twelvedata.com/time_series?symbol=${action}&interval=1day&format=JSON&dp=2&start_date=${startDate} 6:05 PM&end_date=${endDate} 6:05 PM&apikey=b914fed0677e48cdaf1938b5be42956d`
@@ -18,7 +24,7 @@ async function backTesting(action: string,startDate:string,endDate:string) {
       throw new Error("Échec de la récupération des données depuis l'API");
     }
 
-    const data: any = await response.json();
+    const data: valueStock = await response.json() as valueStock;
     const bougiePatternActionEnCour: boolean[] = [];
     const dateTimeBougiePatternActionEnCour: string[] = [];
 
@@ -37,11 +43,6 @@ async function backTesting(action: string,startDate:string,endDate:string) {
           );
           const dateTime = data.values[x].datetime;
 
-          console.log('dateTime', dateTime);
-          console.log('bougie', bougie);
-          console.log(data.values[x].open);
-          console.log(data.values[x].close);
-
           bougiePatternActionEnCour.push(bougie);
           dateTimeBougiePatternActionEnCour.push(dateTime);
         } catch {
@@ -56,14 +57,15 @@ async function backTesting(action: string,startDate:string,endDate:string) {
         dateTimeBougiePatternActionEnCour.reverse(),
     };
   } catch (error) {
-    console.error('fetch ?');
+    console.error('backTesting function error');
+    throw error;
   }
 }
 
 const actionAcheck = 'ATRC';
 
 backTesting(actionAcheck,"08/05/2005","09/11/2023")
-  .then((res: any) => {
+  .then((res: backTestingReturn) => {
     const resultSucess:object[] = [];
     const resultFail:object[] = [];
 
@@ -84,10 +86,12 @@ backTesting(actionAcheck,"08/05/2005","09/11/2023")
           resultBougiePattern[i + 1] === true
         ) {
 
+          // await waitPromesse(500);
+
           const day1 = await fetchRsiDateTime(actionAcheck, resultDateTimeBougiePatternActionEnCour[i]);
           const day2 = await fetchRsiDateTime(actionAcheck, resultDateTimeBougiePatternActionEnCour[i + 1]);
 
-          if( parseFloat(day1)<30 && parseFloat(day2)>30){
+          if( parseFloat(day1)<30 && parseFloat(day2)>30 && day1 !== 'error' && day2 !== 'error'){
             
             if(resultBougiePattern[i+2] === true){
               resultSucess.push({
@@ -106,9 +110,10 @@ backTesting(actionAcheck,"08/05/2005","09/11/2023")
 
         }
       }
+      console.log('resultSucess',resultSucess,'resultFail',resultFail);
     }
     execFetchTimeRsi()
-    .then(()=>console.log('result', resultSucess,resultFail))
+    .catch(() => console.log('Erreur dans execFetchTimeRsi'));
   })
   .catch((error) =>
     console.error('Erreur principale :', "erreur dans l'execution de l'api")
