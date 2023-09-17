@@ -35,8 +35,7 @@ export function checkRsiIndexRsiBas10(listeActionPattern, bougiePattern) {
                         }
                     }
                 }
-                if (tableauPatternRsi[0] &&
-                    tableauPatternRsi[tableauPatternRsi.length - 1]) {
+                if (tableauPatternRsi[0] && tableauPatternRsi[tableauPatternRsi.length - 1]) {
                     actionRsiPatternOk.push(action);
                 }
             });

@@ -6,17 +6,12 @@ import { checkRsiIndexRsiBas10 } from './function/indicateurs/rsi/checkRsiIndexR
 
 import { UseOrNotUse } from './function/types/useOrNotUse';
 
-
 poserQuestionsEnSeries().then((reponsesQuestion) => {
-  const exchangeStock: Promise<any[]> = fetchStocksList(
-    reponsesQuestion.indice
-  ).then((res) => {
+  const exchangeStock: Promise<any[]> = fetchStocksList(reponsesQuestion.indice).then((res) => {
     return res.data;
   });
 
-  const exchangeStockLength: Promise<number> = fetchStocksList(
-    reponsesQuestion.indice
-  ).then((res) => {
+  const exchangeStockLength: Promise<number> = fetchStocksList(reponsesQuestion.indice).then((res) => {
     return res.data.length;
   });
 
@@ -26,9 +21,7 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
 
       // Ici le nombre d'appel est limité à 500 par minute
 
-      const nombreCycleIteration = Math.ceil(
-        stockDataLength / reponsesQuestion.api
-      );
+      const nombreCycleIteration = Math.ceil(stockDataLength / reponsesQuestion.api);
 
       resolveAllIndice(nombreCycleIteration).then(() => {
         console.log('VraiListeFinal', listeFinal);
@@ -38,10 +31,7 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
         for (let x = 1; x < nombreCycleIteration + 1; x++) {
           console.log('startAttente');
           await waitPromesse(70000);
-          await initStrategie(
-            (x - 1) * reponsesQuestion.api,
-            x * reponsesQuestion.api
-          );
+          await initStrategie((x - 1) * reponsesQuestion.api, x * reponsesQuestion.api);
         }
       }
 
@@ -54,12 +44,8 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
         minRsi: number | boolean = reponsesQuestion.minRsi,
         maxRsi: number | boolean = reponsesQuestion.maxRsi,
 
-        stochastiqueSlowKmin:
-          | number
-          | boolean = reponsesQuestion.stochastiqueSlowKmin,
-        stochoastiqueSlowKmax:
-          | number
-          | boolean = reponsesQuestion.stochastiqueSlowKmax,
+        stochastiqueSlowKmin: number | boolean = reponsesQuestion.stochastiqueSlowKmin,
+        stochoastiqueSlowKmax: number | boolean = reponsesQuestion.stochastiqueSlowKmax,
 
         ecartSlowkSlowd: number | boolean = reponsesQuestion.ecartSlowkSlowd,
 

@@ -9,7 +9,6 @@ import fetch from 'node-fetch';
 
 import { UseOrNotUse } from './types/useOrNotUse';
 
-
 export async function analyse(
   stock: any[],
   start: number,
@@ -57,10 +56,7 @@ export async function analyse(
         break;
       }
       try {
-        const fetchPromise = await fetchStocks(
-          stock[i].symbol,
-          bougiePattern.length
-        ).then((res) => {
+        const fetchPromise = await fetchStocks(stock[i].symbol, bougiePattern.length).then((res) => {
           //Endroit prix action minimum
           if (parseFloat(res.values?.[0].close) > price) {
             const dateTime = checkDateTime(bougiePattern, res);
@@ -69,16 +65,11 @@ export async function analyse(
               const bougiePatternActionEnCour = [];
 
               for (let x = 0; x < bougiePattern.length; x++) {
-                const bougie = checkIfPositive(
-                  res.values[x].open,
-                  res.values[x].close
-                );
+                const bougie = checkIfPositive(res.values[x].open, res.values[x].close);
                 bougiePatternActionEnCour.push(bougie);
               }
 
-              if (
-                arraysHaveSameOrder(bougieConfig, bougiePatternActionEnCour)
-              ) {
+              if (arraysHaveSameOrder(bougieConfig, bougiePatternActionEnCour)) {
                 const useOrNotUse: boolean[] = [];
 
                 async function executeAll() {
@@ -96,10 +87,7 @@ export async function analyse(
                     }
                   }
 
-                  if (
-                    typeof stochastiqueSlowKmin === 'number' &&
-                    typeof stochoastiqueSlowKmax === 'number'
-                  ) {
+                  if (typeof stochastiqueSlowKmin === 'number' && typeof stochoastiqueSlowKmax === 'number') {
                     try {
                       const res = await fetchStockastique(
                         stock[i].symbol,

@@ -1,12 +1,8 @@
-import{MACDData} from '../types/macdData';
+import { MACDData } from '../types/macdData';
 
 import fetch from 'node-fetch';
 
-export async function fetchMacd(
-  symbol: string,
-  nbJour: number,
-  macd: number
-): Promise<boolean> {
+export async function fetchMacd(symbol: string, nbJour: number, macd: number): Promise<boolean> {
   return await fetch(
     `https://api.twelvedata.com/macd?symbol=${symbol.toUpperCase()}&interval=1day&outputsize=${nbJour}&format=JSON&apikey=b914fed0677e48cdaf1938b5be42956d`
   )
@@ -26,9 +22,7 @@ export async function fetchMacd(
         macdVerif.push(true);
       }
 
-      if (
-        parseFloat(res.values[0].macd) >= parseFloat(res.values[0].macd_signal)
-      ) {
+      if (parseFloat(res.values[0].macd) >= parseFloat(res.values[0].macd_signal)) {
         macdVerif.push(true);
       } else {
         macdVerif.push(false);

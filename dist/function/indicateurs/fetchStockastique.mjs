@@ -44,8 +44,7 @@ export function fetchStockastique(symbol, nbJour, stochastiqueSlowKmin, stochoas
                     verifBleuEtOrange.push(true);
                 }
                 if (typeof ecartSlowkSlowd === 'number') {
-                    if (parseFloat(res.values[0].slow_k) >
-                        parseFloat(res.values[0].slow_d) + ecartSlowkSlowd) {
+                    if (parseFloat(res.values[0].slow_k) > parseFloat(res.values[0].slow_d) + ecartSlowkSlowd) {
                         verifBleuEtOrange.push(true);
                     }
                     else {

@@ -2,10 +2,7 @@ import fetch from 'node-fetch';
 
 import { RsiData } from '../../types/rsiData';
 
-export async function checkRsiIndexRsiBas10(
-  listeActionPattern: string[],
-  bougiePattern: string[]
-): Promise<string[]> {
+export async function checkRsiIndexRsiBas10(listeActionPattern: string[], bougiePattern: string[]): Promise<string[]> {
   const actionRsiPatternOk: string[] = [];
   const promises = [];
 
@@ -34,10 +31,7 @@ export async function checkRsiIndexRsiBas10(
           }
         }
 
-        if (
-          tableauPatternRsi[0] &&
-          tableauPatternRsi[tableauPatternRsi.length - 1]
-        ) {
+        if (tableauPatternRsi[0] && tableauPatternRsi[tableauPatternRsi.length - 1]) {
           actionRsiPatternOk.push(action);
         }
       });

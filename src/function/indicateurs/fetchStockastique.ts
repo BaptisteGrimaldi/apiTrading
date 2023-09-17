@@ -19,7 +19,6 @@ export async function fetchStockastique(
         return res.json() as Promise<StochasticData>;
       })
       .then((res: StochasticData) => {
-
         if (
           stochastiqueSlowKmin !== undefined &&
           stochoastiqueSlowKmax !== undefined &&
@@ -39,9 +38,7 @@ export async function fetchStockastique(
         }
 
         if (stochastiqueSlowKmin === 666 && stochoastiqueSlowKmax === 666) {
-          if (
-            parseFloat(res.values[0].slow_k) > parseFloat(res.values[0].slow_d)
-          ) {
+          if (parseFloat(res.values[0].slow_k) > parseFloat(res.values[0].slow_d)) {
             verifBleuEtOrange.push(true);
           } else {
             verifBleuEtOrange.push(false);
@@ -51,10 +48,7 @@ export async function fetchStockastique(
         }
 
         if (typeof ecartSlowkSlowd === 'number') {
-          if (
-            parseFloat(res.values[0].slow_k) >
-            parseFloat(res.values[0].slow_d) + ecartSlowkSlowd
-          ) {
+          if (parseFloat(res.values[0].slow_k) > parseFloat(res.values[0].slow_d) + ecartSlowkSlowd) {
             verifBleuEtOrange.push(true);
           } else {
             verifBleuEtOrange.push(false);

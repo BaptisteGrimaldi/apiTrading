@@ -1,7 +1,4 @@
-export function arraysHaveSameOrder(
-  bougieConfig: boolean[],
-  bougiePatternActionEnCour: boolean[]
-) {
+export function arraysHaveSameOrder(bougieConfig: boolean[], bougiePatternActionEnCour: boolean[]) {
   if (bougieConfig.length !== bougiePatternActionEnCour.length) {
     return false;
   }

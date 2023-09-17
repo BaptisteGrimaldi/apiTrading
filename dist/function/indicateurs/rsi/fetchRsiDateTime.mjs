@@ -15,7 +15,7 @@ export function fetchRsiDateTime(actionAcheck, dateTime) {
             if (!response.ok) {
                 throw new Error('La requête a échoué avec un statut non OK');
             }
-            const data = yield response.json();
+            const data = (yield response.json());
             return data.values[0].rsi;
         }
         catch (error) {

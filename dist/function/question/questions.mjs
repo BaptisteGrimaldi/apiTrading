@@ -64,21 +64,17 @@ export function poserQuestionsEnSeries() {
         const useOrNotUse = {
             minRsi: () => (questionOptionelStrat.minRsi === '' ? false : true),
             maxRsi: () => (questionOptionelStrat.maxRsi === '' ? false : true),
-            stochastiqueSlowKmin: () => questionOptionelStrat.stochastiqueSlowKmin === '' ? false : true,
-            stochastiqueSlowKmax: () => questionOptionelStrat.stochastiqueSlowKmax === '' ? false : true,
-            ecartSlowkSlowd: () => questionOptionelStrat.ecartSlowSlowk === '' ? false : true,
+            stochastiqueSlowKmin: () => (questionOptionelStrat.stochastiqueSlowKmin === '' ? false : true),
+            stochastiqueSlowKmax: () => (questionOptionelStrat.stochastiqueSlowKmax === '' ? false : true),
+            ecartSlowkSlowd: () => (questionOptionelStrat.ecartSlowSlowk === '' ? false : true),
             macd: () => (questionOptionelStrat.macd === '' ? false : true),
         };
         const reponsesQuestion = {
             indice: questionObli.indice,
             strategie: questionObli.strategie,
             prix: parseInt(questionObli.prix),
-            minRsi: useOrNotUse.minRsi()
-                ? parseFloat(questionOptionelStrat.minRsi)
-                : false,
-            maxRsi: useOrNotUse.maxRsi()
-                ? parseFloat(questionOptionelStrat.maxRsi)
-                : false,
+            minRsi: useOrNotUse.minRsi() ? parseFloat(questionOptionelStrat.minRsi) : false,
+            maxRsi: useOrNotUse.maxRsi() ? parseFloat(questionOptionelStrat.maxRsi) : false,
             api: parseInt(questionObli.api),
             bougieConfig: questionObli.bougieConfig.split(''),
             stochastiqueSlowKmin: useOrNotUse.stochastiqueSlowKmin()
@@ -87,9 +83,7 @@ export function poserQuestionsEnSeries() {
             stochastiqueSlowKmax: useOrNotUse.stochastiqueSlowKmax()
                 ? parseFloat(questionOptionelStrat.stochastiqueSlowKmax)
                 : false,
-            ecartSlowkSlowd: useOrNotUse.ecartSlowkSlowd()
-                ? parseFloat(questionOptionelStrat.ecartSlowSlowk)
-                : false,
+            ecartSlowkSlowd: useOrNotUse.ecartSlowkSlowd() ? parseFloat(questionOptionelStrat.ecartSlowSlowk) : false,
             macd: useOrNotUse.macd() ? parseFloat(questionOptionelStrat.macd) : false,
             useOrNotUse: useOrNotUse,
         };

@@ -70,8 +70,7 @@ export function analyse(stock, start, end, price, minRsi, maxRsi, stochastiqueSl
                                                     return;
                                                 }
                                             }
-                                            if (typeof stochastiqueSlowKmin === 'number' &&
-                                                typeof stochoastiqueSlowKmax === 'number') {
+                                            if (typeof stochastiqueSlowKmin === 'number' && typeof stochoastiqueSlowKmax === 'number') {
                                                 try {
                                                     const res = yield fetchStockastique(stock[i].symbol, 1, stochastiqueSlowKmin, stochoastiqueSlowKmax);
                                                     if (res === true) {

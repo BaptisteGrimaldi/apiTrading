@@ -13,16 +13,15 @@ export async function fetchRsi(
     .then((res) => {
       return res.json() as Promise<RsiData>;
     })
-    .then((res:RsiData) => {
-
-      if(typeof minRsi === 'number' && typeof maxRsi === 'number'){
+    .then((res: RsiData) => {
+      if (typeof minRsi === 'number' && typeof maxRsi === 'number') {
         if (parseFloat(res.values[0].rsi) >= minRsi && parseFloat(res.values[0].rsi) <= maxRsi) {
           return true;
         } else {
           return false;
         }
-      }else{
-        console.log("c'est pas censé arriver")
+      } else {
+        console.log("c'est pas censé arriver");
         return false;
       }
     })

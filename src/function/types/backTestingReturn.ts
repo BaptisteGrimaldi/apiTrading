@@ -1,6 +1,4 @@
-
-
 export interface backTestingReturn {
-    bougiePatternActionEnCour: boolean[];
-    dateTimeBougiePatternActionEnCour: string[];
+  bougiePatternActionEnCour: boolean[];
+  dateTimeBougiePatternActionEnCour: string[];
 }
