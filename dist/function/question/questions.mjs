@@ -47,9 +47,9 @@ export function poserQuestionsEnSeries() {
                     macd: macd,
                 };
                 break;
-            case 'rsiBas':
-                const minRsiRsiBas = yield questionMinRsi('Quel rsi minimum voulez-vous ?');
-                const maxRsiRsiBas = yield questionMaxRsI('Quel rsi maximum voulez-vous ?');
+            case 'rsiBas10':
+                const minRsiRsiBas = yield questionMinRsi('Quel rsi minimum voulez-vous pour la première bougie ?');
+                const maxRsiRsiBas = yield questionMaxRsI('Quel rsi maximum voulez-vous pour la première bougie?');
                 questionOptionelStrat = {
                     minRsi: minRsiRsiBas,
                     maxRsi: maxRsiRsiBas,

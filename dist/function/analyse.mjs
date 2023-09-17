@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { fetchStocks } from './fetchStock/fetchStocks.mjs';;
 import { checkIfPositive } from './logistique/checkIfPositive.mjs';;
-import { fetchRsi } from './indicateurs/rsi/fetchRsi.mjs';;
+import { checkFetchRsi } from './indicateurs/rsi/fetchRsi.mjs';;
 import { checkDateTime } from './logistique/checkDateTime.mjs';;
 import { arraysHaveSameOrder } from './logistique/checkTableauSimilaire.mjs';;
 import { fetchStockastique } from './indicateurs/fetchStockastique.mjs';;
@@ -62,7 +62,7 @@ export function analyse(stock, start, end, price, minRsi, maxRsi, stochastiqueSl
                                                 maxRsi !== false &&
                                                 typeof minRsi === 'number' &&
                                                 typeof maxRsi === 'number') {
-                                                const res = yield fetchRsi(stock[i].symbol, minRsi, maxRsi);
+                                                const res = yield checkFetchRsi(stock[i].symbol, minRsi, maxRsi);
                                                 if (res === true) {
                                                     useOrNotUse.push(true);
                                                 }

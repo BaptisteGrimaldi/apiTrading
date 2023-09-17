@@ -100,9 +100,9 @@ export async function poserQuestionsEnSeries(): Promise<ReponsesQuestion> {
       };
       break;
 
-    case 'rsiBas':
-      const minRsiRsiBas = await questionMinRsi('Quel rsi minimum voulez-vous ?');
-      const maxRsiRsiBas: string = await questionMaxRsI('Quel rsi maximum voulez-vous ?');
+    case 'rsiBas10':
+      const minRsiRsiBas = await questionMinRsi('Quel rsi minimum voulez-vous pour la première bougie ?');
+      const maxRsiRsiBas: string = await questionMaxRsI('Quel rsi maximum voulez-vous pour la première bougie?');
 
       questionOptionelStrat = {
         minRsi: minRsiRsiBas,

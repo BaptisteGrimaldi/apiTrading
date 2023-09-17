@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import fetch from 'node-fetch';
-export function fetchRsi(symbolStock, minRsi, maxRsi) {
+export function checkFetchRsi(symbolStock, minRsi, maxRsi) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield fetch(`https://api.twelvedata.com/rsi?symbol=${symbolStock}&interval=1day&time_period=14&apikey=b914fed0677e48cdaf1938b5be42956d`)
             .then((res) => {

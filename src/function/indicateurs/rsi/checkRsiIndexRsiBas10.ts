@@ -16,14 +16,14 @@ export async function checkRsiIndexRsiBas10(listeActionPattern: string[], bougie
 
         for (let i = 0; i < bougiePattern.length; i++) {
           if (bougiePattern[i] === '1') {
-            if (parseFloat(res.values[i].rsi) >= 32) {
+            if (parseFloat(res.values[i].rsi) >= 33) {
               tableauPatternRsi.push(true);
             } else {
               tableauPatternRsi.push(false);
             }
           }
           if (bougiePattern[i] === '0') {
-            if (parseFloat(res.values[i].rsi) <= 28) {
+            if (parseFloat(res.values[i].rsi) <= 29) {
               tableauPatternRsi.push(true);
             } else {
               tableauPatternRsi.push(false);

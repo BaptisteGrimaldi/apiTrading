@@ -1,6 +1,6 @@
 import { fetchStocks } from './fetchStock/fetchStocks';
 import { checkIfPositive } from './logistique/checkIfPositive';
-import { fetchRsi } from './indicateurs/rsi/fetchRsi';
+import { checkFetchRsi } from './indicateurs/rsi/fetchRsi';
 import { checkDateTime } from './logistique/checkDateTime';
 import { arraysHaveSameOrder } from './logistique/checkTableauSimilaire';
 import { fetchStockastique } from './indicateurs/fetchStockastique';
@@ -22,7 +22,7 @@ export async function analyse(
   macd?: number | boolean,
   bougiePattern?: string[],
   useOrNotUse?: UseOrNotUse
-) {
+): Promise<string[]> {
   if (
     bougiePattern !== undefined &&
     useOrNotUse !== undefined &&
@@ -79,7 +79,7 @@ export async function analyse(
                     typeof minRsi === 'number' &&
                     typeof maxRsi === 'number'
                   ) {
-                    const res = await fetchRsi(stock[i].symbol, minRsi, maxRsi);
+                    const res = await checkFetchRsi(stock[i].symbol, minRsi, maxRsi);
                     if (res === true) {
                       useOrNotUse.push(true);
                     } else {

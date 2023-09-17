@@ -34,7 +34,7 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
           await initStrategie((x - 1) * reponsesQuestion.api, x * reponsesQuestion.api);
         }
       }
-
+      
       async function initStrategie(
         start: number,
         end: number,
@@ -88,6 +88,7 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
               useOrNotUse
             ).then((res) => {
               return checkRsiIndexRsiBas10(res, bougiePattern);
+
             });
             await addList(strategie2);
             break;
@@ -98,6 +99,10 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
         listeFinal = listeFinal.concat(checkBougieVerteResult);
         console.log('liste Intermédiaire', listeFinal);
       }
+
+
+
+
     })
     .catch((error) => {
       console.error("Une erreur s'est produite :", error);

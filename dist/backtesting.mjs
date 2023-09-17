@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { checkIfPositive } from './function/logistique/checkIfPositive.mjs';;
 import { fetchRsiDateTime } from './function/indicateurs/rsi/fetchRsiDateTime.mjs';;
 import { fetchDataHistoric } from './function/fetchStock/fetchHistoric.mjs';;
+import { moyenneResult } from './function/logistique/moyenneResult.mjs';;
 // 19h46 : start
 // 20h00 : fin
 function backTesting(action) {
@@ -27,9 +28,21 @@ function backTesting(action) {
                     const closePrice = parseFloat(data.values[x].close);
                     const highPrice = parseFloat(data.values[x].high);
                     const lowPrice = parseFloat(data.values[x].low);
+                    let gapHaut;
+                    let gapBas;
                     const variation = ((closePrice - openPrice) / openPrice) * 100;
-                    const gapHaut = ((highPrice - closePrice) / closePrice) * 100;
-                    const gapBas = ((openPrice - lowPrice) / openPrice) * 100;
+                    if (highPrice === openPrice) {
+                        gapHaut = 0;
+                    }
+                    else {
+                        gapHaut = ((highPrice - closePrice) / closePrice) * 100;
+                    }
+                    if (lowPrice === openPrice) {
+                        gapBas = 0;
+                    }
+                    else {
+                        gapBas = ((openPrice - lowPrice) / openPrice) * 100;
+                    }
                     bougieData.push({ variation: variation, gapHaut: gapHaut, gapBas: gapBas });
                     bougiePatternActionEnCour.push(bougie);
                     dateTimeBougiePatternActionEnCour.push(dateTime);
@@ -51,21 +64,20 @@ function backTesting(action) {
         }
     });
 }
-const actionAcheck = 'AAPL';
+const actionAcheck = 'CMCO';
 backTesting(actionAcheck)
     .then((res) => {
     const resultSucess = [];
     const resultFail = [];
-    function execFetchTimeRsi() {
+    function execRsiVerif() {
         return __awaiter(this, void 0, void 0, function* () {
             const resultBougiePattern = res.bougiePatternActionEnCour;
             const resultDateTimeBougiePatternActionEnCour = res.dateTimeBougiePatternActionEnCour;
             for (let i = 0; i < resultBougiePattern.length; i++) {
                 if (resultBougiePattern[i] === false && resultBougiePattern[i + 1] === true) {
-                    // await waitPromesse(500);
                     const day1 = yield fetchRsiDateTime(actionAcheck, resultDateTimeBougiePatternActionEnCour[i]);
                     const day2 = yield fetchRsiDateTime(actionAcheck, resultDateTimeBougiePatternActionEnCour[i + 1]);
-                    if (parseFloat(day1) <= 29 && parseFloat(day2) >= 34 && day1 !== 'error' && day2 !== 'error') {
+                    if (parseFloat(day1) <= 29 && parseFloat(day2) >= 33 && day1 !== 'error' && day2 !== 'error') {
                         if (resultBougiePattern[i + 2] === true) {
                             resultSucess.push({
                                 date: resultDateTimeBougiePatternActionEnCour[i],
@@ -90,37 +102,9 @@ backTesting(actionAcheck)
             console.log('resultSucess', resultSucess);
             console.log('---------------------------------------------------');
             console.log('resultFail', resultFail);
-            const moyenneVariationSucess = [];
-            const moyenneGapHautSucess = [];
-            const moyenneGapBasSucess = [];
-            for (const result of resultSucess) {
-                moyenneVariationSucess.push(result.bougieDataPlus1Variation);
-                moyenneGapHautSucess.push(result.bougieDataPlus2Result.gapHaut);
-                moyenneGapBasSucess.push(result.bougieDataPlus2Result.gapBas);
-            }
-            const moyenneVariationFail = [];
-            const moyenneGapHautFail = [];
-            const moyenneGapBasFail = [];
-            for (const result of resultFail) {
-                moyenneVariationFail.push(result.bougieDataPlus1Variation);
-                moyenneGapHautFail.push(result.bougieDataPlus2Result.gapHaut);
-                moyenneGapBasFail.push(result.bougieDataPlus2Result.gapBas);
-            }
-            const moyenneVariationSucessResult = moyenneVariationSucess.reduce((a, b) => a + b, 0) / moyenneVariationSucess.length;
-            const moyenneGapHautSucessResult = moyenneGapHautSucess.reduce((a, b) => a + b, 0) / moyenneGapHautSucess.length;
-            const moyenneGapBasSucessResult = moyenneGapBasSucess.reduce((a, b) => a + b, 0) / moyenneGapBasSucess.length;
-            const moyenneVariationFailResult = moyenneVariationFail.reduce((a, b) => a + b, 0) / moyenneVariationFail.length;
-            const moyenneGapHautFailResult = moyenneGapHautFail.reduce((a, b) => a + b, 0) / moyenneGapHautFail.length;
-            const moyenneGapBasFailResult = moyenneGapBasFail.reduce((a, b) => a + b, 0) / moyenneGapBasFail.length;
-            console.log('moyenneVariationSucessResult', moyenneVariationSucessResult);
-            console.log('moyenneGapHautSucessResult', moyenneGapHautSucessResult);
-            console.log('moyenneGapBasSucessResult', moyenneGapBasSucessResult);
-            console.log('---------------------------------------------------');
-            console.log('moyenneVariationFailResult', moyenneVariationFailResult);
-            console.log('moyenneGapHautFailResult', moyenneGapHautFailResult);
-            console.log('moyenneGapBasFailResult', moyenneGapBasFailResult);
+            moyenneResult(resultSucess, resultFail);
         });
     }
-    execFetchTimeRsi().catch(() => console.log('Erreur dans execFetchTimeRsi'));
+    execRsiVerif().catch(() => console.log('Erreur dans execRsiVerif'));
 })
     .catch((error) => console.error('Erreur principale :', "erreur dans l'execution de l'api"));

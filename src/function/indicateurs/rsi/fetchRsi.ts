@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 import { RsiData } from '../../types/rsiData';
 
-export async function fetchRsi(
+export async function checkFetchRsi(
   symbolStock: string,
   minRsi: number | boolean,
   maxRsi: number | boolean
