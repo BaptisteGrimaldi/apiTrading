@@ -1,11 +1,10 @@
-
 import * as mysql from 'mysql2/promise';
 
 const dbConfig = {
-    host: 'localhost',
-    user: 'root',
-    password: 'Crapulo2001*',
-    database: 'debugging'
+  host: 'localhost',
+  user: 'root',
+  password: 'Crapulo2001*',
+  database: 'debugging',
 };
 
 export async function insererElementsDansMySQL(
@@ -29,7 +28,7 @@ export async function insererElementsDansMySQL(
     await connection.end();
     console.log('Connexion à MySQL fermée.');
   } catch (error) {
-    console.error('Une erreur s\'est produite :', error);
+    console.error("Une erreur s'est produite :", error);
   }
 }
 

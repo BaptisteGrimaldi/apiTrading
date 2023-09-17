@@ -12,7 +12,7 @@ const dbConfig = {
     host: 'localhost',
     user: 'root',
     password: 'Crapulo2001*',
-    database: 'debugging'
+    database: 'debugging',
 };
 export function insererElementsDansMySQL(resultBougiePattern, nomDeColonneResultBougiePattern, resultDateTimeBougiePatternActionEnCour, nomDeColonneResultDateTimeBougiePatternActionEnCour) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -29,7 +29,7 @@ export function insererElementsDansMySQL(resultBougiePattern, nomDeColonneResult
             console.log('Connexion à MySQL fermée.');
         }
         catch (error) {
-            console.error('Une erreur s\'est produite :', error);
+            console.error("Une erreur s'est produite :", error);
         }
     });
 }
