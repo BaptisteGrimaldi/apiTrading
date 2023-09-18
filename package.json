@@ -2,7 +2,8 @@
   "scripts": {
     "start": "tsc &&  npm run rename-mjs && node ./dist/main.mjs",
     "rename-mjs": "node renameFiles.js && node ajoutImportMjs.js",
-    "prettier": "npx prettier --write ./src/**"
+    "prettier": "npx prettier --write ./src/**",
+    "backTesting":"node backTestingStart.js"
   },
   "devDependencies": {
     "@types/inquirer": "^9.0.3",

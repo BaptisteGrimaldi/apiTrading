@@ -28,7 +28,7 @@ function questionStrategie(question) {
                 type: 'list',
                 name: 'strategie',
                 message: question,
-                choices: ['check2BougiesVertes2Rouges', 'rsiBas10'],
+                choices: ['check2BougiesVertes2Rouges', 'rsiBas10', 'dmiAdx'],
             },
         ]);
         return reponse.strategie;

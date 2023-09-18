@@ -64,7 +64,11 @@ function backTesting(action) {
         }
     });
 }
-const actionAcheck = 'CMCO';
+const actionAcheck = process.argv[2];
+if (!actionAcheck) {
+    console.error('Veuillez spécifier une valeur pour actionAcheck en ligne de commande.');
+    process.exit(1);
+}
 backTesting(actionAcheck)
     .then((res) => {
     const resultSucess = [];
@@ -84,7 +88,8 @@ backTesting(actionAcheck)
                                 action: actionAcheck,
                                 bougieDataPlus1Variation: res.bougieData[i + 1].variation,
                                 bougieDataPlus2Result: res.bougieData[i + 2],
-                                bougieDataPlus3: res.bougiePatternActionEnCour[i + 3],
+                                bougieDataPlus3GainPerte: res.bougiePatternActionEnCour[i + 3],
+                                bougieDataPlus3: res.bougieData[i + 3],
                             });
                         }
                         else {
@@ -93,7 +98,8 @@ backTesting(actionAcheck)
                                 action: actionAcheck,
                                 bougieDataPlus1Variation: res.bougieData[i + 1].variation,
                                 bougieDataPlus2Result: res.bougieData[i + 2],
-                                bougieDataPlus3: res.bougiePatternActionEnCour[i + 3],
+                                bougieDataPlus3GainPerte: res.bougiePatternActionEnCour[i + 3],
+                                bougieDataPlus3: res.bougieData[i + 3],
                             });
                         }
                     }

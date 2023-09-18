@@ -8,6 +8,11 @@ export interface dataResultBackTesting {
       gapHaut: number;
       gapBas: number;
     };
-    bougieDataPlus3: boolean;
+    bougieDataPlus3GainPerte: boolean;
+    bougieDataPlus3:{
+      variation: number;
+      gapHaut: number;
+      gapBas: number;
+    }
   }
   

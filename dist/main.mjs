@@ -12,6 +12,7 @@ import { analyse } from './function/analyse.mjs';;
 import { waitPromesse } from './function/logistique/waitPromesse.mjs';;
 import { poserQuestionsEnSeries } from './function/question/questions.mjs';;
 import { checkRsiIndexRsiBas10 } from './function/indicateurs/rsi/checkRsiIndexRsiBas10.mjs';;
+import { dmiAdx } from './function/indicateurs/dmiAdx.mjs';;
 poserQuestionsEnSeries().then((reponsesQuestion) => {
     const exchangeStock = fetchStocksList(reponsesQuestion.indice).then((res) => {
         return res.data;
@@ -48,6 +49,12 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
                             return checkRsiIndexRsiBas10(res, bougiePattern);
                         });
                         yield addList(strategie2);
+                        break;
+                    case 'dmiAdx':
+                        let strategie3 = yield analyse(stockData, start, end, price, minRsi, maxRsi, stochastiqueSlowKmin, stochoastiqueSlowKmax, ecartSlowkSlowd, macd, bougiePattern, useOrNotUse).then((res) => {
+                            return dmiAdx(res);
+                        });
+                        yield addList(strategie3);
                         break;
                 }
             });

@@ -59,6 +59,8 @@ export function poserQuestionsEnSeries() {
                     macd: '',
                 };
                 break;
+            case 'dmiAdx':
+                break;
         }
         //optionel
         const useOrNotUse = {

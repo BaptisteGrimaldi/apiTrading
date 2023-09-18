@@ -3,6 +3,7 @@ import { analyse } from './function/analyse';
 import { waitPromesse } from './function/logistique/waitPromesse';
 import { poserQuestionsEnSeries } from './function/question/questions';
 import { checkRsiIndexRsiBas10 } from './function/indicateurs/rsi/checkRsiIndexRsiBas10';
+import { dmiAdx } from './function/indicateurs/dmiAdx';
 
 import { UseOrNotUse } from './function/types/useOrNotUse';
 
@@ -92,6 +93,26 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
             });
             await addList(strategie2);
             break;
+          
+          case 'dmiAdx':
+            let strategie3 = await analyse(
+              stockData,
+              start,
+              end,
+              price,
+              minRsi,
+              maxRsi,
+              stochastiqueSlowKmin,
+              stochoastiqueSlowKmax,
+              ecartSlowkSlowd,
+              macd,
+              bougiePattern,
+              useOrNotUse
+            ).then((res) => {
+              return dmiAdx(res)
+            });
+            await addList(strategie3);
+            break;
         }
       }
 
@@ -99,9 +120,6 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
         listeFinal = listeFinal.concat(checkBougieVerteResult);
         console.log('liste Intermédiaire', listeFinal);
       }
-
-
-
 
     })
     .catch((error) => {

@@ -1,17 +1,17 @@
-import { checkIfPositive } from './function/logistique/checkIfPositive';
+import { checkIfPositive } from '../function/logistique/checkIfPositive';
 
-import { fetchRsiDateTime } from './function/indicateurs/rsi/fetchRsiDateTime';
-import { fetchDataHistoric } from './function/fetchStock/fetchHistoric';
-import { moyenneResult } from './function/logistique/moyenneResult';
+import { fetchRsiDateTime } from '../function/indicateurs/rsi/fetchRsiDateTime';
+import { fetchDataHistoric } from '../function/fetchStock/fetchHistoric';
+import { moyenneResult } from '../function/logistique/moyenneResult';
 
 //Types :
-import { valueStock } from './function/types/valueStock';
-import { backTestingReturn } from './function/types/backTestingReturn';
-import { bougieData } from './function/types/bougieData';
-import { dataResultBackTesting } from './function/types/dataResultBackTesting';
+import { valueStock } from '../function/types/valueStock';
+import { backTestingReturn } from '../function/types/backTestingReturn';
+import { bougieData } from '../function/types/bougieData';
+import { dataResultBackTesting } from '../function/types/dataResultBackTesting';
 
 //Debuging code :
-import { insererElementsDansMySQL } from './function/debug/mysql';
+import { insererElementsDansMySQL } from '../function/debug/mysql';
 
 // 19h46 : start
 // 20h00 : fin
@@ -70,7 +70,12 @@ async function backTesting(action: string): Promise<backTestingReturn> {
   }
 }
 
-const actionAcheck = 'CMCO';
+const actionAcheck = process.argv[2];
+
+if (!actionAcheck) {
+  console.error('Veuillez spécifier une valeur pour actionAcheck en ligne de commande.');
+  process.exit(1);
+}
 
 backTesting(actionAcheck)
   .then((res: backTestingReturn) => {
@@ -94,7 +99,8 @@ backTesting(actionAcheck)
                 action: actionAcheck,
                 bougieDataPlus1Variation: res.bougieData[i+1].variation,
                 bougieDataPlus2Result: res.bougieData[i+2],
-                bougieDataPlus3: res.bougiePatternActionEnCour[i+3],
+                bougieDataPlus3GainPerte: res.bougiePatternActionEnCour[i+3],
+                bougieDataPlus3: res.bougieData[i+3],
               });
             } else {
               resultFail.push({
@@ -102,7 +108,8 @@ backTesting(actionAcheck)
                 action: actionAcheck,
                 bougieDataPlus1Variation: res.bougieData[i+1].variation,
                 bougieDataPlus2Result: res.bougieData[i+2],
-                bougieDataPlus3: res.bougiePatternActionEnCour[i+3],
+                bougieDataPlus3GainPerte: res.bougiePatternActionEnCour[i+3],
+                bougieDataPlus3: res.bougieData[i+3],
               });
             }
           }

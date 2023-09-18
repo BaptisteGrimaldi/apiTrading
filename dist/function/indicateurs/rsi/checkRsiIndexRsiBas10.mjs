@@ -13,7 +13,7 @@ export function checkRsiIndexRsiBas10(listeActionPattern, bougiePattern) {
         const actionRsiPatternOk = [];
         const promises = [];
         for (const action of listeActionPattern) {
-            const promise = fetch(`https://api.twelvedata.com/rsi?symbol=${action}&interval=1day&time_period=14&apikey=b914fed0677e48cdaf1938b5be42956d`)
+            const promise = yield fetch(`https://api.twelvedata.com/rsi?symbol=${action}&interval=1day&time_period=14&apikey=b914fed0677e48cdaf1938b5be42956d`)
                 .then((res) => res.json())
                 .then((res) => {
                 const tableauPatternRsi = [];

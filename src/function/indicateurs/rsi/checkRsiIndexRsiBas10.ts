@@ -7,7 +7,7 @@ export async function checkRsiIndexRsiBas10(listeActionPattern: string[], bougie
   const promises = [];
 
   for (const action of listeActionPattern) {
-    const promise = fetch(
+    const promise = await fetch(
       `https://api.twelvedata.com/rsi?symbol=${action}&interval=1day&time_period=14&apikey=b914fed0677e48cdaf1938b5be42956d`
     )
       .then((res) => res.json() as Promise<RsiData>)
