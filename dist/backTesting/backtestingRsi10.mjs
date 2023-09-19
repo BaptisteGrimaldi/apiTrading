@@ -7,10 +7,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { checkIfPositive } from './function/logistique/checkIfPositive.mjs';;;;;;;;;;;;;;;;;;;;;;;;
-import { fetchRsiDateTime } from './function/indicateurs/rsi/fetchRsiDateTime.mjs';;;;;;;;;;;;;;;;;;;;;;;;
-import { fetchDataHistoric } from './function/fetchStock/fetchHistoric.mjs';;;;;;;;;;;;;;;;;;;;;;;;
-import { moyenneResult } from './function/logistique/moyenneResult.mjs';;;;;;;;;;;;;;;;;;;;;;;;
+import { checkIfPositive } from '../function/logistique/checkIfPositive.mjs';;
+import { fetchRsiDateTime } from '../function/indicateurs/rsi/fetchRsiDateTime.mjs';;
+import { fetchDataHistoric } from '../function/fetchStock/fetchHistoric.mjs';;
+import { moyenneResult } from '../function/logistique/moyenneResult.mjs';;
 // 19h46 : start
 // 20h00 : fin
 function backTesting(action) {
@@ -31,17 +31,33 @@ function backTesting(action) {
                     let gapHaut;
                     let gapBas;
                     const variation = ((closePrice - openPrice) / openPrice) * 100;
-                    if (highPrice === openPrice) {
-                        gapHaut = 0;
+                    if (bougie === true) {
+                        if (highPrice === openPrice) {
+                            gapHaut = 0;
+                        }
+                        else {
+                            gapHaut = ((highPrice - closePrice) / closePrice) * 100;
+                        }
+                        if (lowPrice === openPrice) {
+                            gapBas = 0;
+                        }
+                        else {
+                            gapBas = ((openPrice - lowPrice) / openPrice) * 100;
+                        }
                     }
                     else {
-                        gapHaut = ((highPrice - closePrice) / closePrice) * 100;
-                    }
-                    if (lowPrice === openPrice) {
-                        gapBas = 0;
-                    }
-                    else {
-                        gapBas = ((openPrice - lowPrice) / openPrice) * 100;
+                        if (highPrice === closePrice) {
+                            gapHaut = 0;
+                        }
+                        else {
+                            gapHaut = ((highPrice - openPrice) / openPrice) * 100;
+                        }
+                        if (lowPrice === closePrice) {
+                            gapBas = 0;
+                        }
+                        else {
+                            gapBas = ((closePrice - lowPrice) / closePrice) * 100;
+                        }
                     }
                     bougieData.push({ variation: variation, gapHaut: gapHaut, gapBas: gapBas });
                     bougiePatternActionEnCour.push(bougie);

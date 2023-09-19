@@ -79,12 +79,8 @@ export function poserQuestionsEnSeries() {
             maxRsi: useOrNotUse.maxRsi() ? parseFloat(questionOptionelStrat.maxRsi) : false,
             api: parseInt(questionObli.api),
             bougieConfig: questionObli.bougieConfig.split(''),
-            stochastiqueSlowKmin: useOrNotUse.stochastiqueSlowKmin()
-                ? parseFloat(questionOptionelStrat.stochastiqueSlowKmin)
-                : false,
-            stochastiqueSlowKmax: useOrNotUse.stochastiqueSlowKmax()
-                ? parseFloat(questionOptionelStrat.stochastiqueSlowKmax)
-                : false,
+            stochastiqueSlowKmin: useOrNotUse.stochastiqueSlowKmin() ? parseFloat(questionOptionelStrat.stochastiqueSlowKmin) : false,
+            stochastiqueSlowKmax: useOrNotUse.stochastiqueSlowKmax() ? parseFloat(questionOptionelStrat.stochastiqueSlowKmax) : false,
             ecartSlowkSlowd: useOrNotUse.ecartSlowkSlowd() ? parseFloat(questionOptionelStrat.ecartSlowSlowk) : false,
             macd: useOrNotUse.macd() ? parseFloat(questionOptionelStrat.macd) : false,
             useOrNotUse: useOrNotUse,

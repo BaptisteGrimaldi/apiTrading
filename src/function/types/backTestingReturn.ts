@@ -1,4 +1,4 @@
-import { bougieData } from "./bougieData";
+import { bougieData } from './bougieData';
 
 export interface backTestingReturn {
   bougiePatternActionEnCour: boolean[];

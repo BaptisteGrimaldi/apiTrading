@@ -7,14 +7,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import fetch from "node-fetch";
+import fetch from 'node-fetch';
 export function dmiAdx(listeActionPattern) {
     return __awaiter(this, void 0, void 0, function* () {
         const actionDmiPatternOk = [];
         for (const action of listeActionPattern) {
             try {
                 const plus_di = yield fetch(`https://api.twelvedata.com/plus_di?symbol=${action}&interval=1day&time_period=14&apikey=b914fed0677e48cdaf1938b5be42956d`)
-                    .then(res => res.json())
+                    .then((res) => res.json())
                     .then((res) => {
                     const actuel = res.values[0].plus_di;
                     const actuelMoins1 = res.values[1].plus_di;
@@ -22,7 +22,7 @@ export function dmiAdx(listeActionPattern) {
                     return actuelResult;
                 });
                 const minus_di = yield fetch(`https://api.twelvedata.com/minus_di?symbol=${action}&interval=1day&time_period=14&apikey=b914fed0677e48cdaf1938b5be42956d`)
-                    .then(res => res.json())
+                    .then((res) => res.json())
                     .then((res) => {
                     const actuel = res.values[0].minus_di;
                     const actuelMoins1 = res.values[1].minus_di;

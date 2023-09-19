@@ -31,7 +31,7 @@ export function moyenneResult(resultSucess, resultFail) {
     }
     console.log('moyenneVariationSucess', moyenneVariationSucess1.length);
     console.log('moyenneVariationFail', moyenneVariationFail1.length);
-    console.log("chance de réussite :" + moyenneVariationSucess1.length / (moyenneVariationSucess1.length + moyenneVariationFail1.length) * 100 + '%');
+    console.log('chance de réussite :' + (moyenneVariationSucess1.length / (moyenneVariationSucess1.length + moyenneVariationFail1.length)) * 100 + '%');
     const moyenneVariationSucessResult1 = moyenneVariationSucess1.reduce((a, b) => a + b, 0) / moyenneVariationSucess1.length;
     const moyenneVariationSucessResult2 = moyenneVariationSucess2.reduce((a, b) => a + b, 0) / moyenneVariationSucess2.length;
     const moyenneGapHautSucessResult = moyenneGapHautSucess.reduce((a, b) => a + b, 0) / moyenneGapHautSucess.length;

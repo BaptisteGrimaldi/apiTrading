@@ -1,6 +1,5 @@
-
 export interface bougieData {
-    variation: number;
-    gapHaut: number;
-    gapBas: number;
+  variation: number;
+  gapHaut: number;
+  gapBas: number;
 }

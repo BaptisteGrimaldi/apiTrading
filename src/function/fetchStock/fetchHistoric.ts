@@ -30,7 +30,7 @@ export async function fetchDataHistoric(action: string): Promise<valueStock> {
     );
 
     if (!response.ok) {
-      throw new Error("Échec de la récupération des données historique");
+      throw new Error('Échec de la récupération des données historique');
     }
 
     const data = (await response.json()) as valueStock;

@@ -30,12 +30,7 @@ export function analyse(stock, start, end, price, minRsi, maxRsi, stochastiqueSl
             const bougieConfig = bougiePattern.map((bougie) => {
                 return bougie === '1' ? true : false;
             });
-            let useOrNotUseConfig = [
-                useOrNotUse.minRsi(),
-                useOrNotUse.stochastiqueSlowKmin(),
-                useOrNotUse.ecartSlowkSlowd(),
-                useOrNotUse.macd(),
-            ];
+            let useOrNotUseConfig = [useOrNotUse.minRsi(), useOrNotUse.stochastiqueSlowKmin(), useOrNotUse.ecartSlowkSlowd(), useOrNotUse.macd()];
             useOrNotUseConfig = useOrNotUseConfig.filter((value) => value === true);
             // console.log('useOrNotUseConfig', useOrNotUseConfig);
             for (let i = start; i < end; i++) {
@@ -58,10 +53,7 @@ export function analyse(stock, start, end, price, minRsi, maxRsi, stochastiqueSl
                                     const useOrNotUse = [];
                                     function executeAll() {
                                         return __awaiter(this, void 0, void 0, function* () {
-                                            if (minRsi !== false &&
-                                                maxRsi !== false &&
-                                                typeof minRsi === 'number' &&
-                                                typeof maxRsi === 'number') {
+                                            if (minRsi !== false && maxRsi !== false && typeof minRsi === 'number' && typeof maxRsi === 'number') {
                                                 const res = yield checkFetchRsi(stock[i].symbol, minRsi, maxRsi);
                                                 if (res === true) {
                                                     useOrNotUse.push(true);
@@ -84,9 +76,7 @@ export function analyse(stock, start, end, price, minRsi, maxRsi, stochastiqueSl
                                                     console.log('Erreur stochastiqueSlowKmin');
                                                 }
                                             }
-                                            if (typeof ecartSlowkSlowd === 'number' &&
-                                                typeof stochastiqueSlowKmin === 'number' &&
-                                                typeof stochoastiqueSlowKmax === 'number') {
+                                            if (typeof ecartSlowkSlowd === 'number' && typeof stochastiqueSlowKmin === 'number' && typeof stochoastiqueSlowKmax === 'number') {
                                                 try {
                                                     const res = yield fetchStockastique(stock[i].symbol, 1, stochastiqueSlowKmin, stochoastiqueSlowKmax, ecartSlowkSlowd);
                                                     if (res === true) {

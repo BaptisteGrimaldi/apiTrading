@@ -25,7 +25,7 @@ export function fetchDataHistoric(action) {
             });
             const response = yield fetch(`https://api.twelvedata.com/time_series?symbol=${action}&interval=1day&format=JSON&dp=2&start_date=${plusAncienneDataAction} 6:05 PM&end_date=${formatDateToYYYYMMDD(today)} 6:05 PM&apikey=b914fed0677e48cdaf1938b5be42956d`);
             if (!response.ok) {
-                throw new Error("Échec de la récupération des données historique");
+                throw new Error('Échec de la récupération des données historique');
             }
             const data = (yield response.json());
             return data;

@@ -114,10 +114,8 @@ export async function poserQuestionsEnSeries(): Promise<ReponsesQuestion> {
       };
 
       break;
-      case 'dmiAdx':
-        
-        break;
-
+    case 'dmiAdx':
+      break;
   }
 
   //optionel
@@ -142,12 +140,8 @@ export async function poserQuestionsEnSeries(): Promise<ReponsesQuestion> {
     api: parseInt(questionObli.api),
     bougieConfig: questionObli.bougieConfig.split(''),
 
-    stochastiqueSlowKmin: useOrNotUse.stochastiqueSlowKmin()
-      ? parseFloat(questionOptionelStrat.stochastiqueSlowKmin)
-      : false,
-    stochastiqueSlowKmax: useOrNotUse.stochastiqueSlowKmax()
-      ? parseFloat(questionOptionelStrat.stochastiqueSlowKmax)
-      : false,
+    stochastiqueSlowKmin: useOrNotUse.stochastiqueSlowKmin() ? parseFloat(questionOptionelStrat.stochastiqueSlowKmin) : false,
+    stochastiqueSlowKmax: useOrNotUse.stochastiqueSlowKmax() ? parseFloat(questionOptionelStrat.stochastiqueSlowKmax) : false,
 
     ecartSlowkSlowd: useOrNotUse.ecartSlowkSlowd() ? parseFloat(questionOptionelStrat.ecartSlowSlowk) : false,
 

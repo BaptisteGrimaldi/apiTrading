@@ -27,7 +27,7 @@ function askQuestion(prompt) {
   }
 
   // Exécuter le script backtesting.mjs avec l'action en tant qu'argument
-  const childProcess = spawn('node', ['./dist/backTesting/backtestingRsi.mjs', action], {
+  const childProcess = spawn('node', ['./dist/backTesting/backtestingRsi10.mjs', action], {
     stdio: 'inherit', // Utiliser 'inherit' pour hériter des paramètres du terminal parent.
   });
 

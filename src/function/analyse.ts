@@ -40,12 +40,7 @@ export async function analyse(
       return bougie === '1' ? true : false;
     });
 
-    let useOrNotUseConfig: boolean[] = [
-      useOrNotUse.minRsi(),
-      useOrNotUse.stochastiqueSlowKmin(),
-      useOrNotUse.ecartSlowkSlowd(),
-      useOrNotUse.macd(),
-    ];
+    let useOrNotUseConfig: boolean[] = [useOrNotUse.minRsi(), useOrNotUse.stochastiqueSlowKmin(), useOrNotUse.ecartSlowkSlowd(), useOrNotUse.macd()];
 
     useOrNotUseConfig = useOrNotUseConfig.filter((value) => value === true);
 
@@ -73,12 +68,7 @@ export async function analyse(
                 const useOrNotUse: boolean[] = [];
 
                 async function executeAll() {
-                  if (
-                    minRsi !== false &&
-                    maxRsi !== false &&
-                    typeof minRsi === 'number' &&
-                    typeof maxRsi === 'number'
-                  ) {
+                  if (minRsi !== false && maxRsi !== false && typeof minRsi === 'number' && typeof maxRsi === 'number') {
                     const res = await checkFetchRsi(stock[i].symbol, minRsi, maxRsi);
                     if (res === true) {
                       useOrNotUse.push(true);
@@ -89,12 +79,7 @@ export async function analyse(
 
                   if (typeof stochastiqueSlowKmin === 'number' && typeof stochoastiqueSlowKmax === 'number') {
                     try {
-                      const res = await fetchStockastique(
-                        stock[i].symbol,
-                        1,
-                        stochastiqueSlowKmin,
-                        stochoastiqueSlowKmax
-                      );
+                      const res = await fetchStockastique(stock[i].symbol, 1, stochastiqueSlowKmin, stochoastiqueSlowKmax);
                       if (res === true) {
                         useOrNotUse.push(true);
                       } else {
@@ -105,19 +90,9 @@ export async function analyse(
                     }
                   }
 
-                  if (
-                    typeof ecartSlowkSlowd === 'number' &&
-                    typeof stochastiqueSlowKmin === 'number' &&
-                    typeof stochoastiqueSlowKmax === 'number'
-                  ) {
+                  if (typeof ecartSlowkSlowd === 'number' && typeof stochastiqueSlowKmin === 'number' && typeof stochoastiqueSlowKmax === 'number') {
                     try {
-                      const res = await fetchStockastique(
-                        stock[i].symbol,
-                        1,
-                        stochastiqueSlowKmin,
-                        stochoastiqueSlowKmax,
-                        ecartSlowkSlowd
-                      );
+                      const res = await fetchStockastique(stock[i].symbol, 1, stochastiqueSlowKmin, stochoastiqueSlowKmax, ecartSlowkSlowd);
                       if (res === true) {
                         useOrNotUse.push(true);
                       } else {
