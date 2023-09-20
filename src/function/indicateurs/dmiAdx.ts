@@ -9,9 +9,7 @@ export async function dmiAdx(listeActionPattern: string[]): Promise<string[]> {
 
   for (const action of listeActionPattern) {
     try {
-      const plus_di = await fetch(
-        `https://api.twelvedata.com/plus_di?symbol=${action}&interval=1day&time_period=14&apikey=b914fed0677e48cdaf1938b5be42956d`
-      )
+      const plus_di = await fetch(`https://api.twelvedata.com/plus_di?symbol=${action}&interval=1day&time_period=14&apikey=b914fed0677e48cdaf1938b5be42956d`)
         .then((res) => res.json() as Promise<dmiDataPlus>)
         .then((res: dmiDataPlus) => {
           const actuel = res.values[0].plus_di;
@@ -22,9 +20,7 @@ export async function dmiAdx(listeActionPattern: string[]): Promise<string[]> {
           return actuelResult;
         });
 
-      const minus_di = await fetch(
-        `https://api.twelvedata.com/minus_di?symbol=${action}&interval=1day&time_period=14&apikey=b914fed0677e48cdaf1938b5be42956d`
-      )
+      const minus_di = await fetch(`https://api.twelvedata.com/minus_di?symbol=${action}&interval=1day&time_period=14&apikey=b914fed0677e48cdaf1938b5be42956d`)
         .then((res) => res.json() as Promise<dmiDataMinus>)
         .then((res: dmiDataMinus) => {
           const actuel = res.values[0].minus_di;

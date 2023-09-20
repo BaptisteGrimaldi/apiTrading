@@ -2,7 +2,7 @@ import { checkIfPositive } from '../function/logistique/checkIfPositive';
 
 import { fetchRsiDateTime } from '../function/indicateurs/rsi/fetchRsiDateTime';
 import { fetchDataHistoric } from '../function/fetchStock/fetchHistoric';
-import { moyenneResult } from '../function/logistique/moyenneResult';
+import { moyenneMedianeResult } from '../function/logistique/moyenneMedianeResult';
 
 //Types :
 import { valueStock } from '../function/types/valueStock';
@@ -130,7 +130,7 @@ backTesting(actionAcheck)
       console.log('---------------------------------------------------');
       console.log('resultFail', resultFail);
 
-      moyenneResult(resultSucess, resultFail);
+      moyenneMedianeResult(resultSucess, resultFail);
     }
     execRsiVerif().catch(() => console.log('Erreur dans execRsiVerif'));
   })

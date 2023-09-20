@@ -19,11 +19,7 @@ export async function fetchStockastique(
         return res.json() as Promise<StochasticData>;
       })
       .then((res: StochasticData) => {
-        if (
-          stochastiqueSlowKmin !== undefined &&
-          stochoastiqueSlowKmax !== undefined &&
-          (stochastiqueSlowKmin !== 666 || stochoastiqueSlowKmax !== 666)
-        ) {
+        if (stochastiqueSlowKmin !== undefined && stochoastiqueSlowKmax !== undefined && (stochastiqueSlowKmin !== 666 || stochoastiqueSlowKmax !== 666)) {
           if (
             parseFloat(res.values[0].slow_k) >= stochastiqueSlowKmin &&
             parseFloat(res.values[0].slow_k) <= stochoastiqueSlowKmax &&

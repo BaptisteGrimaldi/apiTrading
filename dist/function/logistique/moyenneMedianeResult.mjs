@@ -1,5 +1,5 @@
-import { mediane } from './mediane.mjs';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-export function moyenneResult(resultSucess, resultFail) {
+import { mediane } from './mediane.mjs';;
+export function moyenneMedianeResult(resultSucess, resultFail) {
     const moyenneVariationSucess1 = [];
     const moyenneVariationSucess2 = [];
     const moyenneGapHautSucess = [];
@@ -30,7 +30,8 @@ export function moyenneResult(resultSucess, resultFail) {
     catch (_a) {
         console.log('moyenneVariationFail error');
     }
-    // Pour suprimer le dernier élément du calcul qui est forcement undefined
+    // Pour suprimer le dernier élément du calcul qui est forcement undefined*
+    //Fiable avant le marché
     moyenneVariationFail1.pop();
     moyenneVariationFail2.pop();
     moyenneGapHautFail.pop();

@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { checkIfPositive } from '../function/logistique/checkIfPositive.mjs';;
 import { fetchRsiDateTime } from '../function/indicateurs/rsi/fetchRsiDateTime.mjs';;
 import { fetchDataHistoric } from '../function/fetchStock/fetchHistoric.mjs';;
-import { moyenneResult } from '../function/logistique/moyenneResult.mjs';;
+import { moyenneMedianeResult } from '../function/logistique/moyenneMedianeResult.mjs';;
 // 19h46 : start
 // 20h00 : fin
 function backTesting(action) {
@@ -124,7 +124,7 @@ backTesting(actionAcheck)
             console.log('resultSucess', resultSucess);
             console.log('---------------------------------------------------');
             console.log('resultFail', resultFail);
-            moyenneResult(resultSucess, resultFail);
+            moyenneMedianeResult(resultSucess, resultFail);
         });
     }
     execRsiVerif().catch(() => console.log('Erreur dans execRsiVerif'));

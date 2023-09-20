@@ -2,6 +2,7 @@ import { valueStock } from '../function/types/valueStock';
 
 import { fetchDataHistoric } from '../function/fetchStock/fetchHistoric';
 import { checkIfPositive } from '../function/logistique/checkIfPositive';
+import { checkDay } from '../function/logistique/checkDay';
 
 interface dataJour {
   action: string;
@@ -11,7 +12,7 @@ interface dataJour {
   gapBas: number;
 }
 
-const action = 'REYN';
+const action = 'XNCR';
 
 backTestingJourSemaine(action);
 
@@ -34,10 +35,6 @@ async function backTestingJourSemaine(action: string) {
   const fridayFalse: dataJour[] = [];
 
   for (let i = 0; i < data.values.length; i++) {
-    // Make a function that check if the day is a monday, tuesday, wednesday, thursday or friday
-    // If it is, check if the bougie is positive or negative
-    // If it is, push the action in the array of the day
-    // If it is not, push the action in the array of the day
 
     const dateTime = data.values[i].datetime;
     const bougie = checkIfPositive(data.values[i].open, data.values[i].close);
@@ -77,28 +74,13 @@ async function backTestingJourSemaine(action: string) {
       }
     }
 
-    function checkDay(dateTime: string) {
-      const date = new Date(dateTime);
-      const day = date.getDay();
 
-      if (day === 1) {
-        return 'monday';
-      } else if (day === 2) {
-        return 'tuesday';
-      } else if (day === 3) {
-        return 'wednesday';
-      } else if (day === 4) {
-        return 'thursday';
-      } else if (day === 5) {
-        return 'friday';
-      }
-    }
 
     const day = checkDay(dateTime);
 
     if (day === 'monday') {
       if (bougie === true) {
-        mondayTrue.push({ action, dateTime, variation , gapHaut, gapBas});
+        mondayTrue.push({ action, dateTime, variation, gapHaut, gapBas });
       } else {
         mondayFalse.push({ action, dateTime, variation, gapHaut, gapBas });
       }
@@ -116,7 +98,7 @@ async function backTestingJourSemaine(action: string) {
       }
     } else if (day === 'thursday') {
       if (bougie === true) {
-        thursdayTrue.push({ action, dateTime, variation, gapHaut, gapBas});
+        thursdayTrue.push({ action, dateTime, variation, gapHaut, gapBas });
       } else {
         thursdayFalse.push({ action, dateTime, variation, gapHaut, gapBas });
       }
@@ -129,74 +111,75 @@ async function backTestingJourSemaine(action: string) {
     }
   }
 
-  console.log('mondayTrue', mondayTrue);
-//   console.log('mondayFalse', mondayFalse);
+  // console.log('mondayTrue', mondayTrue);
+  //   console.log('mondayFalse', mondayFalse);
 
-//   console.log('tuesdayTrue', tuesdayTrue);
-//   console.log('tuesdayFalse', tuesdayFalse);
+  //   console.log('tuesdayTrue', tuesdayTrue);
+  //   console.log('tuesdayFalse', tuesdayFalse);
 
-//   console.log('wednesdayTrue', wednesdayTrue);
-//   console.log('wednesdayFalse', wednesdayFalse);
+  //   console.log('wednesdayTrue', wednesdayTrue);
+  //   console.log('wednesdayFalse', wednesdayFalse);
 
-//   console.log('thursdayTrue', thursdayTrue);
-//   console.log('thursdayFalse', thursdayFalse);
+  //   console.log('thursdayTrue', thursdayTrue);
+  //   console.log('thursdayFalse', thursdayFalse);
 
-//   console.log('fridayTrue', fridayTrue);
-//   console.log('fridayFalse', fridayFalse);
+  //   console.log('fridayTrue', fridayTrue);
+  //   console.log('fridayFalse', fridayFalse);
 
   console.log('------------------------------------------------------------------------------------------------------------------');
 
-  console.log('Moyenne True Lundi ' + (mondayTrue.length / (mondayTrue.length + mondayFalse.length)) * 100 + ' %');
+  console.log('Moyenne True Lundi ' + ((mondayTrue.length / (mondayTrue.length + mondayFalse.length)) * 100).toFixed(2) + ' %');
 
-  console.log('Moyenne variation True Lundi ' + mondayTrue.reduce((acc, current) => acc + current.variation, 0) / mondayTrue.length + ' %');
-  console.log('Moyenne gapHaut True Lundi ' + mondayTrue.reduce((acc, current) => acc + current.gapHaut, 0) / mondayTrue.length + ' %');
-    console.log('Moyenne gapBas True Lundi ' + mondayTrue.reduce((acc, current) => acc + current.gapBas, 0) / mondayTrue.length + ' %');
+  console.log('Moyenne variation True Lundi ' + (mondayTrue.reduce((acc, current) => acc + current.variation, 0) / mondayTrue.length).toFixed(2) + ' %');
+  console.log('Moyenne gapHaut True Lundi ' + (mondayTrue.reduce((acc, current) => acc + current.gapHaut, 0) / mondayTrue.length).toFixed(2) + ' %');
+  console.log('Moyenne gapBas True Lundi ' + (mondayTrue.reduce((acc, current) => acc + current.gapBas, 0) / mondayTrue.length).toFixed(2) + ' %');
 
-  console.log('Moyenne variation False Lundi ' + mondayFalse.reduce((acc, current) => acc + current.variation, 0) / mondayFalse.length + ' %');
-    console.log('Moyenne gapHaut False Lundi ' + mondayFalse.reduce((acc, current) => acc + current.gapHaut, 0) / mondayFalse.length + ' %');
-    console.log('Moyenne gapBas False Lundi ' + mondayFalse.reduce((acc, current) => acc + current.gapBas, 0) / mondayFalse.length + ' %');
+  console.log('Moyenne variation False Lundi ' + (mondayFalse.reduce((acc, current) => acc + current.variation, 0) / mondayFalse.length).toFixed(2) + ' %');
+  console.log('Moyenne gapHaut False Lundi ' + (mondayFalse.reduce((acc, current) => acc + current.gapHaut, 0) / mondayFalse.length).toFixed(2) + ' %');
+  console.log('Moyenne gapBas False Lundi ' + (mondayFalse.reduce((acc, current) => acc + current.gapBas, 0) / mondayFalse.length).toFixed(2) + ' %');
   console.log('------------------------------------------------------------------------------------------------------------------');
 
-  console.log('Moyenne True  Mardi ' + (tuesdayTrue.length / (tuesdayTrue.length + tuesdayFalse.length)) * 100 + ' %');
+  console.log('Moyenne True  Mardi ' + ((tuesdayTrue.length / (tuesdayTrue.length + tuesdayFalse.length)) * 100).toFixed(2) + ' %');
 
-  console.log('Moyenne variation True Mardi ' + thursdayTrue.reduce((acc, current) => acc + current.variation, 0) / thursdayTrue.length + ' %');
-console.log('Moyenne gapHaut True Mardi ' + thursdayTrue.reduce((acc, current) => acc + current.gapHaut, 0) / thursdayTrue.length + ' %');
-    console.log('Moyenne gapBas True Mardi ' + thursdayTrue.reduce((acc, current) => acc + current.gapBas, 0) / thursdayTrue.length + ' %');
+  console.log('Moyenne variation True Mardi ' + (thursdayTrue.reduce((acc, current) => acc + current.variation, 0) / thursdayTrue.length).toFixed(2) + ' %');
+  console.log('Moyenne gapHaut True Mardi ' + (thursdayTrue.reduce((acc, current) => acc + current.gapHaut, 0) / thursdayTrue.length).toFixed(2) + ' %');
+  console.log('Moyenne gapBas True Mardi ' + (thursdayTrue.reduce((acc, current) => acc + current.gapBas, 0) / thursdayTrue.length).toFixed(2) + ' %');
 
-  console.log('Moyenne variation False Mardi ' + thursdayFalse.reduce((acc, current) => acc + current.variation, 0) / thursdayFalse.length + ' %');
-console.log('Moyenne gapHaut False Mardi ' + thursdayFalse.reduce((acc, current) => acc + current.gapHaut, 0) / thursdayFalse.length + ' %');
-    console.log('Moyenne gapBas False Mardi ' + thursdayFalse.reduce((acc, current) => acc + current.gapBas, 0) / thursdayFalse.length + ' %');
+  console.log('Moyenne variation False Mardi ' + (thursdayFalse.reduce((acc, current) => acc + current.variation, 0) / thursdayFalse.length).toFixed(2) + ' %');
+  console.log('Moyenne gapHaut False Mardi ' + (thursdayFalse.reduce((acc, current) => acc + current.gapHaut, 0) / thursdayFalse.length).toFixed(2) + ' %');
+  console.log('Moyenne gapBas False Mardi ' + (thursdayFalse.reduce((acc, current) => acc + current.gapBas, 0) / thursdayFalse.length).toFixed(2) + ' %');
   console.log('------------------------------------------------------------------------------------------------------------------');
 
-  console.log('Moyenne True  Mercredis ' + (wednesdayTrue.length / (wednesdayTrue.length + wednesdayFalse.length)) * 100 + ' %');
+  console.log('Moyenne True  Mercredis ' + ((wednesdayTrue.length / (wednesdayTrue.length + wednesdayFalse.length)) * 100).toFixed(2) + ' %');
 
-  console.log('Moyenne variation True Mercredis ' + wednesdayTrue.reduce((acc, current) => acc + current.variation, 0) / wednesdayTrue.length + ' %');
-  console.log('Moyenne gapHaut True Mercredis ' + wednesdayTrue.reduce((acc, current) => acc + current.gapHaut, 0) / wednesdayTrue.length + ' %');
-    console.log('Moyenne gapBas True Mercredis ' + wednesdayTrue.reduce((acc, current) => acc + current.gapBas, 0) / wednesdayTrue.length + ' %');
+  console.log('Moyenne variation True Mercredis ' + (wednesdayTrue.reduce((acc, current) => acc + current.variation, 0) / wednesdayTrue.length).toFixed(2) + ' %');
+  console.log('Moyenne gapHaut True Mercredis ' + (wednesdayTrue.reduce((acc, current) => acc + current.gapHaut, 0) / wednesdayTrue.length).toFixed(2) + ' %');
+  console.log('Moyenne gapBas True Mercredis ' + (wednesdayTrue.reduce((acc, current) => acc + current.gapBas, 0) / wednesdayTrue.length).toFixed(2) + ' %');
 
-  console.log('Moyenne variation False Mercedis ' + wednesdayFalse.reduce((acc, current) => acc + current.variation, 0) / wednesdayFalse.length + ' %');
-    console.log('Moyenne gapHaut False Mercedis ' + wednesdayFalse.reduce((acc, current) => acc + current.gapHaut, 0) / wednesdayFalse.length + ' %');
-    console.log('Moyenne gapBas False Mercedis ' + wednesdayFalse.reduce((acc, current) => acc + current.gapBas, 0) / wednesdayFalse.length + ' %');
+  console.log('Moyenne variation False Mercedis ' + (wednesdayFalse.reduce((acc, current) => acc + current.variation, 0) / wednesdayFalse.length).toFixed(2) + ' %');
+
+  console.log('Moyenne gapHaut False Mercedis ' + (wednesdayFalse.reduce((acc, current) => acc + current.gapHaut, 0) / wednesdayFalse.length).toFixed(2) + ' %');
+  console.log('Moyenne gapBas False Mercedis ' + (wednesdayFalse.reduce((acc, current) => acc + current.gapBas, 0) / wednesdayFalse.length).toFixed(2) + ' %');
   console.log('------------------------------------------------------------------------------------------------------------------');
 
-  console.log('Moyenne True  Jeudi ' + (thursdayTrue.length / (thursdayTrue.length + thursdayFalse.length)) * 100 + ' %');
+  console.log('Moyenne True  Jeudi ' + ((thursdayTrue.length / (thursdayTrue.length + thursdayFalse.length)) * 100).toFixed(2) + ' %');
 
-  console.log('Moyenne variation True Jeudi ' + thursdayTrue.reduce((acc, current) => acc + current.variation, 0) / thursdayTrue.length + ' %');
-  console.log('Moyenne gapHaut True Jeudi ' + thursdayTrue.reduce((acc, current) => acc + current.gapHaut, 0) / thursdayTrue.length + ' %');
-    console.log('Moyenne gapBas True Jeudi ' + thursdayTrue.reduce((acc, current) => acc + current.gapBas, 0) / thursdayTrue.length + ' %');
+  console.log('Moyenne variation True Jeudi ' + (thursdayTrue.reduce((acc, current) => acc + current.variation, 0) / thursdayTrue.length).toFixed(2) + ' %');
+  console.log('Moyenne gapHaut True Jeudi ' + (thursdayTrue.reduce((acc, current) => acc + current.gapHaut, 0) / thursdayTrue.length).toFixed(2) + ' %');
+  console.log('Moyenne gapBas True Jeudi ' + (thursdayTrue.reduce((acc, current) => acc + current.gapBas, 0) / thursdayTrue.length).toFixed(2) + ' %');
 
-  console.log('Moyenne variation False Jeudi ' + thursdayFalse.reduce((acc, current) => acc + current.variation, 0) / thursdayFalse.length + ' %');
-    console.log('Moyenne gapHaut False Jeudi ' + thursdayFalse.reduce((acc, current) => acc + current.gapHaut, 0) / thursdayFalse.length + ' %');
-        console.log('Moyenne gapBas False Jeudi ' + thursdayFalse.reduce((acc, current) => acc + current.gapBas, 0) / thursdayFalse.length + ' %');
+  console.log('Moyenne variation False Jeudi ' + (thursdayFalse.reduce((acc, current) => acc + current.variation, 0) / thursdayFalse.length).toFixed(2) + ' %');
+  console.log('Moyenne gapHaut False Jeudi ' + (thursdayFalse.reduce((acc, current) => acc + current.gapHaut, 0) / thursdayFalse.length).toFixed(2) + ' %');
+  console.log('Moyenne gapBas False Jeudi ' + (thursdayFalse.reduce((acc, current) => acc + current.gapBas, 0) / thursdayFalse.length).toFixed(2) + ' %');
   console.log('------------------------------------------------------------------------------------------------------------------');
 
-  console.log('Moyenne True  Vendredi ' + (fridayTrue.length / (fridayTrue.length + fridayFalse.length)) * 100 + ' %');
+  console.log('Moyenne True  Vendredi ' + ((fridayTrue.length / (fridayTrue.length + fridayFalse.length)) * 100).toFixed(2) + ' %');
 
-  console.log('Moyenne variation True Vendredi ' + fridayTrue.reduce((acc, current) => acc + current.variation, 0) / fridayTrue.length + ' %');
-  console.log('Moyenne gapHaut True Vendredi ' + fridayTrue.reduce((acc, current) => acc + current.gapHaut, 0) / fridayTrue.length + ' %');
-    console.log('Moyenne gapBas True Vendredi ' + fridayTrue.reduce((acc, current) => acc + current.gapBas, 0) / fridayTrue.length + ' %');
+  console.log('Moyenne variation True Vendredi ' + (fridayTrue.reduce((acc, current) => acc + current.variation, 0) / fridayTrue.length).toFixed(2) + ' %');
+  console.log('Moyenne gapHaut True Vendredi ' + (fridayTrue.reduce((acc, current) => acc + current.gapHaut, 0) / fridayTrue.length).toFixed(2) + ' %');
+  console.log('Moyenne gapBas True Vendredi ' + (fridayTrue.reduce((acc, current) => acc + current.gapBas, 0) / fridayTrue.length).toFixed(2) + ' %');
 
-  console.log('Moyenne variation False Vendredi ' + fridayFalse.reduce((acc, current) => acc + current.variation, 0) / fridayFalse.length + ' %');
-    console.log('Moyenne gapHaut False Vendredi ' + fridayFalse.reduce((acc, current) => acc + current.gapHaut, 0) / fridayFalse.length + ' %');
-    console.log('Moyenne gapBas False Vendredi ' + fridayFalse.reduce((acc, current) => acc + current.gapBas, 0) / fridayFalse.length + ' %');
+  console.log('Moyenne variation False Vendredi ' + (fridayFalse.reduce((acc, current) => acc + current.variation, 0) / fridayFalse.length).toFixed(2) + ' %');
+  console.log('Moyenne gapHaut False Vendredi ' + (fridayFalse.reduce((acc, current) => acc + current.gapHaut, 0) / fridayFalse.length).toFixed(2) + ' %');
+  console.log('Moyenne gapBas False Vendredi ' + (fridayFalse.reduce((acc, current) => acc + current.gapBas, 0) / fridayFalse.length).toFixed(2) + ' %');
 }

@@ -24,7 +24,7 @@ export async function fetchDataHistoric(action: string): Promise<valueStock> {
       });
 
     const response = await fetch(
-      `https://api.twelvedata.com/time_series?symbol=${action}&interval=1day&format=JSON&dp=2&start_date=${plusAncienneDataAction} 6:05 PM&end_date=${formatDateToYYYYMMDD(
+      `https://api.twelvedata.com/time_series?symbol=${action}&interval=1day&format=JSON&start_date=${plusAncienneDataAction} 6:05 PM&end_date=${formatDateToYYYYMMDD(
         today
       )} 6:05 PM&apikey=b914fed0677e48cdaf1938b5be42956d`
     );
