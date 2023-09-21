@@ -3,12 +3,15 @@ import { checkIfPositive } from '../function/logistique/checkIfPositive';
 import { fetchRsiDateTime } from '../function/indicateurs/rsi/fetchRsiDateTime';
 import { fetchDataHistoric } from '../function/fetchStock/fetchHistoric';
 import { moyenneMedianeResult } from '../function/logistique/moyenneMedianeResult';
+import { fetchActionDay } from '../function/fetchStock/fetchActionday';
+import { intraday } from '../function/logistique/intraday';
 
 //Types :
 import { valueStock } from '../function/types/valueStock';
 import { backTestingReturn } from '../function/types/backTestingReturn';
 import { bougieData } from '../function/types/bougieData';
 import { dataResultBackTesting } from '../function/types/dataResultBackTesting';
+import { actionValues } from '../function/types/actionValues';
 
 //Debuging code :
 import { insererElementsDansMySQL } from '../function/debug/mysql';
@@ -109,6 +112,7 @@ backTesting(actionAcheck)
                 date: resultDateTimeBougiePatternActionEnCour[i],
                 action: actionAcheck,
                 bougieDataPlus1Variation: res.bougieData[i + 1].variation,
+                dateResult: resultDateTimeBougiePatternActionEnCour[i + 2],
                 bougieDataPlus2Result: res.bougieData[i + 2],
                 bougieDataPlus3GainPerte: res.bougiePatternActionEnCour[i + 3],
                 bougieDataPlus3: res.bougieData[i + 3],
@@ -118,6 +122,7 @@ backTesting(actionAcheck)
                 date: resultDateTimeBougiePatternActionEnCour[i],
                 action: actionAcheck,
                 bougieDataPlus1Variation: res.bougieData[i + 1].variation,
+                dateResult: resultDateTimeBougiePatternActionEnCour[i + 2],
                 bougieDataPlus2Result: res.bougieData[i + 2],
                 bougieDataPlus3GainPerte: res.bougiePatternActionEnCour[i + 3],
                 bougieDataPlus3: res.bougieData[i + 3],
@@ -130,7 +135,52 @@ backTesting(actionAcheck)
       console.log('---------------------------------------------------');
       console.log('resultFail', resultFail);
 
+      const resultSucessDate: string[] = [];
+      const resultFailDate: string[] = [];
+
+      const resultSucessActionValue: actionValues[][] = [];
+      const resultFailActionValue: actionValues[][] = [];
+
+      for (let i = 0; i < resultSucess.length; i++) {
+        resultSucessDate.push(resultSucess[i].dateResult);
+      }
+
+      for (let i = 0; i < resultFail.length; i++) {
+        resultFailDate.push(resultFail[i].dateResult);
+      }
+
+      console.log('resultSucessDate', resultSucessDate);
+      console.log("resultSucessDate.length", resultSucessDate.length)
+      console.log('---------------------------------------------------');
+      console.log('resultFailDate', resultFailDate);
+      console.log("resultFailDate.length", resultFailDate.length)
+
+
+        for (let i = 0; i < resultSucessDate.length; i++) {
+            const day: actionValues[] = await fetchActionDay(resultSucessDate[i], actionAcheck).then((data) => {
+                return data.values;
+            });
+            resultSucessActionValue.push(day);
+        }
+
+        // console.log('resultSucessActionValue', resultSucessActionValue);
+    
+        // for (let i = 0; i < resultFailDate.length; i++) {
+        //     const day: actionValues = await fetchActionDay(resultFailDate[i], actionAcheck).then((data) => {
+        //         return data.values;
+        //     });
+        //     console.log(`${resultSucessDate[i]}`, day);
+        //     // resultFailActionValue.push(day);
+        // }
+
+        // console.log('resultFailActionValue', resultFailActionValue);
+
+      
+
+
+
       moyenneMedianeResult(resultSucess, resultFail);
+
     }
     execRsiVerif().catch(() => console.log('Erreur dans execRsiVerif'));
   })

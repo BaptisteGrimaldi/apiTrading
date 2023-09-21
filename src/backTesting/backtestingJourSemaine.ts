@@ -12,7 +12,7 @@ interface dataJour {
   gapBas: number;
 }
 
-const action = 'XNCR';
+const action = 'SAIC';
 
 backTestingJourSemaine(action);
 
@@ -35,7 +35,6 @@ async function backTestingJourSemaine(action: string) {
   const fridayFalse: dataJour[] = [];
 
   for (let i = 0; i < data.values.length; i++) {
-
     const dateTime = data.values[i].datetime;
     const bougie = checkIfPositive(data.values[i].open, data.values[i].close);
 
@@ -73,8 +72,6 @@ async function backTestingJourSemaine(action: string) {
         gapBas = ((closePrice - lowPrice) / closePrice) * 100;
       }
     }
-
-
 
     const day = checkDay(dateTime);
 

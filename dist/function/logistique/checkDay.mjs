@@ -16,4 +16,7 @@ export function checkDay(dateTime) {
     else if (day === 5) {
         return 'friday';
     }
+    else {
+        return 'error';
+    }
 }
