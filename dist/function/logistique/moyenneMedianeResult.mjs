@@ -32,10 +32,10 @@ export function moyenneMedianeResult(resultSucess, resultFail) {
     }
     // Pour suprimer le dernier élément du calcul qui est forcement undefined*
     //Fiable avant le marché
-    moyenneVariationFail1.pop();
-    moyenneVariationFail2.pop();
-    moyenneGapHautFail.pop();
-    moyenneGapBasFail.pop();
+    // moyenneVariationFail1.pop();
+    // moyenneVariationFail2.pop();
+    // moyenneGapHautFail.pop();
+    // moyenneGapBasFail.pop();
     console.log('moyenneVariationSucess', moyenneVariationSucess1.length);
     console.log('moyenneVariationFail', moyenneVariationFail1.length);
     console.log('chance de réussite :' + (moyenneVariationSucess1.length / (moyenneVariationSucess1.length + moyenneVariationFail1.length)) * 100 + '%');

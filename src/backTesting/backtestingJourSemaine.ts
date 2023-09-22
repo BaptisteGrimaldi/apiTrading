@@ -12,7 +12,7 @@ interface dataJour {
   gapBas: number;
 }
 
-const action = 'WMG';
+const action = process.argv[2];
 
 backTestingJourSemaine(action);
 

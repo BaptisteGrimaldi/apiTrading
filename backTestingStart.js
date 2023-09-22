@@ -15,6 +15,20 @@ function askQuestion(prompt) {
   });
 }
 
+// Fonction pour exécuter un fichier avec une action donnée
+async function executeFile(file, action) {
+  return new Promise((resolve) => {
+    const childProcess = spawn('node', [file, action], {
+      stdio: 'inherit', // Utiliser 'inherit' pour hériter des paramètres du terminal parent.
+    });
+
+    // Lorsque le processus fils se termine
+    childProcess.on('close', () => {
+      resolve();
+    });
+  });
+}
+
 (async () => {
   // Poser la question
   const action = await askQuestion('Entrez le nom de l\'action : ');
@@ -26,13 +40,15 @@ function askQuestion(prompt) {
     return;
   }
 
-  // Exécuter le script backtesting.mjs avec l'action en tant qu'argument
-  const childProcess = spawn('node', ['./dist/backTesting/backtestingRsi10.mjs', action], {
-    stdio: 'inherit', // Utiliser 'inherit' pour hériter des paramètres du terminal parent.
-  });
+  // Liste des fichiers à exécuter
+  const files = ['./dist/backTesting/backtestingRsi10.mjs', './dist/backTesting/backtestingJourSemaine.mjs', './dist/backTesting/backtestingPrixHeure.mjs'];
 
-  // Lorsque le processus fils se termine
-  childProcess.on('close', () => {
-    rl.close();
-  });
+  // Exécuter les fichiers en série
+  for (const file of files) {
+    // console.log(`Exécution de ${file}`);
+    await executeFile(file, action);
+    // console.log(`Terminé ${file}`);
+  }
+
+  rl.close();
 })();

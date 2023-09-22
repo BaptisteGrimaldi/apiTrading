@@ -94,7 +94,7 @@ export function intraday(dataResult: actionValues[]) {
     },
   ];
 
-  console.log('----------------------------------------------')
+  console.log('----------------------------------------------');
   console.log("Heure de prix d'achat idéal : ", triAchatIdeal);
 
   const achatSecondaire9h30 = achatSecondaire.filter((heure) => heure === '09:30:00');
@@ -180,4 +180,12 @@ export function intraday(dataResult: actionValues[]) {
     },
   ];
   console.log('Heure de prix de vente idéal : ', triVenteIdeal);
+
+  return {
+    triAchatIdeal,
+    triAchatSecondaire,
+    triNeutre,
+    triVenteSecondaire,
+    triVenteIdeal,
+  }
 }

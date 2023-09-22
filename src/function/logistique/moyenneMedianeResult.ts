@@ -42,10 +42,10 @@ export function moyenneMedianeResult(resultSucess: dataResultBackTesting[], resu
 
   //Fiable avant le marché
 
-  moyenneVariationFail1.pop();
-  moyenneVariationFail2.pop();
-  moyenneGapHautFail.pop();
-  moyenneGapBasFail.pop();
+  // moyenneVariationFail1.pop();
+  // moyenneVariationFail2.pop();
+  // moyenneGapHautFail.pop();
+  // moyenneGapBasFail.pop();
 
   console.log('moyenneVariationSucess', moyenneVariationSucess1.length);
   console.log('moyenneVariationFail', moyenneVariationFail1.length);

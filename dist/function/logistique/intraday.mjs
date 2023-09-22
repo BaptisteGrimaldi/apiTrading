@@ -147,4 +147,11 @@ export function intraday(dataResult) {
         },
     ];
     console.log('Heure de prix de vente idéal : ', triVenteIdeal);
+    return {
+        triAchatIdeal,
+        triAchatSecondaire,
+        triNeutre,
+        triVenteSecondaire,
+        triVenteIdeal,
+    };
 }

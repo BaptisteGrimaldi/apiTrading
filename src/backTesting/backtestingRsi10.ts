@@ -155,28 +155,26 @@ backTesting(actionAcheck)
       console.log('resultFailDate', resultFailDate);
       // console.log("resultFailDate.length", resultFailDate.length)
 
+      // for (let i = 0; i < resultSucessDate.length; i++) {
+      //     const day: actionValues[] = await fetchActionDay(resultSucessDate[i], actionAcheck).then((data) => {
+      //         return data.values;
+      //     });
+      //     resultSucessActionValue.push(day);
+      // }
 
-        // for (let i = 0; i < resultSucessDate.length; i++) {
-        //     const day: actionValues[] = await fetchActionDay(resultSucessDate[i], actionAcheck).then((data) => {
-        //         return data.values;
-        //     });
-        //     resultSucessActionValue.push(day);
-        // }
+      // console.log('resultSucessActionValue', resultSucessActionValue);
 
-        // console.log('resultSucessActionValue', resultSucessActionValue);
-    
-        // for (let i = 0; i < resultFailDate.length; i++) {
-        //     const day: actionValues = await fetchActionDay(resultFailDate[i], actionAcheck).then((data) => {
-        //         return data.values;
-        //     });
-        //     console.log(`${resultSucessDate[i]}`, day);
-        //     // resultFailActionValue.push(day);
-        // }
+      // for (let i = 0; i < resultFailDate.length; i++) {
+      //     const day: actionValues = await fetchActionDay(resultFailDate[i], actionAcheck).then((data) => {
+      //         return data.values;
+      //     });
+      //     console.log(`${resultSucessDate[i]}`, day);
+      //     // resultFailActionValue.push(day);
+      // }
 
-        // console.log('resultFailActionValue', resultFailActionValue);
+      // console.log('resultFailActionValue', resultFailActionValue);
 
       moyenneMedianeResult(resultSucess, resultFail);
-
     }
     execRsiVerif().catch(() => console.log('Erreur dans execRsiVerif'));
   })

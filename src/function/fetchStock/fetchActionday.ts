@@ -3,17 +3,15 @@ import fetch from 'node-fetch';
 import { valueStock } from '../types/valueStock';
 
 export async function fetchActionDay(date: string, action: string): Promise<any> {
+  const datePlus1 = new Date(date);
 
-    const datePlus1 = new Date(date);
+  datePlus1.setDate(datePlus1.getDate() + 1);
+  const year = datePlus1.getFullYear();
+  const month = (datePlus1.getMonth() + 1).toString().padStart(2, '0');
+  const day = datePlus1.getDate().toString().padStart(2, '0');
+  const nouvelleDate = `${year}-${month}-${day}`;
 
-    datePlus1.setDate(datePlus1.getDate() + 1);
-    const year = datePlus1.getFullYear();
-    const month = (datePlus1.getMonth() + 1).toString().padStart(2, '0');
-    const day = datePlus1.getDate().toString().padStart(2, '0');
-    const nouvelleDate = `${year}-${month}-${day}`;
-
-    console.log('nouvelleDate', nouvelleDate);
-
+  console.log('nouvelleDate', nouvelleDate);
 
   try {
     const actionDay = await fetch(

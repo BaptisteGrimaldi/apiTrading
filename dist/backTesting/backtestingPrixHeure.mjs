@@ -10,34 +10,57 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import fetch from 'node-fetch';
 import { formatDateToYYYYMMDD } from '../function/logistique/formatDate.mjs';;
 import { intraday } from '../function/logistique/intraday.mjs';;
-export function backtestingPrixHeure(action) {
+import { plusAncienneDateAction } from '../function/fetchStock/plusAncienneDateAction.mjs';;
+export function backtestingPrixHeure(action, interval, start_date, end_date) {
     return __awaiter(this, void 0, void 0, function* () {
-        const today = new Date();
         try {
-            const plusAncienneDataAction = yield fetch(`https://api.twelvedata.com/earliest_timestamp?symbol=${action}&interval=1day&apikey=b914fed0677e48cdaf1938b5be42956d`)
-                .then((response) => response.json())
-                .then((data) => data)
-                .then((data) => {
-                return data.datetime;
-            })
-                .catch((error) => {
-                console.error("Une erreur s'est produite lors de la récupération de la datetime la plus ancienne", error);
-                return 'error';
-            });
-            const response = yield fetch(`https://api.twelvedata.com/time_series?symbol=${action}&interval=1h&format=JSON&start_date=${plusAncienneDataAction} 2:50 PM&end_date=${formatDateToYYYYMMDD(today)} 2:50 PM&apikey=b914fed0677e48cdaf1938b5be42956d`);
+            const response = yield fetch(`https://api.twelvedata.com/time_series?symbol=${action}&interval=${interval}&format=JSON&start_date=${start_date} 2:50 PM&end_date=${end_date} 2:50 PM&apikey=b914fed0677e48cdaf1938b5be42956d`);
             if (!response.ok) {
                 throw new Error('Échec de la récupération des données historique');
             }
             const data = (yield response.json());
-            return data;
+            const dateLaPlusAncienneFetcher = data.values[data.values.length - 1].datetime.split(' ')[0];
+            return { data: data, dateLaPlusAncienneFetcher: dateLaPlusAncienneFetcher };
         }
         catch (error) {
             console.error("Une erreur s'est produite lors de la récupération des données de fetchDataHistorique", error);
-            throw error;
         }
     });
 }
-backtestingPrixHeure('WMG').then((data) => {
-    const dataResult = data.values;
-    intraday(dataResult);
+const action = process.argv[2];
+const tempo = await (() => __awaiter(void 0, void 0, void 0, function* () {
+    const plusAncienneDataAction = yield plusAncienneDateAction(action);
+    return plusAncienneDataAction;
+}))();
+const today = new Date();
+const dateAujourdhui = formatDateToYYYYMMDD(today);
+backtestingPrixHeure(action, '1h', tempo, dateAujourdhui).then((data) => {
+    const intradayGlobal = [];
+    let dataResult = data.data.values;
+    let dataResultLength = dataResult.length;
+    let dateLaPlusAncienneFetcher = data.dateLaPlusAncienneFetcher;
+    intradayGlobal.push(intraday(dataResult));
+    function processIntradayData() {
+        return __awaiter(this, void 0, void 0, function* () {
+            while (dataResultLength % 5000 === 0) {
+                const data = yield backtestingPrixHeure(action, '1h', tempo, dateLaPlusAncienneFetcher);
+                dataResult = data.data.values;
+                dateLaPlusAncienneFetcher = data.dateLaPlusAncienneFetcher;
+                if (data.data.values.length === 5000) {
+                    dataResultLength += 5000;
+                    intradayGlobal.push(intraday(dataResult));
+                }
+                else {
+                    intradayGlobal.push(intraday(dataResult));
+                    return;
+                }
+            }
+        });
+    }
+    (() => __awaiter(void 0, void 0, void 0, function* () {
+        yield processIntradayData();
+        // Le code ici ne sera exécuté qu'après que processIntradayData() soit terminé
+        console.log("Toutes les itérations de la boucle sont terminées.");
+        // console.log(intradayGlobal);
+    }))();
 });
