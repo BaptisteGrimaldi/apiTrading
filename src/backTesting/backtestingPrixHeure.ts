@@ -45,7 +45,7 @@ export async function backtestingPrixHeure(action: string): Promise<valueStock> 
   }
 }
 
-backtestingPrixHeure('SAIC').then((data) => {
+backtestingPrixHeure('WMG').then((data) => {
   const dataResult: actionValues[] = data.values;
   intraday(dataResult);
 });

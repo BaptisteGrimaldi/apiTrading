@@ -21,7 +21,7 @@ export async function checkRsiIndexRsiBas10(listeActionPattern: string[], bougie
             }
           }
           if (bougiePattern[i] === '0') {
-            if (parseFloat(res.values[i].rsi) <= 29) {
+            if (parseFloat(res.values[i].rsi) <= 30) {
               tableauPatternRsi.push(true);
             } else {
               tableauPatternRsi.push(false);

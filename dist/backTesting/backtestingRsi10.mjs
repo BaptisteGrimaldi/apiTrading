@@ -11,7 +11,6 @@ import { checkIfPositive } from '../function/logistique/checkIfPositive.mjs';;
 import { fetchRsiDateTime } from '../function/indicateurs/rsi/fetchRsiDateTime.mjs';;
 import { fetchDataHistoric } from '../function/fetchStock/fetchHistoric.mjs';;
 import { moyenneMedianeResult } from '../function/logistique/moyenneMedianeResult.mjs';;
-import { fetchActionDay } from '../function/fetchStock/fetchActionday.mjs';;
 // 19h46 : start
 // 20h00 : fin
 function backTesting(action) {
@@ -138,16 +137,16 @@ backTesting(actionAcheck)
                 resultFailDate.push(resultFail[i].dateResult);
             }
             console.log('resultSucessDate', resultSucessDate);
-            console.log("resultSucessDate.length", resultSucessDate.length);
+            // console.log("resultSucessDate.length", resultSucessDate.length)
             console.log('---------------------------------------------------');
             console.log('resultFailDate', resultFailDate);
-            console.log("resultFailDate.length", resultFailDate.length);
-            for (let i = 0; i < resultSucessDate.length; i++) {
-                const day = yield fetchActionDay(resultSucessDate[i], actionAcheck).then((data) => {
-                    return data.values;
-                });
-                resultSucessActionValue.push(day);
-            }
+            // console.log("resultFailDate.length", resultFailDate.length)
+            // for (let i = 0; i < resultSucessDate.length; i++) {
+            //     const day: actionValues[] = await fetchActionDay(resultSucessDate[i], actionAcheck).then((data) => {
+            //         return data.values;
+            //     });
+            //     resultSucessActionValue.push(day);
+            // }
             // console.log('resultSucessActionValue', resultSucessActionValue);
             // for (let i = 0; i < resultFailDate.length; i++) {
             //     const day: actionValues = await fetchActionDay(resultFailDate[i], actionAcheck).then((data) => {

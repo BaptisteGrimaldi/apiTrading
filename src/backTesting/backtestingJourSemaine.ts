@@ -12,7 +12,7 @@ interface dataJour {
   gapBas: number;
 }
 
-const action = 'SAIC';
+const action = 'WMG';
 
 backTestingJourSemaine(action);
 

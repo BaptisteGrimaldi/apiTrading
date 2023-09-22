@@ -150,18 +150,18 @@ backTesting(actionAcheck)
       }
 
       console.log('resultSucessDate', resultSucessDate);
-      console.log("resultSucessDate.length", resultSucessDate.length)
+      // console.log("resultSucessDate.length", resultSucessDate.length)
       console.log('---------------------------------------------------');
       console.log('resultFailDate', resultFailDate);
-      console.log("resultFailDate.length", resultFailDate.length)
+      // console.log("resultFailDate.length", resultFailDate.length)
 
 
-        for (let i = 0; i < resultSucessDate.length; i++) {
-            const day: actionValues[] = await fetchActionDay(resultSucessDate[i], actionAcheck).then((data) => {
-                return data.values;
-            });
-            resultSucessActionValue.push(day);
-        }
+        // for (let i = 0; i < resultSucessDate.length; i++) {
+        //     const day: actionValues[] = await fetchActionDay(resultSucessDate[i], actionAcheck).then((data) => {
+        //         return data.values;
+        //     });
+        //     resultSucessActionValue.push(day);
+        // }
 
         // console.log('resultSucessActionValue', resultSucessActionValue);
     
@@ -174,10 +174,6 @@ backTesting(actionAcheck)
         // }
 
         // console.log('resultFailActionValue', resultFailActionValue);
-
-      
-
-
 
       moyenneMedianeResult(resultSucess, resultFail);
 

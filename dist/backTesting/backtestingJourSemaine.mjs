@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { fetchDataHistoric } from '../function/fetchStock/fetchHistoric.mjs';;
 import { checkIfPositive } from '../function/logistique/checkIfPositive.mjs';;
 import { checkDay } from '../function/logistique/checkDay.mjs';;
-const action = 'SAIC';
+const action = 'WMG';
 backTestingJourSemaine(action);
 function backTestingJourSemaine(action) {
     return __awaiter(this, void 0, void 0, function* () {

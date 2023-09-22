@@ -37,7 +37,7 @@ export function backtestingPrixHeure(action) {
         }
     });
 }
-backtestingPrixHeure('SAIC').then((data) => {
+backtestingPrixHeure('WMG').then((data) => {
     const dataResult = data.values;
     intraday(dataResult);
 });
