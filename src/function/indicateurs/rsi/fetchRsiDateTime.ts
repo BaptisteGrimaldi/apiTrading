@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { RsiData } from '../../types/rsiData';
+import { RsiData } from '../../../types/rsiData';
 
 export async function fetchRsiDateTime(actionAcheck: string, dateTime: string): Promise<string> {
   try {

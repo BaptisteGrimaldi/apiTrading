@@ -23,7 +23,6 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
     Promise.all([exchangeStock, exchangeStockLength])
         .then(([stockData, stockDataLength]) => {
         let listeFinal = [];
-        // Ici le nombre d'appel est limité à 500 par minute
         const nombreCycleIteration = Math.ceil(stockDataLength / reponsesQuestion.api);
         resolveAllIndice(nombreCycleIteration).then(() => {
             console.log('VraiListeFinal', listeFinal);

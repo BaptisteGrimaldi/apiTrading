@@ -4,11 +4,11 @@ import { formatDateToYYYYMMDD } from '../function/logistique/formatDate';
 import { intraday } from '../function/logistique/intraday';
 
 //types :
-import { valueStock } from '../function/types/valueStock';
-import { DateTimeInfo } from '../function/types/dateTimeAncienne';
-import { jourEnCour } from '../function/types/jourEnCour';
-import { actionHeure } from '../function/types/actionHeure';
-import { actionValues } from '../function/types/actionValues';
+import { valueStock } from '../types/valueStock';
+import { DateTimeInfo } from '../types/dateTimeAncienne';
+import { jourEnCour } from '../types/jourEnCour';
+import { actionHeure } from '../types/actionHeure';
+import { actionValues } from '../types/actionValues';
 import { plusAncienneDateAction } from '../function/fetchStock/plusAncienneDateAction';
 
 export async function backtestingPrixHeure(action: string, interval: string,start_date:string,end_date:string): Promise<any> {

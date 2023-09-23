@@ -7,11 +7,11 @@ import { fetchActionDay } from '../function/fetchStock/fetchActionday';
 import { intraday } from '../function/logistique/intraday';
 
 //Types :
-import { valueStock } from '../function/types/valueStock';
-import { backTestingReturn } from '../function/types/backTestingReturn';
-import { bougieData } from '../function/types/bougieData';
-import { dataResultBackTesting } from '../function/types/dataResultBackTesting';
-import { actionValues } from '../function/types/actionValues';
+import { valueStock } from '../types/valueStock';
+import { backTestingReturn } from '../types/backTestingReturn';
+import { bougieData } from '../types/bougieData';
+import { dataResultBackTesting } from '../types/dataResultBackTesting';
+import { actionValues } from '../types/actionValues';
 
 //Debuging code :
 import { insererElementsDansMySQL } from '../function/debug/mysql';

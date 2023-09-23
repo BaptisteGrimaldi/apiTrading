@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-import { valueStock } from '../types/valueStock';
+import { valueStock } from '../../types/valueStock';
 
 export async function fetchActionDay(date: string, action: string): Promise<any> {
   const datePlus1 = new Date(date);

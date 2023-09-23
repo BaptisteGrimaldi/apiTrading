@@ -1,8 +1,8 @@
 import fetch from 'node-fetch';
 
 //types :
-import { dmiDataPlus } from '../types/dmiPlus';
-import { dmiDataMinus } from '../types/dmiMinus';
+import { dmiDataPlus } from '../../types/dmiPlus';
+import { dmiDataMinus } from '../../types/dmiMinus';
 
 export async function dmiAdx(listeActionPattern: string[]): Promise<string[]> {
   const actionDmiPatternOk: string[] = [];
@@ -31,7 +31,7 @@ export async function dmiAdx(listeActionPattern: string[]): Promise<string[]> {
           return actuelResult;
         });
 
-      if (plus_di.actuel > minus_di.actuel && plus_di.actuelMoins1 < minus_di.actuelMoins1) {
+      if ((plus_di.actuel > minus_di.actuel) && (plus_di.actuelMoins1 < minus_di.actuelMoins1)) {
         actionDmiPatternOk.push(action);
       }
     } catch {

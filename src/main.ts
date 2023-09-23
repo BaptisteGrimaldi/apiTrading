@@ -5,7 +5,7 @@ import { poserQuestionsEnSeries } from './function/question/questions';
 import { checkRsiIndexRsiBas10 } from './function/indicateurs/rsi/checkRsiIndexRsiBas10';
 import { dmiAdx } from './function/indicateurs/dmiAdx';
 
-import { UseOrNotUse } from './function/types/useOrNotUse';
+import { UseOrNotUse } from './types/useOrNotUse';
 
 poserQuestionsEnSeries().then((reponsesQuestion) => {
   const exchangeStock: Promise<any[]> = fetchStocksList(reponsesQuestion.indice).then((res) => {
@@ -19,8 +19,6 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
   Promise.all([exchangeStock, exchangeStockLength])
     .then(([stockData, stockDataLength]) => {
       let listeFinal: string[] = [];
-
-      // Ici le nombre d'appel est limité à 500 par minute
 
       const nombreCycleIteration = Math.ceil(stockDataLength / reponsesQuestion.api);
 

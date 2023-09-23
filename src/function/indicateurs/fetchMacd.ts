@@ -1,4 +1,4 @@
-import { MACDData } from '../types/macdData';
+import { MACDData } from '../../types/macdData';
 
 import fetch from 'node-fetch';
 

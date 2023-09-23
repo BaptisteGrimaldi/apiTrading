@@ -1,4 +1,4 @@
-import { mediane } from './mediane.mjs';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+import { mediane } from './mediane.mjs';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 export function moyenneResult(resultSucess, resultFail) {
     const moyenneVariationSucess1 = [];
     const moyenneVariationSucess2 = [];

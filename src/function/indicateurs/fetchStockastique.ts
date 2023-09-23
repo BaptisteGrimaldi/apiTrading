@@ -1,4 +1,4 @@
-import { StochasticData } from '../types/stochasticData';
+import { StochasticData } from '../../types/stochasticData';
 
 import fetch from 'node-fetch';
 

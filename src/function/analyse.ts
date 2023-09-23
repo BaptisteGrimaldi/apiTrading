@@ -7,7 +7,7 @@ import { fetchStockastique } from './indicateurs/fetchStockastique';
 import { fetchMacd } from './indicateurs/fetchMacd';
 import fetch from 'node-fetch';
 
-import { UseOrNotUse } from './types/useOrNotUse';
+import { UseOrNotUse } from '../types/useOrNotUse';
 
 export async function analyse(
   stock: any[],

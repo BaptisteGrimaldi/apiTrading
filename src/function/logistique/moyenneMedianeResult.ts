@@ -1,4 +1,4 @@
-import { dataResultBackTesting } from '../types/dataResultBackTesting';
+import { dataResultBackTesting } from '../../types/dataResultBackTesting';
 import { mediane } from './mediane';
 
 export function moyenneMedianeResult(resultSucess: dataResultBackTesting[], resultFail: dataResultBackTesting[]) {

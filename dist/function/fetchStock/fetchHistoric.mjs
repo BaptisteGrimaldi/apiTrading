@@ -9,20 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import fetch from 'node-fetch';
 import { formatDateToYYYYMMDD } from '../logistique/formatDate.mjs';;
+import { plusAncienneDateAction } from './plusAncienneDateAction.mjs';;
 export function fetchDataHistoric(action) {
     return __awaiter(this, void 0, void 0, function* () {
         const today = new Date();
         try {
-            const plusAncienneDataAction = yield fetch(`https://api.twelvedata.com/earliest_timestamp?symbol=${action}&interval=1day&apikey=b914fed0677e48cdaf1938b5be42956d`)
-                .then((response) => response.json())
-                .then((data) => data)
-                .then((data) => {
-                return data.datetime;
-            })
-                .catch((error) => {
-                console.error("Une erreur s'est produite lors de la récupération de la datetime la plus ancienne", error);
-                return 'error';
-            });
+            const plusAncienneDataAction = yield plusAncienneDateAction(action);
             const response = yield fetch(`https://api.twelvedata.com/time_series?symbol=${action}&interval=1day&format=JSON&start_date=${plusAncienneDataAction} 6:05 PM&end_date=${formatDateToYYYYMMDD(today)} 6:05 PM&apikey=b914fed0677e48cdaf1938b5be42956d`);
             if (!response.ok) {
                 throw new Error('Échec de la récupération des données historique');

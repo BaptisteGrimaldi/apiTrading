@@ -1,4 +1,4 @@
-import { DateTimeInfo } from '../types/dateTimeAncienne';
+import { DateTimeInfo } from '../../types/dateTimeAncienne';
 import fetch from 'node-fetch';
 
 export async function plusAncienneDateAction(action: string): Promise<string> {

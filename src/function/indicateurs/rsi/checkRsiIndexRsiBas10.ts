@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-import { RsiData } from '../../types/rsiData';
+import { RsiData } from '../../../types/rsiData';
 
 export async function checkRsiIndexRsiBas10(listeActionPattern: string[], bougiePattern: string[]): Promise<string[]> {
   const actionRsiPatternOk: string[] = [];

@@ -1,4 +1,4 @@
-import { valueStock } from '../function/types/valueStock';
+import { valueStock } from '../types/valueStock';
 
 import { fetchDataHistoric } from '../function/fetchStock/fetchHistoric';
 import { checkIfPositive } from '../function/logistique/checkIfPositive';
