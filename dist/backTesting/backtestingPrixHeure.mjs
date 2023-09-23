@@ -8,9 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import fetch from 'node-fetch';
-import { formatDateToYYYYMMDD } from '../function/logistique/formatDate.mjs';;
-import { intraday } from '../function/logistique/intraday.mjs';;
-import { plusAncienneDateAction } from '../function/fetchStock/plusAncienneDateAction.mjs';;
+import {formatDateToYYYYMMDD } from '../function/logistique/formatDate.mjs';;
+import {intraday } from '../function/logistique/intraday.mjs';;
+import {plusAncienneDateAction } from '../function/fetchStock/plusAncienneDateAction.mjs';;
 export function backtestingPrixHeure(action, interval, start_date, end_date) {
     return __awaiter(this, void 0, void 0, function* () {
         try {

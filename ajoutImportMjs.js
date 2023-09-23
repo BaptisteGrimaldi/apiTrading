@@ -4,8 +4,8 @@ const path = require('path');
 function updateImportsWithMjs(filePath) {
   const fileContent = fs.readFileSync(filePath, 'utf8');
 
-  // ca ne marche que sur les imports avec /function !!!!!!!!!!!!!!!!!!!
-  const regex = /import\s*\{([^}]+)\}\s*from\s*'([^']+)'/g;
+  // const regex = /import\s*\{([^}]+)\}\s*from\s*'([^']+)'/g;
+  const regex = /import\s*\{\s*([^}]+)\s*\}\s*from\s*['"]([^'"]+)['"]/g;
 
   const updatedContent = fileContent.replace(regex, (match, namedImports, importPath) => {
     // Vérifiez si l'importPath se termine déjà par '.mjs'

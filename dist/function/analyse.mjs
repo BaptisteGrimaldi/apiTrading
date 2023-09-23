@@ -7,13 +7,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { fetchStocks } from './fetchStock/fetchStocks.mjs';;
-import { checkIfPositive } from './logistique/checkIfPositive.mjs';;
-import { checkFetchRsi } from './indicateurs/rsi/fetchRsi.mjs';;
-import { checkDateTime } from './logistique/checkDateTime.mjs';;
-import { arraysHaveSameOrder } from './logistique/checkTableauSimilaire.mjs';;
-import { fetchStockastique } from './indicateurs/fetchStockastique.mjs';;
-import { fetchMacd } from './indicateurs/fetchMacd.mjs';;
+import {fetchStocks } from './fetchStock/fetchStocks.mjs';;
+import {checkIfPositive } from './logistique/checkIfPositive.mjs';;
+import {checkFetchRsi } from './indicateurs/rsi/fetchRsi.mjs';;
+import {checkDateTime } from './logistique/checkDateTime.mjs';;
+import {arraysHaveSameOrder } from './logistique/checkTableauSimilaire.mjs';;
+import {fetchStockastique } from './indicateurs/fetchStockastique.mjs';;
+import {fetchMacd } from './indicateurs/fetchMacd.mjs';;
 export function analyse(stock, start, end, price, minRsi, maxRsi, stochastiqueSlowKmin, stochoastiqueSlowKmax, ecartSlowkSlowd, macd, bougiePattern, useOrNotUse) {
     return __awaiter(this, void 0, void 0, function* () {
         if (bougiePattern !== undefined &&

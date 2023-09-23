@@ -1,4 +1,4 @@
-import { checkDay } from './checkDay.mjs';;
+import {checkDay } from './checkDay.mjs';;
 export function intraday(dataResult) {
     const resultDay = [];
     for (const heure of dataResult) {

@@ -1,89 +1,13 @@
-import { checkIfPositive } from '../function/logistique/checkIfPositive';
 
 import { fetchRsiDateTime } from '../function/indicateurs/rsi/fetchRsiDateTime';
-import { fetchDataHistoric } from '../function/fetchStock/fetchHistoric';
 import { moyenneMedianeResult } from '../function/logistique/moyenneMedianeResult';
-import { fetchActionDay } from '../function/fetchStock/fetchActionday';
-import { intraday } from '../function/logistique/intraday';
+import { backTesting } from './function/recupAllData';
 
 //Types :
-import { valueStock } from '../types/valueStock';
 import { backTestingReturn } from '../types/backTestingReturn';
-import { bougieData } from '../types/bougieData';
 import { dataResultBackTesting } from '../types/dataResultBackTesting';
 import { actionValues } from '../types/actionValues';
 
-//Debuging code :
-import { insererElementsDansMySQL } from '../function/debug/mysql';
-
-// 19h46 : start
-// 20h00 : fin
-
-async function backTesting(action: string): Promise<backTestingReturn> {
-  try {
-    const data: valueStock = await fetchDataHistoric(action);
-    const bougiePatternActionEnCour: boolean[] = [];
-    const dateTimeBougiePatternActionEnCour: string[] = [];
-    const bougieData: bougieData[] = [];
-
-    for (let x = 0; x < data.values.length; x++) {
-      try {
-        const bougie = checkIfPositive(data.values[x].open, data.values[x].close);
-        const dateTime = data.values[x].datetime;
-
-        const openPrice = parseFloat(data.values[x].open);
-        const closePrice = parseFloat(data.values[x].close);
-        const highPrice = parseFloat(data.values[x].high);
-        const lowPrice = parseFloat(data.values[x].low);
-
-        let gapHaut: number;
-        let gapBas: number;
-        const variation = ((closePrice - openPrice) / openPrice) * 100;
-
-        if (bougie === true) {
-          if (highPrice === openPrice) {
-            gapHaut = 0;
-          } else {
-            gapHaut = ((highPrice - closePrice) / closePrice) * 100;
-          }
-
-          if (lowPrice === openPrice) {
-            gapBas = 0;
-          } else {
-            gapBas = ((openPrice - lowPrice) / openPrice) * 100;
-          }
-        } else {
-          if (highPrice === closePrice) {
-            gapHaut = 0;
-          } else {
-            gapHaut = ((highPrice - openPrice) / openPrice) * 100;
-          }
-
-          if (lowPrice === closePrice) {
-            gapBas = 0;
-          } else {
-            gapBas = ((closePrice - lowPrice) / closePrice) * 100;
-          }
-        }
-
-        bougieData.push({ variation: variation, gapHaut: gapHaut, gapBas: gapBas });
-        bougiePatternActionEnCour.push(bougie);
-        dateTimeBougiePatternActionEnCour.push(dateTime);
-      } catch {
-        console.log("l'index n'éxiste pas");
-        break;
-      }
-    }
-    return {
-      bougiePatternActionEnCour: bougiePatternActionEnCour.reverse(),
-      dateTimeBougiePatternActionEnCour: dateTimeBougiePatternActionEnCour.reverse(),
-      bougieData: bougieData.reverse(),
-    };
-  } catch (error) {
-    console.error('backTesting function error');
-    throw error;
-  }
-}
 
 const actionAcheck = process.argv[2];
 
@@ -149,30 +73,10 @@ backTesting(actionAcheck)
         resultFailDate.push(resultFail[i].dateResult);
       }
 
+
       console.log('resultSucessDate', resultSucessDate);
-      // console.log("resultSucessDate.length", resultSucessDate.length)
       console.log('---------------------------------------------------');
       console.log('resultFailDate', resultFailDate);
-      // console.log("resultFailDate.length", resultFailDate.length)
-
-      // for (let i = 0; i < resultSucessDate.length; i++) {
-      //     const day: actionValues[] = await fetchActionDay(resultSucessDate[i], actionAcheck).then((data) => {
-      //         return data.values;
-      //     });
-      //     resultSucessActionValue.push(day);
-      // }
-
-      // console.log('resultSucessActionValue', resultSucessActionValue);
-
-      // for (let i = 0; i < resultFailDate.length; i++) {
-      //     const day: actionValues = await fetchActionDay(resultFailDate[i], actionAcheck).then((data) => {
-      //         return data.values;
-      //     });
-      //     console.log(`${resultSucessDate[i]}`, day);
-      //     // resultFailActionValue.push(day);
-      // }
-
-      // console.log('resultFailActionValue', resultFailActionValue);
 
       moyenneMedianeResult(resultSucess, resultFail);
     }

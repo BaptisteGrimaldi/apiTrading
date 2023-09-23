@@ -8,8 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import fetch from 'node-fetch';
-import { formatDateToYYYYMMDD } from '../logistique/formatDate.mjs';;
-import { plusAncienneDateAction } from './plusAncienneDateAction.mjs';;
+import {formatDateToYYYYMMDD } from '../logistique/formatDate.mjs';;
+import {plusAncienneDateAction } from './plusAncienneDateAction.mjs';;
 export function fetchDataHistoric(action) {
     return __awaiter(this, void 0, void 0, function* () {
         const today = new Date();

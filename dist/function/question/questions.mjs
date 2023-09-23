@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { questionIndice, questionStrategie, questionPrix, questionMinRsi, questionMaxRsI, questionStochastiqueSlowKmin, questionStochastiqueSlowKmax, ecartSlowkSlowd, cycleApi, questionBougieConfig, questionMacd, } from './questionSimple.mjs';;
+import {questionIndice, questionStrategie, questionPrix, questionMinRsi, questionMaxRsI, questionStochastiqueSlowKmin, questionStochastiqueSlowKmax, ecartSlowkSlowd, cycleApi, questionBougieConfig, questionMacd, } from './questionSimple.mjs';;
 export function poserQuestionsEnSeries() {
     return __awaiter(this, void 0, void 0, function* () {
         //obligatoire

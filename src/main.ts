@@ -3,7 +3,7 @@ import { analyse } from './function/analyse';
 import { waitPromesse } from './function/logistique/waitPromesse';
 import { poserQuestionsEnSeries } from './function/question/questions';
 import { checkRsiIndexRsiBas10 } from './function/indicateurs/rsi/checkRsiIndexRsiBas10';
-import { dmiAdx } from './function/indicateurs/dmiAdx';
+import { dmiAdx } from './function/indicateurs/dmi/stratDmiAdx';
 
 import { UseOrNotUse } from './types/useOrNotUse';
 

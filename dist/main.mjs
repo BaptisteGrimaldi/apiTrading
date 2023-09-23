@@ -7,12 +7,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { fetchStocksList } from './function/fetchStock/fetchStocksList.mjs';;
-import { analyse } from './function/analyse.mjs';;
-import { waitPromesse } from './function/logistique/waitPromesse.mjs';;
-import { poserQuestionsEnSeries } from './function/question/questions.mjs';;
-import { checkRsiIndexRsiBas10 } from './function/indicateurs/rsi/checkRsiIndexRsiBas10.mjs';;
-import { dmiAdx } from './function/indicateurs/dmiAdx.mjs';;
+import {fetchStocksList } from './function/fetchStock/fetchStocksList.mjs';;
+import {analyse } from './function/analyse.mjs';;
+import {waitPromesse } from './function/logistique/waitPromesse.mjs';;
+import {poserQuestionsEnSeries } from './function/question/questions.mjs';;
+import {checkRsiIndexRsiBas10 } from './function/indicateurs/rsi/checkRsiIndexRsiBas10.mjs';;
+import {dmiAdx } from './function/indicateurs/dmi/stratDmiAdx.mjs';;
 poserQuestionsEnSeries().then((reponsesQuestion) => {
     const exchangeStock = fetchStocksList(reponsesQuestion.indice).then((res) => {
         return res.data;

@@ -7,47 +7,46 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import {fetchRsiDateTime } from '../function/indicateurs/rsi/fetchRsiDateTime.mjs';;
-import {moyenneMedianeResult } from '../function/logistique/moyenneMedianeResult.mjs';;
 import {backTesting } from './function/recupAllData.mjs';;
-const actionAcheck = process.argv[2];
-if (!actionAcheck) {
-    console.error('Veuillez spécifier une valeur pour actionAcheck en ligne de commande.');
-    process.exit(1);
-}
+import {moyenneMedianeResult } from '../function/logistique/moyenneMedianeResult.mjs';;
+import {fetchDmiPlus } from '../function/indicateurs/dmi/dmi+Fetch.mjs';;
+import {fetchDmiMinus } from '../function/indicateurs/dmi/dmi-Fetch.mjs';;
+const actionAcheck = "ABNB";
 backTesting(actionAcheck)
     .then((res) => {
     const resultSucess = [];
     const resultFail = [];
-    function execRsiVerif() {
+    function execVerif() {
         return __awaiter(this, void 0, void 0, function* () {
             const resultBougiePattern = res.bougiePatternActionEnCour;
             const resultDateTimeBougiePatternActionEnCour = res.dateTimeBougiePatternActionEnCour;
             for (let i = 0; i < resultBougiePattern.length; i++) {
-                if (resultBougiePattern[i] === false && resultBougiePattern[i + 1] === true) {
-                    const day1 = yield fetchRsiDateTime(actionAcheck, resultDateTimeBougiePatternActionEnCour[i]);
-                    const day2 = yield fetchRsiDateTime(actionAcheck, resultDateTimeBougiePatternActionEnCour[i + 1]);
-                    if (parseFloat(day1) <= 29 && parseFloat(day2) >= 33 && day1 !== 'error' && day2 !== 'error') {
-                        if (resultBougiePattern[i + 2] === true) {
+                if (resultBougiePattern[i] === true) {
+                    const dayPlusActuel = yield fetchDmiPlus(actionAcheck, resultDateTimeBougiePatternActionEnCour[i]);
+                    const dayMoinsActuel = yield fetchDmiMinus(actionAcheck, resultDateTimeBougiePatternActionEnCour[i]);
+                    const dayPlusPrecedent = yield fetchDmiPlus(actionAcheck, resultDateTimeBougiePatternActionEnCour[i + 1]);
+                    const dayMoinsPrecedent = yield fetchDmiMinus(actionAcheck, resultDateTimeBougiePatternActionEnCour[i + 1]);
+                    if (parseFloat(dayPlusActuel) >= parseFloat(dayMoinsActuel) && parseFloat(dayMoinsPrecedent) > parseFloat(dayPlusPrecedent) && dayPlusActuel !== 'error' && dayMoinsActuel !== 'error' && dayPlusPrecedent !== 'error' && dayMoinsPrecedent !== 'error') {
+                        if (resultBougiePattern[i + 1] === true) {
                             resultSucess.push({
                                 date: resultDateTimeBougiePatternActionEnCour[i],
                                 action: actionAcheck,
-                                bougieDataPlus1Variation: res.bougieData[i + 1].variation,
-                                dateResult: resultDateTimeBougiePatternActionEnCour[i + 2],
-                                bougieDataPlus2Result: res.bougieData[i + 2],
-                                bougieDataPlus3GainPerte: res.bougiePatternActionEnCour[i + 3],
-                                bougieDataPlus3: res.bougieData[i + 3],
+                                bougieDataPlus1Variation: res.bougieData[i].variation,
+                                dateResult: resultDateTimeBougiePatternActionEnCour[i + 1],
+                                bougieDataPlus2Result: res.bougieData[i + 1],
+                                bougieDataPlus3GainPerte: res.bougiePatternActionEnCour[i + 2],
+                                bougieDataPlus3: res.bougieData[i + 2],
                             });
                         }
                         else {
                             resultFail.push({
                                 date: resultDateTimeBougiePatternActionEnCour[i],
                                 action: actionAcheck,
-                                bougieDataPlus1Variation: res.bougieData[i + 1].variation,
-                                dateResult: resultDateTimeBougiePatternActionEnCour[i + 2],
-                                bougieDataPlus2Result: res.bougieData[i + 2],
-                                bougieDataPlus3GainPerte: res.bougiePatternActionEnCour[i + 3],
-                                bougieDataPlus3: res.bougieData[i + 3],
+                                bougieDataPlus1Variation: res.bougieData[i].variation,
+                                dateResult: resultDateTimeBougiePatternActionEnCour[i + 1],
+                                bougieDataPlus2Result: res.bougieData[i + 1],
+                                bougieDataPlus3GainPerte: res.bougiePatternActionEnCour[i + 2],
+                                bougieDataPlus3: res.bougieData[i + 2],
                             });
                         }
                     }
@@ -58,8 +57,6 @@ backTesting(actionAcheck)
             console.log('resultFail', resultFail);
             const resultSucessDate = [];
             const resultFailDate = [];
-            const resultSucessActionValue = [];
-            const resultFailActionValue = [];
             for (let i = 0; i < resultSucess.length; i++) {
                 resultSucessDate.push(resultSucess[i].dateResult);
             }
@@ -72,6 +69,6 @@ backTesting(actionAcheck)
             moyenneMedianeResult(resultSucess, resultFail);
         });
     }
-    execRsiVerif().catch(() => console.log('Erreur dans execRsiVerif'));
+    execVerif().catch(() => console.log('Erreur dans execRsiVerif'));
 })
     .catch((error) => console.error('Erreur principale :', "erreur dans l'execution de l'api"));

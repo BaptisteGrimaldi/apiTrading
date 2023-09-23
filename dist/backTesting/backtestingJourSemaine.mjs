@@ -7,9 +7,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { fetchDataHistoric } from '../function/fetchStock/fetchHistoric.mjs';;
-import { checkIfPositive } from '../function/logistique/checkIfPositive.mjs';;
-import { checkDay } from '../function/logistique/checkDay.mjs';;
+import {fetchDataHistoric } from '../function/fetchStock/fetchHistoric.mjs';;
+import {checkIfPositive } from '../function/logistique/checkIfPositive.mjs';;
+import {checkDay } from '../function/logistique/checkDay.mjs';;
 const action = process.argv[2];
 backTestingJourSemaine(action);
 function backTestingJourSemaine(action) {

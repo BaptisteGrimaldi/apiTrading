@@ -1,8 +1,8 @@
 import fetch from 'node-fetch';
 
 //types :
-import { dmiDataPlus } from '../../types/dmiPlus';
-import { dmiDataMinus } from '../../types/dmiMinus';
+import { dmiDataPlus } from '../../../types/dmiPlus';
+import { dmiDataMinus } from '../../../types/dmiMinus';
 
 export async function dmiAdx(listeActionPattern: string[]): Promise<string[]> {
   const actionDmiPatternOk: string[] = [];
