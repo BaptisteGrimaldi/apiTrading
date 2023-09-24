@@ -1,6 +1,6 @@
 
 import { fetchRsiDateTime } from '../function/indicateurs/rsi/fetchRsiDateTime';
-import { moyenneMedianeResult } from '../function/logistique/moyenneMedianeResult';
+import { moyenneMedianeResult } from '../function/logistique/moyenneMediane/moyenneMedianeResultRsi';
 import { backTesting } from './function/recupAllData';
 
 //Types :

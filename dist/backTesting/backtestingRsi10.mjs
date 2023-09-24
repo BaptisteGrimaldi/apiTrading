@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import {fetchRsiDateTime } from '../function/indicateurs/rsi/fetchRsiDateTime.mjs';;
-import {moyenneMedianeResult } from '../function/logistique/moyenneMedianeResult.mjs';;
+import {moyenneMedianeResult } from '../function/logistique/moyenneMediane/moyenneMedianeResultRsi.mjs';;
 import {backTesting } from './function/recupAllData.mjs';;
 const actionAcheck = process.argv[2];
 if (!actionAcheck) {

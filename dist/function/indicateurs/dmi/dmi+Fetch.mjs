@@ -8,20 +8,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import fetch from "node-fetch";
-const action = 'AAPL';
-export function fetchDmiPlus(action, start_date) {
+const action = 'ABNB';
+export function fetchDmiPlus(action, end_date) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const response = yield fetch(`https://api.twelvedata.com/plus_di?symbol=${action}&interval=1day&outputsize=1&time_period=14&format=JSON&start_date=${start_date}%209:00AM&apikey=b914fed0677e48cdaf1938b5be42956d`);
+            const response = yield fetch(`https://api.twelvedata.com/plus_di?symbol=${action}&interval=1day&outputsize=1&time_period=14&format=JSON&end_date=${end_date}%209:00PM&apikey=b914fed0677e48cdaf1938b5be42956d`);
             const data = yield response.json();
+            // console.log("avant exec ",start_date);
             return data.values[0].plus_di;
         }
         catch (_a) {
-            console.log("erreur fetch dmiDataPlus");
-            console.log(start_date);
+            console.log(`pas de donnés a cette date pour fetch dmiPlus : ${end_date}`);
             return 'error';
         }
     });
 }
-// fetchDmiPlus(action, '2021-05-05')
+// fetchDmiPlus(action, '2020-12-16')
 //     .then((data: string) => console.log(data))
