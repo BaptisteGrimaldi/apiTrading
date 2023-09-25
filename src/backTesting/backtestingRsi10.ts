@@ -30,7 +30,7 @@ backTesting(actionAcheck)
           const day1 = await fetchRsiDateTime(actionAcheck, resultDateTimeBougiePatternActionEnCour[i]);
           const day2 = await fetchRsiDateTime(actionAcheck, resultDateTimeBougiePatternActionEnCour[i + 1]);
 
-          if (parseFloat(day1) <= 29 && parseFloat(day2) >= 33 && day1 !== 'error' && day2 !== 'error') {
+          if (parseFloat(day1) <= 30 && parseFloat(day2) >= 33 && day1 !== 'error' && day2 !== 'error') {
             if (resultBougiePattern[i + 2] === true) {
               resultSucess.push({
                 date: resultDateTimeBougiePatternActionEnCour[i],
