@@ -1,9 +1,10 @@
-import { dataResultBackTesting } from '../../../types/dataResultBackTestingRsi';
+
+import { dataResultBackTesting4Bv } from '../../../types/dataResultBackTesting4Bv';
 import { mediane } from '../mediane';
 
 //ResultSucees et resultFail sont des tableaux de dataResultBackTesting ou des variantes de ce type
 
-export function moyenneMedianeResultRsi(resultSucess: dataResultBackTesting[], resultFail: dataResultBackTesting[]) {
+export function moyenneMedianeResult4Bv(resultSucess: dataResultBackTesting4Bv[], resultFail: dataResultBackTesting4Bv[]) {
   const moyenneVariationSucess1: number[] = [];
 
   const moyenneVariationSucessResult: number[] = [];
@@ -12,11 +13,11 @@ export function moyenneMedianeResultRsi(resultSucess: dataResultBackTesting[], r
 
   try {
     for (const result of resultSucess) {
-      moyenneVariationSucess1.push(result.bougieDataPlus1Variation);
+      moyenneVariationSucess1.push(result.bougieDataPlus1.variation);
 
-      moyenneVariationSucessResult.push(result.bougieDataPlus2Result.variation);
-      moyenneGapHautSucess.push(result.bougieDataPlus2Result.gapHaut);
-      moyenneGapBasSucess.push(result.bougieDataPlus2Result.gapBas);
+      moyenneVariationSucessResult.push(result.bougieDataResult.variation);
+      moyenneGapHautSucess.push(result.bougieDataResult.gapHaut);
+      moyenneGapBasSucess.push(result.bougieDataResult.gapBas);
     }
   } catch (error) {
     console.log('moyenneVariationSucess error');
@@ -30,11 +31,11 @@ export function moyenneMedianeResultRsi(resultSucess: dataResultBackTesting[], r
 
   try {
     for (const result of resultFail) {
-      moyenneVariationFail1.push(result.bougieDataPlus1Variation);
+      moyenneVariationFail1.push(result.bougieDataPlus1.variation);
 
-      moyenneVariationFailResult.push(result.bougieDataPlus2Result.variation);
-      moyenneGapHautFail.push(result.bougieDataPlus2Result.gapHaut);
-      moyenneGapBasFail.push(result.bougieDataPlus2Result.gapBas);
+      moyenneVariationFailResult.push(result.bougieDataResult.variation);
+      moyenneGapHautFail.push(result.bougieDataResult.gapHaut);
+      moyenneGapBasFail.push(result.bougieDataResult.gapBas);
     }
   } catch {
     console.log('moyenneVariationFail error');

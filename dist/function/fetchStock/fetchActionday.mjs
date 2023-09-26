@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import fetch from 'node-fetch';
-export function fetchActionDay(date, action) {
+export function fetchActionDay(date, action, interval) {
     return __awaiter(this, void 0, void 0, function* () {
         const datePlus1 = new Date(date);
         datePlus1.setDate(datePlus1.getDate() + 1);
@@ -16,15 +16,20 @@ export function fetchActionDay(date, action) {
         const month = (datePlus1.getMonth() + 1).toString().padStart(2, '0');
         const day = datePlus1.getDate().toString().padStart(2, '0');
         const nouvelleDate = `${year}-${month}-${day}`;
-        console.log('nouvelleDate', nouvelleDate);
         try {
-            const actionDay = yield fetch(`https://api.twelvedata.com/time_series?symbol=${action}&interval=1h&format=JSON&start_date=${date}%209:00AM&end_date=${nouvelleDate}&apikey=b914fed0677e48cdaf1938b5be42956d`);
-            const data = (yield actionDay.json());
-            return data;
+            const actionDay = yield fetch(`https://api.twelvedata.com/time_series?symbol=${action}&interval=${interval}&format=JSON&start_date=${date}%209:00AM&end_date=${nouvelleDate}&apikey=b914fed0677e48cdaf1938b5be42956d`);
+            let data = (yield actionDay.json());
+            if ('code' in data && 'message' in data && 'status' in data && 'meta' in data) {
+                console.log('data non disponible : ');
+                return 'error';
+            }
+            else {
+                return data;
+            }
         }
         catch (_a) {
-            console.log("erreur lors de la récupération des données de l'action");
+            console.log("erreur lors de la récupération des données de l'action", nouvelleDate);
+            return 'error';
         }
     });
 }
-fetchActionDay('2023-05-05', 'AAPL').then((data) => console.log(data.values));

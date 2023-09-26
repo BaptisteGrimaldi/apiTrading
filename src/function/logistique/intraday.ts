@@ -187,5 +187,5 @@ export function intraday(dataResult: actionValues[]) {
     triNeutre,
     triVenteSecondaire,
     triVenteIdeal,
-  }
+  };
 }

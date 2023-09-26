@@ -1,11 +1,7 @@
-
 import { dataResultBackTestingDmi } from '../../../types/dataResultBackTestingDmi';
 import { mediane } from '../mediane';
 
-export function moyenneMedianeResultDmi(
-  resultSuccess: dataResultBackTestingDmi[],
-  resultFail: dataResultBackTestingDmi[]
-) {
+export function moyenneMedianeResultDmi(resultSuccess: dataResultBackTestingDmi[], resultFail: dataResultBackTestingDmi[]) {
   const moyenneVariationSuccess1: number[] = [];
 
   const moyenneVariationSuccessResult: number[] = [];
@@ -54,41 +50,19 @@ export function moyenneMedianeResultDmi(
   console.log('moyenneVariationSuccess', moyenneVariationSuccess1.length);
   console.log('moyenneVariationFail', moyenneVariationFail1.length);
 
-  console.log(
-    'chance de réussite :' +
-      ((moyenneVariationSuccess1.length /
-        (moyenneVariationSuccess1.length + moyenneVariationFail1.length)) *
-        100 +
-        '%')
-  );
+  console.log('chance de réussite :' + ((moyenneVariationSuccess1.length / (moyenneVariationSuccess1.length + moyenneVariationFail1.length)) * 100 + '%'));
 
-  const moyenneVariationSuccessResult1 =
-    moyenneVariationSuccess1.reduce((a, b) => a + b, 0) /
-    moyenneVariationSuccess1.length;
+  const moyenneVariationSuccessResult1 = moyenneVariationSuccess1.reduce((a, b) => a + b, 0) / moyenneVariationSuccess1.length;
 
-  const moyenneVariationSuccessResultReal =
-  moyenneVariationSuccessResult.reduce((a, b) => a + b, 0) /
-  moyenneVariationSuccessResult.length;
-  const moyenneGapHautSuccessResult =
-    moyenneGapHautSuccess.reduce((a, b) => a + b, 0) /
-    moyenneGapHautSuccess.length;
-  const moyenneGapBasSuccessResult =
-    moyenneGapBasSuccess.reduce((a, b) => a + b, 0) /
-    moyenneGapBasSuccess.length;
+  const moyenneVariationSuccessResultReal = moyenneVariationSuccessResult.reduce((a, b) => a + b, 0) / moyenneVariationSuccessResult.length;
+  const moyenneGapHautSuccessResult = moyenneGapHautSuccess.reduce((a, b) => a + b, 0) / moyenneGapHautSuccess.length;
+  const moyenneGapBasSuccessResult = moyenneGapBasSuccess.reduce((a, b) => a + b, 0) / moyenneGapBasSuccess.length;
 
-  const moyenneVariationFailResult1 =
-    moyenneVariationFail1.reduce((a, b) => a + b, 0) /
-    moyenneVariationFail1.length;
+  const moyenneVariationFailResult1 = moyenneVariationFail1.reduce((a, b) => a + b, 0) / moyenneVariationFail1.length;
 
-  const moyenneVariationFailResult2 =
-    moyenneVariationFail2.reduce((a, b) => a + b, 0) /
-    moyenneVariationFail2.length;
-  const moyenneGapHautFailResult =
-    moyenneGapHautFail.reduce((a, b) => a + b, 0) /
-    moyenneGapHautFail.length;
-  const moyenneGapBasFailResult =
-    moyenneGapBasFail.reduce((a, b) => a + b, 0) /
-    moyenneGapBasFail.length;
+  const moyenneVariationFailResult2 = moyenneVariationFail2.reduce((a, b) => a + b, 0) / moyenneVariationFail2.length;
+  const moyenneGapHautFailResult = moyenneGapHautFail.reduce((a, b) => a + b, 0) / moyenneGapHautFail.length;
+  const moyenneGapBasFailResult = moyenneGapBasFail.reduce((a, b) => a + b, 0) / moyenneGapBasFail.length;
 
   console.log('moyenneVariationSuccessResultI-1', moyenneVariationSuccessResult1.toFixed(2));
   console.log('medianeVariationSuccessResultI-1', mediane(moyenneVariationSuccess1).toFixed(2));

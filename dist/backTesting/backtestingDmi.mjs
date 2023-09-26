@@ -7,13 +7,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import {backTesting } from './function/recupAllData.mjs';;
+import {recupAllData } from './function/recupAllData.mjs';;
 import {fetchDmiPlus } from '../function/indicateurs/dmi/dmi+Fetch.mjs';;
 import {fetchDmiMinus } from '../function/indicateurs/dmi/dmi-Fetch.mjs';;
 import {waitPromesse } from '../function/logistique/waitPromesse.mjs';;
 import {moyenneMedianeResultDmi } from '../function/logistique/moyenneMediane/moyenneMedianeResultDmi.mjs';;
-const actionAcheck = "ABNB";
-backTesting(actionAcheck)
+const actionAcheck = 'ABNB';
+recupAllData(actionAcheck)
     .then((res) => {
     const resultSucess = [];
     const resultFail = [];
@@ -28,7 +28,12 @@ backTesting(actionAcheck)
                     const dayMoinsActuel = yield fetchDmiMinus(actionAcheck, resultDateTimeBougiePatternActionEnCour[i]);
                     const dayPlusPrecedent = yield fetchDmiPlus(actionAcheck, resultDateTimeBougiePatternActionEnCour[i - 1]);
                     const dayMoinsPrecedent = yield fetchDmiMinus(actionAcheck, resultDateTimeBougiePatternActionEnCour[i - 1]);
-                    if (parseFloat(dayPlusActuel) >= parseFloat(dayMoinsActuel) && parseFloat(dayMoinsPrecedent) > parseFloat(dayPlusPrecedent) && dayPlusActuel !== 'error' && dayMoinsActuel !== 'error' && dayPlusPrecedent !== 'error' && dayMoinsPrecedent !== 'error') {
+                    if (parseFloat(dayPlusActuel) >= parseFloat(dayMoinsActuel) &&
+                        parseFloat(dayMoinsPrecedent) > parseFloat(dayPlusPrecedent) &&
+                        dayPlusActuel !== 'error' &&
+                        dayMoinsActuel !== 'error' &&
+                        dayPlusPrecedent !== 'error' &&
+                        dayMoinsPrecedent !== 'error') {
                         if (resultBougiePattern[i + 1] === true) {
                             resultSucess.push({
                                 date: resultDateTimeBougiePatternActionEnCour[i],

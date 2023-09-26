@@ -13,13 +13,13 @@ export function plusAncienneDateAction(action) {
         try {
             const response = yield fetch(`https://api.twelvedata.com/earliest_timestamp?symbol=${action}&interval=1day&apikey=b914fed0677e48cdaf1938b5be42956d`);
             if (!response.ok) {
-                console.error("La requête a échoué avec un statut HTTP non OK:", response.status);
-                throw new Error("La requête a échoué avec un statut HTTP non OK");
+                console.error('La requête a échoué avec un statut HTTP non OK:', response.status);
+                throw new Error('La requête a échoué avec un statut HTTP non OK');
             }
-            const data = yield response.json();
+            const data = (yield response.json());
             if (!data || !data.datetime) {
-                console.error("Données JSON invalides ou manquantes dans la réponse.");
-                throw new Error("Données JSON invalides ou manquantes dans la réponse.");
+                console.error('Données JSON invalides ou manquantes dans la réponse.');
+                throw new Error('Données JSON invalides ou manquantes dans la réponse.');
             }
             return data.datetime;
         }

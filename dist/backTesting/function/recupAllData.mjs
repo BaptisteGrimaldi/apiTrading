@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import {fetchDataHistoric } from '../../function/fetchStock/fetchHistoric.mjs';;
 import {checkIfPositive } from '../../function/logistique/checkIfPositive.mjs';;
-export function backTesting(action) {
+export function recupAllData(action) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const data = yield fetchDataHistoric(action);

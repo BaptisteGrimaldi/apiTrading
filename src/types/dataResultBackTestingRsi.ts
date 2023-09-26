@@ -1,5 +1,5 @@
 export interface dataResultBackTesting {
-  date: string;
+  dateDebutPattern: string;
   action: string;
   bougieDataPlus1Variation: number;
   dateResult: string;

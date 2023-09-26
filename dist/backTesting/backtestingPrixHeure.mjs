@@ -28,13 +28,13 @@ export function backtestingPrixHeure(action, interval, start_date, end_date) {
     });
 }
 const action = process.argv[2];
-const tempo = await (() => __awaiter(void 0, void 0, void 0, function* () {
+const tempoPlusAncienneDateTimeAction = await (() => __awaiter(void 0, void 0, void 0, function* () {
     const plusAncienneDataAction = yield plusAncienneDateAction(action);
     return plusAncienneDataAction;
 }))();
 const today = new Date();
 const dateAujourdhui = formatDateToYYYYMMDD(today);
-backtestingPrixHeure(action, '1h', tempo, dateAujourdhui).then((data) => {
+backtestingPrixHeure(action, '1h', tempoPlusAncienneDateTimeAction, dateAujourdhui).then((data) => {
     const intradayGlobal = [];
     let dataResult = data.data.values;
     let dataResultLength = dataResult.length;
@@ -43,7 +43,7 @@ backtestingPrixHeure(action, '1h', tempo, dateAujourdhui).then((data) => {
     function processIntradayData() {
         return __awaiter(this, void 0, void 0, function* () {
             while (dataResultLength % 5000 === 0) {
-                const data = yield backtestingPrixHeure(action, '1h', tempo, dateLaPlusAncienneFetcher);
+                const data = yield backtestingPrixHeure(action, '1h', tempoPlusAncienneDateTimeAction, dateLaPlusAncienneFetcher);
                 dataResult = data.data.values;
                 dateLaPlusAncienneFetcher = data.dateLaPlusAncienneFetcher;
                 if (data.data.values.length === 5000) {
@@ -59,8 +59,6 @@ backtestingPrixHeure(action, '1h', tempo, dateAujourdhui).then((data) => {
     }
     (() => __awaiter(void 0, void 0, void 0, function* () {
         yield processIntradayData();
-        // Le code ici ne sera exécuté qu'après que processIntradayData() soit terminé
-        console.log("Toutes les itérations de la boucle sont terminées.");
-        // console.log(intradayGlobal);
+        console.log('Toutes les itérations de la boucle sont terminées.');
     }))();
 });

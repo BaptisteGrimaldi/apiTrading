@@ -3,7 +3,8 @@
     "start": "tsc &&  npm run rename-mjs && node ./dist/main.mjs",
     "rename-mjs": "node renameFiles.js && node ajoutImportMjs.js",
     "prettier": "npx prettier --write ./src/**",
-    "backTesting":"node backTestingStart.js"
+    "backTesting":"node backTestingStart.js",
+    "achatVente":"node dist/function/logistique/achatVenteDebutDay.mjs"
   },
   "devDependencies": {
     "@types/inquirer": "^9.0.3",

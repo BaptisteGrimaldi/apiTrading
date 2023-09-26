@@ -1,13 +1,11 @@
-
 import { fetchRsiDateTime } from '../function/indicateurs/rsi/fetchRsiDateTime';
-import { moyenneMedianeResult } from '../function/logistique/moyenneMediane/moyenneMedianeResultRsi';
-import { backTesting } from './function/recupAllData';
+import { moyenneMedianeResultRsi } from '../function/logistique/moyenneMediane/moyenneMedianeResultRsi';
+import { recupAllData } from './function/recupAllData';
 
 //Types :
 import { backTestingReturn } from '../types/backTestingReturn';
-import { dataResultBackTesting } from '../types/dataResultBackTesting';
+import { dataResultBackTesting } from '../types/dataResultBackTestingRsi';
 import { actionValues } from '../types/actionValues';
-
 
 const actionAcheck = process.argv[2];
 
@@ -16,7 +14,7 @@ if (!actionAcheck) {
   process.exit(1);
 }
 
-backTesting(actionAcheck)
+recupAllData(actionAcheck)
   .then((res: backTestingReturn) => {
     const resultSucess: dataResultBackTesting[] = [];
     const resultFail: dataResultBackTesting[] = [];
@@ -33,7 +31,7 @@ backTesting(actionAcheck)
           if (parseFloat(day1) <= 30 && parseFloat(day2) >= 33 && day1 !== 'error' && day2 !== 'error') {
             if (resultBougiePattern[i + 2] === true) {
               resultSucess.push({
-                date: resultDateTimeBougiePatternActionEnCour[i],
+                dateDebutPattern: resultDateTimeBougiePatternActionEnCour[i],
                 action: actionAcheck,
                 bougieDataPlus1Variation: res.bougieData[i + 1].variation,
                 dateResult: resultDateTimeBougiePatternActionEnCour[i + 2],
@@ -43,7 +41,7 @@ backTesting(actionAcheck)
               });
             } else {
               resultFail.push({
-                date: resultDateTimeBougiePatternActionEnCour[i],
+                dateDebutPattern: resultDateTimeBougiePatternActionEnCour[i],
                 action: actionAcheck,
                 bougieDataPlus1Variation: res.bougieData[i + 1].variation,
                 dateResult: resultDateTimeBougiePatternActionEnCour[i + 2],
@@ -59,26 +57,22 @@ backTesting(actionAcheck)
       console.log('---------------------------------------------------');
       console.log('resultFail', resultFail);
 
-      const resultSucessDate: string[] = [];
-      const resultFailDate: string[] = [];
+      // const resultSucessDate: string[] = [];
+      // const resultFailDate: string[] = [];
 
-      const resultSucessActionValue: actionValues[][] = [];
-      const resultFailActionValue: actionValues[][] = [];
+      // for (let i = 0; i < resultSucess.length; i++) {
+      //   resultSucessDate.push(resultSucess[i].dateResult);
+      // }
 
-      for (let i = 0; i < resultSucess.length; i++) {
-        resultSucessDate.push(resultSucess[i].dateResult);
-      }
+      // for (let i = 0; i < resultFail.length; i++) {
+      //   resultFailDate.push(resultFail[i].dateResult);
+      // }
 
-      for (let i = 0; i < resultFail.length; i++) {
-        resultFailDate.push(resultFail[i].dateResult);
-      }
+      // console.log('resultSucessDate', resultSucessDate);
+      // console.log('---------------------------------------------------');
+      // console.log('resultFailDate', resultFailDate);
 
-
-      console.log('resultSucessDate', resultSucessDate);
-      console.log('---------------------------------------------------');
-      console.log('resultFailDate', resultFailDate);
-
-      moyenneMedianeResult(resultSucess, resultFail);
+      moyenneMedianeResultRsi(resultSucess, resultFail);
     }
     execRsiVerif().catch(() => console.log('Erreur dans execRsiVerif'));
   })
