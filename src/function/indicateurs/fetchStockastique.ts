@@ -5,7 +5,6 @@ const cleApi = process.env.cleApi;
 
 import { StochasticData } from '../../types/stochasticData';
 
-
 export async function fetchStockastique(
   symbol: string,
   nbJour: number,
@@ -16,9 +15,7 @@ export async function fetchStockastique(
   try {
     const verifBleuEtOrange: boolean[] = [];
 
-    return await fetch(
-      `https://api.twelvedata.com/stoch?symbol=${symbol.toUpperCase()}&interval=1day&outputsize=${nbJour}&format=JSON&apikey=${cleApi}`
-    )
+    return await fetch(`https://api.twelvedata.com/stoch?symbol=${symbol.toUpperCase()}&interval=1day&outputsize=${nbJour}&format=JSON&apikey=${cleApi}`)
       .then((res: any) => {
         return res.json() as Promise<StochasticData>;
       })

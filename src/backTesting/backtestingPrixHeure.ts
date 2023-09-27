@@ -37,19 +37,16 @@ const tempoPlusAncienneDateTimeAction: string = await (async () => {
   return plusAncienneDataAction;
 })();
 
-
 const today: Date = new Date();
 const dateAujourdhui: string = formatDateToYYYYMMDD(today);
 
-backtestingPrixHeure(action, '1h',tempoPlusAncienneDateTimeAction, dateAujourdhui).then((data) => {
-
+backtestingPrixHeure(action, '1h', tempoPlusAncienneDateTimeAction, dateAujourdhui).then((data) => {
   let dataResult: actionValues[] = data.data.values;
   let dataResultLength: number = dataResult.length;
 
   let dateLaPlusAncienneFetcher: string = data.dateLaPlusAncienneFetcher;
 
   console.log(JSON.stringify(intraday(dataResult), null, 2));
-
 
   async function processIntradayData() {
     while (dataResultLength % 5000 === 0) {

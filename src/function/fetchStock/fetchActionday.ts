@@ -3,9 +3,8 @@ import fetch from 'node-fetch';
 import { valueStock } from '../../types/valueStock';
 import * as dotenv from 'dotenv';
 
-//types : 
+//types :
 import { absenceData } from '../../types/absenceData';
-
 
 dotenv.config();
 const cleApi = process.env.cleApi;
@@ -32,13 +31,7 @@ export async function fetchActionDay(date: string, action: string, interval: str
       return data;
     }
   } catch {
-    console.log("erreur lors de la récupération des données de l'action",nouvelleDate);
+    console.log("erreur lors de la récupération des données de l'action", nouvelleDate);
     return 'error';
   }
 }
-
-
-
-
-
-

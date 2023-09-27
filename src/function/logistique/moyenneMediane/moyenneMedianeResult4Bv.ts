@@ -1,4 +1,3 @@
-
 import { dataResultBackTesting4Bv } from '../../../types/dataResultBackTesting4Bv';
 import { mediane } from '../mediane';
 
