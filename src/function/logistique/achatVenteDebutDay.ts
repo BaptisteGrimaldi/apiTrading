@@ -2,14 +2,14 @@ import { fetchActionDay } from "../fetchStock/fetchActionday";
 import { waitPromesse } from "./waitPromesse";
 import { obtenirDateAujourdhui } from "./obtenirDateAujourdhui";
 
-const action = 'NFLX';
+const action = 'FLYW';
 const dateAujourdhui = obtenirDateAujourdhui();
 
 let achat = true;
-const gapBasminSucess =1.003;
-const gapHautminFail = 1.0005;
+const gapBasminSucess =1;
+const gapHautminFail = 1.012;
 
-const variationSucess = 1.028;
+const variationSucess = 1.030;
 
 async function executeAchat() {
   while (achat) {

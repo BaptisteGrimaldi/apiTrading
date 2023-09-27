@@ -1,9 +1,12 @@
 import { DateTimeInfo } from '../../types/dateTimeAncienne';
 import fetch from 'node-fetch';
+import * as dotenv from 'dotenv';
+dotenv.config();
+const cleApi = process.env.cleApi;
 
 export async function plusAncienneDateAction(action: string): Promise<string> {
   try {
-    const response = await fetch(`https://api.twelvedata.com/earliest_timestamp?symbol=${action}&interval=1day&apikey=b914fed0677e48cdaf1938b5be42956d`);
+    const response = await fetch(`https://api.twelvedata.com/earliest_timestamp?symbol=${action}&interval=1day&apikey=${cleApi}`);
 
     if (!response.ok) {
       console.error('La requête a échoué avec un statut HTTP non OK:', response.status);

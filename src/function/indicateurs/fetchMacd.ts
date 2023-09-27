@@ -1,10 +1,13 @@
+import fetch from 'node-fetch';
+import * as dotenv from 'dotenv';
+dotenv.config();
+const cleApi = process.env.cleApi;
 import { MACDData } from '../../types/macdData';
 
-import fetch from 'node-fetch';
 
 export async function fetchMacd(symbol: string, nbJour: number, macd: number): Promise<boolean> {
   return await fetch(
-    `https://api.twelvedata.com/macd?symbol=${symbol.toUpperCase()}&interval=1day&outputsize=${nbJour}&format=JSON&apikey=b914fed0677e48cdaf1938b5be42956d`
+    `https://api.twelvedata.com/macd?symbol=${symbol.toUpperCase()}&interval=1day&outputsize=${nbJour}&format=JSON&apikey=${cleApi}`
   )
     .then((res) => {
       return res.json() as Promise<MACDData>;

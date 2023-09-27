@@ -1,13 +1,17 @@
 import { recupAllData } from './function/recupAllData';
 import { moyenneMedianeResult4Bv } from '../function/logistique/moyenneMediane/moyenneMedianeResult4Bv';
 import { fetchActionDay } from '../function/fetchStock/fetchActionday';
+import  {fetchActionIntraday} from '../function/fetchStock/fetchActionIntraday';
+import { intraday } from '../function/logistique/intraday';
 
 //types
 import { backTestingReturn } from '../types/backTestingReturn';
 import { dataResultBackTesting4Bv } from '../types/dataResultBackTesting4Bv';
+import  {actionValues} from '../types/actionValues';
+
 // action récente : GMFI
 
-const actionAcheck = 'AAPL';
+const actionAcheck = 'FLYW';
 
 recupAllData(actionAcheck)
   .then((res: backTestingReturn) => {
@@ -19,7 +23,8 @@ recupAllData(actionAcheck)
       const resultDateTimeBougiePatternActionEnCour = res.dateTimeBougiePatternActionEnCour;
 
       for (let i = 0; i < resultBougiePattern.length; i++) {
-        if (resultBougiePattern[i] === true && resultBougiePattern[i + 1] === true && resultBougiePattern[i + 2] === true && resultBougiePattern[i + 3] === true) {
+        if ( resultBougiePattern[i-1] === false  &&resultBougiePattern[i] === true && resultBougiePattern[i + 1] === true && resultBougiePattern[i + 2] === true && resultBougiePattern[i + 3] === true) {
+
           const day1 = await fetchActionDay(resultDateTimeBougiePatternActionEnCour[i], actionAcheck, '1day');
           const day2 = await fetchActionDay(resultDateTimeBougiePatternActionEnCour[i + 1], actionAcheck, '1day');
           const day3 = await fetchActionDay(resultDateTimeBougiePatternActionEnCour[i + 2], actionAcheck, '1day');
@@ -49,26 +54,59 @@ recupAllData(actionAcheck)
           }
         }
       }
-        console.log('resultSucess', resultSucess);
-        console.log('---------------------------------------------------');
-        console.log('resultFail', resultFail);
+        // console.log('resultSucess', resultSucess);
+        // console.log('---------------------------------------------------');
+        // console.log('resultFail', resultFail);
 
-      // const resultSucessDate: string[] = [];
-      // const resultFailDate: string[] = [];
+      const resultSucessDate: string[] = [];
+      const resultFailDate: string[] = [];
 
-      // for (let i = 0; i < resultSucess.length; i++) {
-      //   resultSucessDate.push(resultSucess[i].dateResult);
-      // }
+      const resultSucessDataIntraday: actionValues[] = [];
+      const resultFailDataIntraday: actionValues[] = [];
 
-      // for (let i = 0; i < resultFail.length; i++) {
-      //   resultFailDate.push(resultFail[i].dateResult);
-      // }
+      let failFetchDataSucess = 0;
+      let failFetchDataFail = 0;
 
-      // console.log('resultSucessDate', resultSucessDate);
-      // console.log('---------------------------------------------------');
-      // console.log('resultFailDate', resultFailDate);
+      for (let i = 0; i < resultSucess.length; i++) {
+        resultSucessDate.push(resultSucess[i].dateResult);
+      }
 
-        moyenneMedianeResult4Bv(resultSucess, resultFail);
+      for (let i = 0; i < resultFail.length; i++) {
+        resultFailDate.push(resultFail[i].dateResult);
+      }
+
+      for(let i = 0; i < resultSucessDate.length; i++){
+        const data = await fetchActionIntraday(actionAcheck, resultSucessDate[i], '1h');
+        if(data !== 'error'){
+          resultSucessDataIntraday.push(...data.values);
+        }else{
+          failFetchDataSucess++;
+          console.log('data non disponible sucess : ', resultSucessDate[i])
+        }
+      }
+
+      for(let i = 0; i < resultFailDate.length; i++){
+        const data = await fetchActionIntraday(actionAcheck, resultFailDate[i], '1h');
+        if(data !== 'error'){
+          resultFailDataIntraday.push(...data.values);
+        }else{
+          failFetchDataFail++;
+          console.log('data non disponible fail : ', resultFailDate[i])
+        }
+      }
+
+      console.log("---------------------------------------------");
+      console.log("Heure resultSucessDataIntraday")
+      console.log(JSON.stringify(intraday(resultSucessDataIntraday), null, 2));
+      console.log("---------------------------------------------");
+      console.log("Heure resultFailDataIntraday")
+      console.log(JSON.stringify(intraday(resultFailDataIntraday), null, 2));
+      console.log("---------------------------------------------");
+      console.log("---------------------------------------------");
+      console.log("failFetchDataSucess", failFetchDataSucess);
+      console.log("failFetchDataFail", failFetchDataFail);
+
+      // moyenneMedianeResult4Bv(resultSucess, resultFail);
     }
     execRsiVerif().catch(() => console.log('Erreur dans execRsiVerif'));
   })

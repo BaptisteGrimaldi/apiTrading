@@ -94,8 +94,8 @@ export function intraday(dataResult: actionValues[]) {
     },
   ];
 
-  console.log('----------------------------------------------');
-  console.log("Heure de prix d'achat idéal : ", triAchatIdeal);
+  // console.log('----------------------------------------------');
+  // console.log("Heure de prix d'achat idéal : ", triAchatIdeal);
 
   const achatSecondaire9h30 = achatSecondaire.filter((heure) => heure === '09:30:00');
   const achatSecondaire10h30 = achatSecondaire.filter((heure) => heure === '10:30:00');
@@ -116,7 +116,7 @@ export function intraday(dataResult: actionValues[]) {
       '15h30': achatSecondaire15h30.length,
     },
   ];
-  console.log("Seconde heure de prix d'achat : ", triAchatSecondaire);
+  // console.log("Seconde heure de prix d'achat : ", triAchatSecondaire);
 
   const neutre9h30 = neutre.filter((heure) => heure === '09:30:00');
   const neutre10h30 = neutre.filter((heure) => heure === '10:30:00');
@@ -137,7 +137,7 @@ export function intraday(dataResult: actionValues[]) {
       '15h30': neutre15h30.length,
     },
   ];
-  console.log('Heure de prix neutre : ', triNeutre);
+  // console.log('Heure de prix neutre : ', triNeutre);
 
   const venteSecondaire9h30 = venteSecondaire.filter((heure) => heure === '09:30:00');
   const venteSecondaire10h30 = venteSecondaire.filter((heure) => heure === '10:30:00');
@@ -158,7 +158,7 @@ export function intraday(dataResult: actionValues[]) {
       '15h30': venteSecondaire15h30.length,
     },
   ];
-  console.log('Seconde heure de prix de vente : ', triVenteSecondaire);
+  // console.log('Seconde heure de prix de vente : ', triVenteSecondaire);
 
   const venteIdeal9h30 = venteIdeal.filter((heure) => heure === '09:30:00');
   const venteIdeal10h30 = venteIdeal.filter((heure) => heure === '10:30:00');
@@ -179,7 +179,7 @@ export function intraday(dataResult: actionValues[]) {
       '15h30': venteIdeal15h30.length,
     },
   ];
-  console.log('Heure de prix de vente idéal : ', triVenteIdeal);
+  // console.log('Heure de prix de vente idéal : ', triVenteIdeal);
 
   return {
     triAchatIdeal,

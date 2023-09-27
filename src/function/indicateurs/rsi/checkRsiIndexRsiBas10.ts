@@ -1,4 +1,7 @@
 import fetch from 'node-fetch';
+import * as dotenv from 'dotenv';
+dotenv.config();
+const cleApi = process.env.cleApi;
 
 import { RsiData } from '../../../types/rsiData';
 
@@ -7,7 +10,7 @@ export async function checkRsiIndexRsiBas10(listeActionPattern: string[], bougie
   const promises = [];
 
   for (const action of listeActionPattern) {
-    const promise = await fetch(`https://api.twelvedata.com/rsi?symbol=${action}&interval=1day&time_period=14&apikey=b914fed0677e48cdaf1938b5be42956d`)
+    const promise = await fetch(`https://api.twelvedata.com/rsi?symbol=${action}&interval=1day&time_period=14&apikey=${cleApi}`)
       .then((res) => res.json() as Promise<RsiData>)
       .then((res: RsiData) => {
         const tableauPatternRsi: boolean[] = [];

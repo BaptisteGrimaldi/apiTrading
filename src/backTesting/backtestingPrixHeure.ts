@@ -1,4 +1,7 @@
 import fetch from 'node-fetch';
+import * as dotenv from 'dotenv';
+dotenv.config();
+const cleApi = process.env.cleApi;
 import { formatDateToYYYYMMDD } from '../function/logistique/formatDate';
 import { intraday } from '../function/logistique/intraday';
 
@@ -10,7 +13,7 @@ import { plusAncienneDateAction } from '../function/fetchStock/plusAncienneDateA
 export async function backtestingPrixHeure(action: string, interval: string, start_date: string, end_date: string): Promise<any> {
   try {
     const response = await fetch(
-      `https://api.twelvedata.com/time_series?symbol=${action}&interval=${interval}&format=JSON&start_date=${start_date} 2:50 PM&end_date=${end_date} 2:50 PM&apikey=b914fed0677e48cdaf1938b5be42956d`
+      `https://api.twelvedata.com/time_series?symbol=${action}&interval=${interval}&format=JSON&start_date=${start_date} 2:50 PM&end_date=${end_date} 2:50 PM&apikey=${cleApi}`
     );
 
     if (!response.ok) {
@@ -34,18 +37,19 @@ const tempoPlusAncienneDateTimeAction: string = await (async () => {
   return plusAncienneDataAction;
 })();
 
+
 const today: Date = new Date();
 const dateAujourdhui: string = formatDateToYYYYMMDD(today);
 
-backtestingPrixHeure(action, '1h', tempoPlusAncienneDateTimeAction, dateAujourdhui).then((data) => {
-  const intradayGlobal: any = [];
+backtestingPrixHeure(action, '1h',tempoPlusAncienneDateTimeAction, dateAujourdhui).then((data) => {
 
   let dataResult: actionValues[] = data.data.values;
   let dataResultLength: number = dataResult.length;
 
   let dateLaPlusAncienneFetcher: string = data.dateLaPlusAncienneFetcher;
 
-  intradayGlobal.push(intraday(dataResult));
+  console.log(JSON.stringify(intraday(dataResult), null, 2));
+
 
   async function processIntradayData() {
     while (dataResultLength % 5000 === 0) {
@@ -55,9 +59,9 @@ backtestingPrixHeure(action, '1h', tempoPlusAncienneDateTimeAction, dateAujourdh
 
       if (data.data.values.length === 5000) {
         dataResultLength += 5000;
-        intradayGlobal.push(intraday(dataResult));
+        console.log(JSON.stringify(intraday(dataResult), null, 2));
       } else {
-        intradayGlobal.push(intraday(dataResult));
+        console.log(JSON.stringify(intraday(dataResult), null, 2));
         return;
       }
     }

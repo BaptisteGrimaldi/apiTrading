@@ -1,6 +1,10 @@
+import fetch from 'node-fetch';
+import * as dotenv from 'dotenv';
+dotenv.config();
+const cleApi = process.env.cleApi;
+
 import { StochasticData } from '../../types/stochasticData';
 
-import fetch from 'node-fetch';
 
 export async function fetchStockastique(
   symbol: string,
@@ -13,7 +17,7 @@ export async function fetchStockastique(
     const verifBleuEtOrange: boolean[] = [];
 
     return await fetch(
-      `https://api.twelvedata.com/stoch?symbol=${symbol.toUpperCase()}&interval=1day&outputsize=${nbJour}&format=JSON&apikey=b914fed0677e48cdaf1938b5be42956d`
+      `https://api.twelvedata.com/stoch?symbol=${symbol.toUpperCase()}&interval=1day&outputsize=${nbJour}&format=JSON&apikey=${cleApi}`
     )
       .then((res: any) => {
         return res.json() as Promise<StochasticData>;
