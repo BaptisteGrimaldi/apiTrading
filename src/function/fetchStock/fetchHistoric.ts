@@ -1,8 +1,10 @@
 import fetch from 'node-fetch';
+import * as dotenv from 'dotenv';
+dotenv.config();
+const cleApi = process.env.cleApi;
 
 //types :
 import { valueStock } from '../../types/valueStock';
-import { DateTimeInfo } from '../../types/dateTimeAncienne';
 
 import { formatDateToYYYYMMDD } from '../logistique/formatDate';
 import { plusAncienneDateAction } from './plusAncienneDateAction';
@@ -16,7 +18,7 @@ export async function fetchDataHistoric(action: string): Promise<valueStock> {
     const response = await fetch(
       `https://api.twelvedata.com/time_series?symbol=${action}&interval=1day&format=JSON&start_date=${plusAncienneDataAction} 6:05 PM&end_date=${formatDateToYYYYMMDD(
         today
-      )} 6:05 PM&apikey=b914fed0677e48cdaf1938b5be42956d`
+      )} 6:05 PM&apikey=${cleApi}`
     );
 
     if (!response.ok) {

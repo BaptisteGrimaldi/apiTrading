@@ -1,19 +1,14 @@
 import fetch from 'node-fetch';
 
 import { valueStock } from '../../types/valueStock';
-import { waitPromesse } from '../logistique/waitPromesse';
-import { type } from 'os';
+import * as dotenv from 'dotenv';
 
-interface absenceData {
-  code: number;
-  message: string;
-  status: string;
-  meta: {
-    symbol: string;
-    interval: string;
-    exchange: string;
-  };
-}
+//types : 
+import { absenceData } from '../../types/absenceData';
+
+
+dotenv.config();
+const cleApi = process.env.cleApi;
 
 export async function fetchActionDay(date: string, action: string, interval: string): Promise<valueStock | 'error'> {
   const datePlus1 = new Date(date);
@@ -26,12 +21,12 @@ export async function fetchActionDay(date: string, action: string, interval: str
 
   try {
     const actionDay = await fetch(
-      `https://api.twelvedata.com/time_series?symbol=${action}&interval=${interval}&format=JSON&start_date=${date}%209:00AM&end_date=${nouvelleDate}&apikey=b914fed0677e48cdaf1938b5be42956d`
+      `https://api.twelvedata.com/time_series?symbol=${action}&interval=${interval}&format=JSON&start_date=${date}%209:00AM&end_date=${nouvelleDate}&apikey=${cleApi}`
     );
     let data = (await actionDay.json()) as valueStock | absenceData;
 
     if ('code' in data && 'message' in data && 'status' in data && 'meta' in data) {
-      console.log('data non disponible : ');
+      console.log('data non disponible ');
       return 'error';
     } else {
       return data;
