@@ -1,6 +1,6 @@
 import { fetchStocks } from './fetchStock/fetchStocks';
 import { checkIfPositive } from './logistique/checkIfPositive';
-import { checkFetchRsi } from './indicateurs/rsi/fetchRsi';
+import { checkFetchRsi } from './indicateurs/rsi/checkFetchRsi';
 import { checkDateTime } from './logistique/checkDateTime';
 import { arraysHaveSameOrder } from './logistique/checkTableauSimilaire';
 import { fetchStockastique } from './indicateurs/fetchStockastique';

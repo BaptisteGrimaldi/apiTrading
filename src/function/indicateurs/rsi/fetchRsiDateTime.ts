@@ -20,3 +20,5 @@ export async function fetchRsiDateTime(actionAcheck: string, dateTime: string): 
     return 'error';
   }
 }
+
+// fetchRsiDateTime('AAPL', '2023-09-27').then((data) => console.log(data));

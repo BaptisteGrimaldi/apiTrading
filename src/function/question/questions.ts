@@ -76,7 +76,7 @@ export async function poserQuestionsEnSeries(): Promise<ReponsesQuestion> {
   };
 
   switch (questionObli.strategie) {
-    case 'check2BougiesVertes2Rouges':
+    case 'general':
       const minRsi: string = await questionMinRsi('Quel rsi minimum voulez-vous ?');
       const maxRsi: string = await questionMaxRsI('Quel rsi maximum voulez-vous ?');
       const stochastiqueSlowKmin: string = await questionStochastiqueSlowKmin(

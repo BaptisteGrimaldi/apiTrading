@@ -27,6 +27,7 @@ export function intraday30min(dataResult: actionValues[]) {
         heure: sequence.datetime.split(' ')[1],
         day: checkDay(sequence.datetime.split(' ')[0]),
         date: sequence.datetime.split(' ')[0],
+        volume: parseFloat(sequence.volume),
       });
     });
 

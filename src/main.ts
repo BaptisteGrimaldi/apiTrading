@@ -4,7 +4,7 @@ import { waitPromesse } from './function/logistique/waitPromesse';
 import { poserQuestionsEnSeries } from './function/question/questions';
 import { checkRsiIndexRsiBas10 } from './function/indicateurs/rsi/checkRsiIndexRsiBas10';
 import { dmiAdx } from './function/indicateurs/dmi/stratDmiAdx';
-
+import { moyenneVolumeJourAction } from './function/fetchStock/moyenneVolumeJourAction';
 import { UseOrNotUse } from './types/useOrNotUse';
 
 poserQuestionsEnSeries().then((reponsesQuestion) => {
@@ -23,13 +23,16 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
       const nombreCycleIteration = Math.ceil(stockDataLength / reponsesQuestion.api);
 
       resolveAllIndice(nombreCycleIteration).then(() => {
+
+        
+
         console.log('VraiListeFinal', listeFinal);
       });
 
       async function resolveAllIndice(nombreCycleIteration: number) {
         for (let x = 1; x < nombreCycleIteration + 1; x++) {
           console.log('startAttente');
-          await waitPromesse(70000);
+          await waitPromesse(30000);
           await initStrategie((x - 1) * reponsesQuestion.api, x * reponsesQuestion.api);
         }
       }
@@ -54,7 +57,7 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
         useOrNotUse: UseOrNotUse = reponsesQuestion.useOrNotUse
       ) {
         switch (strat) {
-          case 'check2BougiesVertes2Rouges':
+          case 'general':
             let strategie = await analyse(
               stockData,
               start,
@@ -68,7 +71,14 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
               macd,
               bougiePattern,
               useOrNotUse
-            );
+            )
+            .then((res) => {
+              return moyenneVolumeJourAction(res,10);
+            })
+            .catch((error) => {
+              console.error("Une erreur s'est produite dans la stratégie general", error);
+              throw error;
+            });
             await addList(strategie);
             break;
           case 'rsiBas10':
@@ -87,7 +97,12 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
               useOrNotUse
             ).then((res) => {
               return checkRsiIndexRsiBas10(res, bougiePattern);
-            });
+            })
+            .then((res) => {
+              return moyenneVolumeJourAction(res,10);
+            })
+
+
             await addList(strategie2);
             break;
 
@@ -107,7 +122,10 @@ poserQuestionsEnSeries().then((reponsesQuestion) => {
               useOrNotUse
             ).then((res) => {
               return dmiAdx(res);
-            });
+            })
+            .then((res) => {
+              return moyenneVolumeJourAction(res,10);
+            })
             await addList(strategie3);
             break;
         }

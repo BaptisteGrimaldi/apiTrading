@@ -8,10 +8,11 @@ import { intraday } from '../function/logistique/intraday';
 import { backTestingReturn } from '../types/backTestingReturn';
 import { dataResultBackTesting4Bv } from '../types/dataResultBackTesting4Bv';
 import { actionValues } from '../types/actionValues';
+import { fetchRsiDateTime } from '../function/indicateurs/rsi/fetchRsiDateTime';
 
 // action récente : GMFI
 
-const actionAcheck = 'FLYW';
+const actionAcheck = 'WFRD';
 
 recupAllData(actionAcheck)
   .then((res: backTestingReturn) => {
@@ -30,10 +31,14 @@ recupAllData(actionAcheck)
           resultBougiePattern[i + 2] === true &&
           resultBougiePattern[i + 3] === true
         ) {
+
+          // const day0 = await fetchRsiDateTime(actionAcheck, resultDateTimeBougiePatternActionEnCour[i-1]);
+
           const day1 = await fetchActionDay(resultDateTimeBougiePatternActionEnCour[i], actionAcheck, '1day');
           const day2 = await fetchActionDay(resultDateTimeBougiePatternActionEnCour[i + 1], actionAcheck, '1day');
           const day3 = await fetchActionDay(resultDateTimeBougiePatternActionEnCour[i + 2], actionAcheck, '1day');
           const day4 = await fetchActionDay(resultDateTimeBougiePatternActionEnCour[i + 3], actionAcheck, '1day');
+
 
           if (day1 !== 'error' && day2 !== 'error' && day3 !== 'error' && day4 !== 'error') {
             if (resultBougiePattern[i + 4] === true) {
@@ -58,9 +63,9 @@ recupAllData(actionAcheck)
           }
         }
       }
-      // console.log('resultSucess', resultSucess);
-      // console.log('---------------------------------------------------');
-      // console.log('resultFail', resultFail);
+      console.log('resultSucess', resultSucess);
+      console.log('---------------------------------------------------');
+      console.log('resultFail', resultFail);
 
       const resultSucessDate: string[] = [];
       const resultFailDate: string[] = [];

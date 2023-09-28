@@ -3,4 +3,5 @@ export interface jourEnCour {
   heure: string;
   day: string;
   date: string;
+  volume: number;
 }
