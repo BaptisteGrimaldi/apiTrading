@@ -11,8 +11,7 @@ export async function moyenneVolumeJourAction(listeActions: string[],outputsizeJ
   for(let action of listeActions){
       await fetchStocks(action,outputsizeJour)
       .then((res:valueStock) => {
-        console.log(res.values)
-      
+
         const sommeVolumeAction = res.values.reduce((total, action:actionValues) => {
           const volumeAction = parseFloat(action.volume);
           return total + volumeAction;
